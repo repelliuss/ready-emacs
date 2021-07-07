@@ -1,12 +1,26 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-(defmacro rps/load-modules (&rest modules)
-  `(dolist (module ',modules)
-    (load (concat user-emacs-directory "rps/" (symbol-name module) "/config"))))
+(defvar rps/emacs-directory (concat user-emacs-directory "rps/"))
 
-(rps/load-modules base)
+(defun rps/load  (module files &optional packages-p)
+  (let* ((module-name (symbol-name module))
+         (module-path (concat rps/emacs-directory module-name "/")))
+    (require (intern (concat "rps-" module-name)) (concat module-path "config"))
+    (let ((path (concat module-path (if packages-p
+                                        "packages/"
+                                      "submodules/"))))
+      (dolist (file files)
+        (load (concat path (symbol-name file)) t t)))))
 
-(load (concat user-emacs-directory "config"))
+(defmacro rps/load-submodules (module &rest submodules)
+  `(rps/load ,module ',submodules))
+
+(defmacro rps/load-packages (module &rest packages)
+  `(rps/load ,module ',packages t))
+
+(rps/load-submodules 'base package window)
+
+(load (concat user-emacs-directory "config") t t)
 
 (use-package gcmh
   :demand

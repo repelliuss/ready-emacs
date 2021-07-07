@@ -5,4 +5,4 @@
       gc-cons-threshold most-positive-fixnum
       load-prefer-newer noninteractive)
 
-(load (concat user-emacs-directory "early-config"))
+(load (concat user-emacs-directory "early-config") t t)

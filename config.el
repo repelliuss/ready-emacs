@@ -1,6 +1,7 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
-(rps/load-modules ui editor)
+(rps/load-packages 'ui defaults)
+(rps/load-packages 'editor defaults)
 
 (setq user-full-name "repelliuss"
       user-mail-address "repelliuss@gmail.com")
@@ -19,7 +20,8 @@
         modus-themes-diffs 'deuteranopia
         modus-themes-org-blocks 'tinted-background
         modus-themes-scale-headings t
-        modus-themes-variable-pitch-headings t)
+        modus-themes-variable-pitch-headings t
+        modus-themes-region 'bg-only)
   :config
   (modus-themes-load-themes)
   (modus-themes-load-operandi))

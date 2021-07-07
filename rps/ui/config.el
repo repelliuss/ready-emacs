@@ -25,4 +25,4 @@
 (advice-add #'scroll-up-command :filter-args (lambda (_)))
 (advice-add #'scroll-down-command :filter-args (lambda (_)))
 
-(rps/load-submodules 'ui mood-line)
+(provide 'rps-ui)

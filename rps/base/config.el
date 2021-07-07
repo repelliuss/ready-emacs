@@ -1,12 +1,5 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
-(defvar rps/emacs-directory (concat user-emacs-directory "rps/"))
-
-(defmacro rps/load-submodules (module &rest submodules)
-  `(let ((module-path (concat rps/emacs-directory (symbol-name ,module) "/")))
-     (dolist (submodule ',submodules)
-       (load (concat module-path (symbol-name submodule))))))
-
 ;; Get rid of "For information about GNU Emacs..." message at startup, unless
 ;; we're in a daemon session where it'll say "Starting Emacs daemon." instead,
 ;; which isn't so bad.
@@ -92,4 +85,4 @@
               (advice-remove #'tty-run-terminal-initialization #'ignore)
               (tty-run-terminal-initialization (selected-frame) nil t))))
 
-(rps/load-submodules 'base package window)
+(provide 'rps-base)
