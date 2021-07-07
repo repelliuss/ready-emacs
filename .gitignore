@@ -1,0 +1,12 @@
+# savehist-mode.
+history
+
+# auto-save files.
+\#*#
+
+# Backup files.
+*~
+
+# Our package manager, straight specific. We only want our version lockfiles.
+straight/*
+!straight/versions
