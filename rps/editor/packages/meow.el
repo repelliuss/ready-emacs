@@ -94,6 +94,10 @@
          :map meow-insert-state-keymap
          ("C-g" . meow-insert-exit))
   :config
+  (after! which-key
+    (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))
+    (add-to-list 'which-key-replacement-alist '(("0" . "meow-digit-argument") . ("[0-9]")))
+    (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t)))
   (meow-setup)
   (meow-global-mode 1))
 
