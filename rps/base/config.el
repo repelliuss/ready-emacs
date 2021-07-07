@@ -92,6 +92,7 @@
                                               (cdr feature))
                                    (funcall oldfun feature subfeature))))
 
+;; TODO: Better naming?
 (defmacro after! (file &rest body)
   `(with-eval-after-load ',file
      ,@body))

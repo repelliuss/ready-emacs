@@ -1,5 +1,7 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
+;; TODO: Change rps
+
 (defvar rps/emacs-directory (concat user-emacs-directory "rps/"))
 
 (defun rps/load  (module files &optional packages-p)
