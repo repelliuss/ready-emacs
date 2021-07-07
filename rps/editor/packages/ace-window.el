@@ -14,7 +14,7 @@
       (?? aw-show-dispatch-help))
     "List of actions for `aw-dispatch-default'.")
   :config
-  (setq aw-keys '(?y ?u ?i ?o ?p ?[ ?])
+  (setq aw-keys '(?y ?u ?i ?o ?p ?\[ ?\])
         aw-scope 'frame
         aw-minibuffer-flag t)
   (advice-add #'ace-window :after #'golden-ratio))
