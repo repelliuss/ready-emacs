@@ -1,4 +1,4 @@
-;;; marginilia.el -*- lexical-binding: t; -*-
+;;; marginalia.el -*- lexical-binding: t; -*-
 
 (use-package marginalia
   :demand
