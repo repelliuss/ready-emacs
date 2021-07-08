@@ -3,10 +3,7 @@
 (defvar rps/emacs-directory (concat user-emacs-directory "rps/"))
 (defvar rps/modules '(:base :editor :ui)) ; base module gets removed after loading
 
-(defmacro after! (file &rest body)
-  `(eval-after-load ',file ',(macroexp-progn body)))
-
-(defun rps/load  (module files &optional packages-p)
+(defun rps/enable-files  (module files &optional packages-p)
   (let* ((module-name (substring (symbol-name module) 1))
          (module-path (concat rps/emacs-directory module-name "/")))
     (require (intern (concat "rps-" module-name)) (concat module-path "config"))
@@ -18,15 +15,15 @@
                                (symbol-name file)
                              file)) t t)))))
 
-(defun rps/load-submodules-all (module)
-  (rps/load module (directory-files (concat rps/emacs-directory
-                                            (substring (symbol-name module) 1)
-                                            "/submodules/")
-                                    nil directory-files-no-dot-files-regexp t)))
+(defun rps/enable-submodule-all (module)
+  (rps/enable-files module (directory-files (concat rps/emacs-directory
+                                                    (substring (symbol-name module) 1)
+                                                    "/submodules/")
+                                            nil directory-files-no-dot-files-regexp t)))
 
 (defun rps/enable-module-all (module)
-  (rps/load-submodules-all module)
-  (rps/load module '(defaults) t))
+  (rps/enable-submodule-all module)
+  (rps/enable-files module '(defaults) t))
 
 (defun rps/enable-all ()
   (dolist (module rps/modules)
@@ -52,13 +49,13 @@
                  (if (not (listp (car args)))
                      (error "`:sub' arg is not a list for `%s' in `rps/enable'" module)
                    (if (not (eq 'all (caar args)))
-                       (push `(rps/load ,module ,(car args)) load-list)
-                     (push `(rps/load-submodules-all ,module) load-list)
+                       (push `(rps/enable-files ,module ,(car args)) load-list)
+                     (push `(rps/enable-submodule-all ,module) load-list)
                      (setq args (cdr args)))))
                 ((eq expr :pkg)
                  (if (not (listp (car args)))
                      (error "`:pkg' arg is not a list for `%s' in `rps/enable'" module)
-                   (push `(rps/load ,module ',(car args) t) load-list))))
+                   (push `(rps/enable-files ,module ',(car args) t) load-list))))
                (setq expr (car args)
                      args (cdr args)))
              (macroexp-progn load-list)))))
