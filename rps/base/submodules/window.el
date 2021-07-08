@@ -17,7 +17,6 @@
 
 (after! which-key
   (add-to-list 'which-key-replacement-alist '(("w$" . "prefix") . (nil . "Window")))
-  ;; TODO: remove wind, window, windows and wrapping -
-  )
+  (add-to-list 'which-key-replacement-alist '(("w .$" . "\\(?:-\\(?:states\\|windows?\\)\\|wind\\(?:ow\\)?\\)") . (nil . ""))))
 
 (provide 'rps-window '(editor))
