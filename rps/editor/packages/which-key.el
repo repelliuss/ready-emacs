@@ -1,6 +1,4 @@
-;;; which.el -*- lexical-binding: t; -*-
-
-;; TODO: update file name
+;;; which-key.el -*- lexical-binding: t; -*-
 
 (use-package which-key
   :demand

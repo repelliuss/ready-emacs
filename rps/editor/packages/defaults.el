@@ -2,8 +2,8 @@
 
 (rps/load-packages 'editor
                    meow
-                   which
+                   which-key
                    selectrum
-                   marginilia
+                   marginalia
                    ace-window
                    golden-ratio)
