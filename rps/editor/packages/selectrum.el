@@ -2,10 +2,7 @@
 
 (use-package selectrum
   :demand
-  :after (orderless)
-  :bind (:map meow-leader-keymap
-	 ("r" . selectrum-repeat)
-	 :map selectrum-minibuffer-map
+  :bind (:map selectrum-minibuffer-map
          ("M-j" . selectrum-next-candidate)
          ("M-k" . selectrum-previous-candidate)
 	 ("M-d" . selectrum-next-page)
@@ -17,8 +14,12 @@
 	 ("M-y" . kill-ring-save)
 	 ("M-RET" . selectrum-submit-exact-input))
   :config
-  (setq orderless-skip-highlighting (lambda () selectrum-is-active)
-        selectrum-refine-candidates-function #'orderless-filter
-        selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  (after! meow
+    (bind-keys :map meow-leader-keymap
+               ("r" . selectrum-repeat)))
+  (after! orderless
+    (setq orderless-skip-highlighting (lambda () selectrum-is-active)
+          selectrum-refine-candidates-function #'orderless-filter
+          selectrum-highlight-candidates-function #'orderless-highlight-matches))
   (savehist-mode 1)
   (selectrum-mode 1))
