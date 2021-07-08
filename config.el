@@ -2,15 +2,6 @@
 
 (enable! all)
 
-;; (enable!
-
-;;   :editor
-;;   :sub (all)                              ; all submodules
-;;   :pkg (defaults)
-
-;;   :ui all                               ; all submodules and default packages
-;;   )
-
 (setq user-full-name "repelliuss"
       user-mail-address "repelliuss@gmail.com")
 
