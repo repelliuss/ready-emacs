@@ -1,5 +1,5 @@
 ;;; defaults.el -*- lexical-binding: t; -*-
 
-(rps/enable
+(enable!
   :ui
   :pkg (mood-line))

@@ -1,10 +1,8 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
 (defvar rps/emacs-directory (concat user-emacs-directory "rps/"))
-
 (defvar rps/modules '(:base :editor :ui)) ; base module gets removed after loading
 
-;; TODO: Better naming?
 (defmacro after! (file &rest body)
   `(eval-after-load ',file ',(macroexp-progn body)))
 
@@ -34,7 +32,7 @@
   (dolist (module rps/modules)
     (rps/enable-module-all module)))
 
-(defmacro rps/enable (&rest args)
+(defmacro enable! (&rest args)
   (cond ((eq 'all (car args))
          '(rps/enable-all))
         ((not (memq (car args) rps/modules))
@@ -67,5 +65,5 @@
 
 (provide 'rps-base)
 
-(rps/enable :base all)
+(enable! :base all)
 (setq rps/modules (delq :base rps/modules))

@@ -1,8 +1,8 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
-(rps/enable all)
+(enable! all)
 
-;; (rps/enable
+;; (enable!
 
 ;;   :editor
 ;;   :sub (all)                              ; all submodules

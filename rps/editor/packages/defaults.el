@@ -1,6 +1,6 @@
 ;;; defaults.el -*- lexical-binding: t; -*-
 
-(rps/enable
+(enable!
   :editor
   :pkg (meow
         which-key
