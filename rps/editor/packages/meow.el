@@ -99,7 +99,7 @@
     (add-to-list 'which-key-replacement-alist '(("0" . "meow-digit-argument") . ("[0-9]")))
     (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t)))
   (after! (rps-window . editor)
-    (set-keymap-parent meow-leader-keymap rps-window-map))
+    (set-keymap-parent meow-leader-keymap rps/window-map))
   (meow-setup)
   (meow-global-mode 1))
 

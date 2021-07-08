@@ -1,7 +1,7 @@
 ;;; window.el -*- lexical-binding: t; -*-
 
 (bind-keys
- :map (defvar rps-window-map (make-sparse-keymap))
+ :map (defvar rps/window-map (make-sparse-keymap))
  ("w h" . windmove-left)
  ("w j" . windmove-down)
  ("w k" . windmove-up)
