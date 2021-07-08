@@ -20,12 +20,6 @@
                                (symbol-name file)
                              file)) t t)))))
 
-(defmacro rps/load-submodules (module &rest submodules)
-  `(rps/load ,module ',submodules))
-
-(defmacro rps/load-packages (module &rest packages)
-  `(rps/load ,module ',packages t))
-
 (defun rps/load-submodules-all (module)
   (rps/load module (directory-files (concat rps/emacs-directory
                                             (substring (symbol-name module) 1)
@@ -34,7 +28,7 @@
 
 (defun rps/enable-module-all (module)
   (rps/load-submodules-all module)
-  (rps/load-packages module defaults))
+  (rps/load module '(defaults) t))
 
 (defun rps/enable-all ()
   (dolist (module rps/modules)
@@ -60,13 +54,13 @@
                  (if (not (listp (car args)))
                      (error "`:sub' arg is not a list for `%s' in `rps/enable'" module)
                    (if (not (eq 'all (caar args)))
-                       (push `(rps/load-submodules ,module ,@(car args)) load-list)
+                       (push `(rps/load ,module ,(car args)) load-list)
                      (push `(rps/load-submodules-all ,module) load-list)
                      (setq args (cdr args)))))
                 ((eq expr :pkg)
                  (if (not (listp (car args)))
                      (error "`:pkg' arg is not a list for `%s' in `rps/enable'" module)
-                   (push `(rps/load-packages ,module ,@(car args)) load-list))))
+                   (push `(rps/load ,module ',(car args) t) load-list))))
                (setq expr (car args)
                      args (cdr args)))
              (macroexp-progn load-list)))))
