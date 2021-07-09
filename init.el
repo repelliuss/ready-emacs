@@ -1,7 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
 ;; TODO: Prepare Windows & Mac support
-;; TODO: Provide feature for each submodule
 ;; TODO: Add finalize hook
 ;; TODO: Move gcmh to base/packages
 ;; TODO: Look naming convention
