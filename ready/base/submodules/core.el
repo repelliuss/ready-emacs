@@ -84,11 +84,3 @@
             (lambda ()
               (advice-remove #'tty-run-terminal-initialization #'ignore)
               (tty-run-terminal-initialization (selected-frame) nil t))))
-
-;; with/eval-after-load takes a single argument but we need to check subfeatures
-(advice-add #'featurep :around (lambda (oldfun feature &optional subfeature)
-                                 (if (consp feature)
-                                     (funcall oldfun (car feature)
-                                              (cdr feature))
-                                   (funcall oldfun feature subfeature))))
-

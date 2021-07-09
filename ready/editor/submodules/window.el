@@ -19,4 +19,4 @@
   (add-to-list 'which-key-replacement-alist '(("w$" . "prefix") . (nil . "Window")))
   (add-to-list 'which-key-replacement-alist '(("w .$" . "\\(?:-\\(?:states\\|windows?\\)\\|wind\\(?:ow\\)?\\)") . (nil . ""))))
 
-(provide 'rdy/window '(editor))
+(provide 'rdy/window/editor)
