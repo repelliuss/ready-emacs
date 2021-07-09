@@ -21,5 +21,5 @@
     (setq orderless-skip-highlighting (lambda () selectrum-is-active)
           selectrum-refine-candidates-function #'orderless-filter
           selectrum-highlight-candidates-function #'orderless-highlight-matches))
-  (savehist-mode 1)
-  (selectrum-mode 1))
+  (savehist-mode)
+  (selectrum-mode))

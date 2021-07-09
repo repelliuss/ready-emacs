@@ -1,9 +1,8 @@
 ;;; marginalia.el -*- lexical-binding: t; -*-
 
 (use-package marginalia
-  :demand
-  :after (selectrum)
-  :bind (:map selectrum-minibuffer-map
-         ("M-m" . marginalia-cycle))
-  :config
-  (marginalia-mode 1))
+  :init
+  (after! selectrum
+    (bind-keys :map selectrum-minibuffer-map
+               ("M-m" . marginalia-cycle))
+    (marginalia-mode)))

@@ -3,4 +3,4 @@
 (use-package mood-line
   :demand
   :config
-  (mood-line-mode 1))
+  (mood-line-mode))

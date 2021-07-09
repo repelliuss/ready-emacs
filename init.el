@@ -2,9 +2,9 @@
 
 ;; TODO: Prepare Windows & Mac support
 ;; TODO: Handle backup and autosave files
-;; TODO: Check packages for dependendent loading
 ;; TODO: Add defaults and all variables
 ;; TODO: Remove use-package config variables
+;; TODO: use general.el
 
 (load (concat user-emacs-directory "ready/base/config") t t)
 

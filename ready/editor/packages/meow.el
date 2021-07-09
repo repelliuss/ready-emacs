@@ -101,6 +101,6 @@
   (after! rdy/window/editor
     (set-keymap-parent meow-leader-keymap rdy/window-map))
   (meow-setup)
-  (meow-global-mode 1))
+  (meow-global-mode))
 
 ;; TODO: Set keypad window height here

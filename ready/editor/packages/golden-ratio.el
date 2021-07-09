@@ -8,4 +8,4 @@
                  (lambda ()
                    (and which-key--buffer
                         (window-live-p (get-buffer-window which-key--buffer))))))
-  (golden-ratio-mode 1))
+  (golden-ratio-mode))
