@@ -1,5 +1,7 @@
 ;;; core.el -*- lexical-binding: t; -*-
 
+(defvar rdy--finalize-hook)
+
 ;; Get rid of "For information about GNU Emacs..." message at startup, unless
 ;; we're in a daemon session where it'll say "Starting Emacs daemon." instead,
 ;; which isn't so bad.
