@@ -21,4 +21,4 @@
 (advice-add #'scroll-up-command :filter-args (lambda (_)))
 (advice-add #'scroll-down-command :filter-args (lambda (_)))
 
-(provide 'rps-editor)
+(provide 'rdy/editor)

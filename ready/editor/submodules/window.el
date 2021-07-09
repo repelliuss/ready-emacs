@@ -1,7 +1,7 @@
 ;;; window.el -*- lexical-binding: t; -*-
 
 (bind-keys
- :map (defvar rps/window-map (make-sparse-keymap))
+ :map (defvar rdy/window-map (make-sparse-keymap))
  ("w h" . windmove-left)
  ("w j" . windmove-down)
  ("w k" . windmove-up)
@@ -19,4 +19,4 @@
   (add-to-list 'which-key-replacement-alist '(("w$" . "prefix") . (nil . "Window")))
   (add-to-list 'which-key-replacement-alist '(("w .$" . "\\(?:-\\(?:states\\|windows?\\)\\|wind\\(?:ow\\)?\\)") . (nil . ""))))
 
-(provide 'rps-window '(editor))
+(provide 'rdy/window '(editor))
