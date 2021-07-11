@@ -18,3 +18,5 @@
 
 (setq use-package-always-defer t
       straight-use-package-by-default t)
+
+(use-package general :demand t)

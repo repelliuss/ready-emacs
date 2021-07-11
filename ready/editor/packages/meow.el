@@ -89,10 +89,11 @@
 
 (use-package meow
   :demand t
-  :bind (:map meow-leader-keymap
-         ("." . find-file)
-         :map meow-insert-state-keymap
-         ("C-g" . meow-insert-exit))
+  :general
+  (:keymaps 'meow-leader-keymap
+   "." #'find-file)
+  (:keymaps 'meow-insert-state-keymap
+   "C-g" #'meow-insert-exit)
   :config
   (after! which-key
     (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))

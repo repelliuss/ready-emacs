@@ -3,9 +3,11 @@
 (use-package ace-window
   :init
   (after! meow
-    (bind-keys :map meow-leader-keymap
-               ("w w" . ace-window)
-               ("w f" . aw-flip-window)))
+    (general-def
+     :keymaps 'meow-leader-keymap
+     :prefix "w"
+     "w" #'ace-window
+     "f" #'aw-flip-window))
   :config
   (setq aw-keys '(?y ?u ?i ?o ?p ?\[ ?\])
         aw-scope 'frame
