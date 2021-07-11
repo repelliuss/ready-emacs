@@ -1,7 +1,7 @@
 ;;; selectrum.el -*- lexical-binding: t; -*-
 
 (use-package selectrum
-  :demand
+  :demand t
   :bind (:map selectrum-minibuffer-map
          ("M-j" . selectrum-next-candidate)
          ("M-k" . selectrum-previous-candidate)

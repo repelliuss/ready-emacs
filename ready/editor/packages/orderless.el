@@ -1,7 +1,7 @@
 ;;; orderless.el -*- lexical-binding: t; -*-
 
 (use-package orderless
-  :demand
+  :demand t
   :config
   (setq completion-styles '(orderless)
 	completion-category-overrides nil

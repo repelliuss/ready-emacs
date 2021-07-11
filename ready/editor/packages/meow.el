@@ -88,7 +88,7 @@
    '("\\" . quoted-insert)))
 
 (use-package meow
-  :demand
+  :demand t
   :bind (:map meow-leader-keymap
          ("." . find-file)
          :map meow-insert-state-keymap

@@ -1,7 +1,7 @@
 ;;; which-key.el -*- lexical-binding: t; -*-
 
 (use-package which-key
-  :demand
+  :demand t
   :config
   (setq which-key-sort-order #'which-key-key-order-alpha
         which-key-sort-uppercase-first nil

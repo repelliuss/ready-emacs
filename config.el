@@ -6,7 +6,7 @@
       user-mail-address "repelliuss@gmail.com")
 
 (use-package modus-themes
-  :demand
+  :demand t
   :init
   (setq modus-themes-inhibit-reload t
         modus-themes-success-deuteranopia t

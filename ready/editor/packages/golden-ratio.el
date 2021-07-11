@@ -1,7 +1,7 @@
 ;;; golden-ratio.el -*- lexical-binding: t; -*-
 
 (use-package golden-ratio
-  :demand
+  :demand t
   :config
   (after! which-key
     (add-to-list 'golden-ratio-inhibit-functions
