@@ -1,7 +1,15 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
 (defvar rdy--emacs-directory (concat user-emacs-directory "ready/"))
-(defvar rdy--modules '(:base :editor :ui)) ; base module gets removed after loading
+
+(defun rdy--get-files (&optional path)
+  (directory-files (concat rdy--emacs-directory path)
+                   nil directory-files-no-dot-files-regexp t))
+
+(defvar rdy--modules (mapcar (lambda (module-name)
+                               (intern (concat ":"
+                                               (file-name-sans-extension module-name))))
+                             (rdy--get-files)))
 
 (defun rdy--enable-files  (module files &optional packages-p)
   (let* ((module-name (substring (symbol-name module) 1))
