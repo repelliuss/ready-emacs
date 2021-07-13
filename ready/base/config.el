@@ -23,14 +23,11 @@
                                (symbol-name file)
                              file)) t t)))))
 
-(defun rdy--enable-submodule-all (module)
-  (rdy--enable-files module (directory-files (concat rdy--emacs-directory
-                                                    (substring (symbol-name module) 1)
-                                                    "/submodules/")
-                                            nil directory-files-no-dot-files-regexp t)))
-
 (defun rdy--enable-module-all (module)
-  (rdy--enable-submodule-all module)
+  (rdy--enable-files module (eval
+                             (intern (concat "rdy/"
+                                             (substring (symbol-name module) 1)
+                                             "-sub-all"))))
   (rdy--enable-files module '(defaults) t))
 
 (defun rdy--enable-all ()
@@ -58,7 +55,9 @@
                      (error "`:sub' arg is not a list for `%s' in `rdy-enable'" module)
                    (if (not (eq 'all (caar args)))
                        (push `(rdy--enable-files ,module ,(car args)) load-list)
-                     (push `(rdy--enable-submodule-all ,module) load-list)
+                     (push `(rdy--enable-files ,module ,(intern (concat "rdy/"
+                                                                        (substring (symbol-name module) 1)
+                                                                        "-sub-all")))  load-list)
                      (setq args (cdr args)))))
                 ((eq expr :pkg)
                  (if (not (listp (car args)))
