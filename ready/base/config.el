@@ -68,7 +68,37 @@
                      args (cdr args)))
              (macroexp-progn load-list)))))
 
-(provide 'rdy/base)
+(let ((_))
+  (dolist (module rdy--modules)
+    (let ((submodules))
+      (eval `(defvar ,(intern (concat "rdy/"
+                                      (substring (symbol-name module) 1)
+                                      "-sub-all"))
+               ',(mapcar (lambda (submodule)
+                           (intern (file-name-sans-extension submodule)))
+                         (rdy--get-files (concat (substring (symbol-name module) 1)
+                                                 "/submodules/"))))))))
 
+(let ((pkg-defaults '((base   . (gcmh))
+
+                      (editor . (meow
+                                 which-key
+                                 orderless
+                                 selectrum
+                                 marginalia
+                                 ace-window
+                                 golden-ratio))
+
+                      (ui     . (mood-line)))))
+
+  (dolist (pkg-assoc pkg-defaults)
+    (let ((module (car pkg-assoc))
+          (defaults (cdr pkg-assoc)))
+      (eval `(defvar ,(intern (concat "rdy/"
+                                      (symbol-name module)
+                                      "-pkg-defaults"))
+               ',defaults)))))
+
+(provide 'rdy/base)
 (enable! :base all)
 (setq rdy--modules (delq :base rdy--modules))
