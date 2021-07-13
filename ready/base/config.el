@@ -26,12 +26,12 @@
 (defun rdy--enable-module-all (module)
   (rdy--enable-files module
                      (eval
-                      (intern (concat "rdy/"
+                      (intern (concat "rdy--"
                                       (substring (symbol-name module) 1)
                                       "-sub-all"))))
   (rdy--enable-files module
                      (eval
-                      (intern (concat "rdy/"
+                      (intern (concat "rdy--"
                                       (substring (symbol-name module) 1)
                                       "-pkg-defaults")))
                      t))
@@ -39,6 +39,18 @@
 (defun rdy--enable-all ()
   (dolist (module rdy--modules)
     (rdy--enable-module-all module)))
+
+(defun rdy--modify-list (var modifications)
+  (mapc (lambda (subarg)
+          (cond
+           ((char-equal ?- (elt (symbol-name subarg) 0))
+            (setq var (delq (intern (substring (symbol-name subarg) 1))
+                            var)))
+           ((char-equal ?+ (elt (symbol-name subarg) 0))
+            (push (intern (substring (symbol-name subarg) 1))
+                  var))))
+        modifications)
+  var)
 
 (defmacro enable! (&rest args)
   (cond ((eq 'all (car args))
@@ -60,19 +72,26 @@
                  (if (not (listp (car args)))
                      (error "`:sub' arg is not a list for `%s' in `rdy-enable'" module)
                    (if (not (eq 'all (caar args)))
-                       (push `(rdy--enable-files ,module ,(car args)) load-list)
-                     (push `(rdy--enable-files ,module ,(intern (concat "rdy/"
-                                                                        (substring (symbol-name module) 1)
-                                                                        "-sub-all")))  load-list)
+                       (push `(rdy--enable-files ,module ',(car args)) load-list)
+                     (let ((sub-all (eval (intern (concat "rdy--"
+                                                          (substring (symbol-name module) 1)
+                                                          "-sub-all")))))
+                       (push `(rdy--enable-files ,module
+                                                 ',(rdy--modify-list sub-all (cdar args)))
+                             load-list))
                      (setq args (cdr args)))))
                 ((eq expr :pkg)
                  (if (not (listp (car args)))
                      (error "`:pkg' arg is not a list for `%s' in `rdy-enable'" module)
                    (if (not (eq 'defaults (caar args)))
                        (push `(rdy--enable-files ,module ',(car args) t) load-list)
-                     (push `(rdy--enable-files ,module ,(intern (concat "rdy/"
-                                                                        (substring (symbol-name module) 1)
-                                                                        "-pkg-defaults"))) load-list)))))
+                     (let ((pkg-defaults (eval (intern (concat "rdy--"
+                                                               (substring (symbol-name module) 1)
+                                                               "-pkg-defaults")))))
+                       (push `(rdy--enable-files ,module
+                                                 ',(rdy--modify-list pkg-defaults (cdar args)) t)
+                             load-list))
+                     (setq args (cdr args))))))
                (setq expr (car args)
                      args (cdr args)))
              (macroexp-progn load-list)))))
@@ -80,7 +99,7 @@
 (let ((_))
   (dolist (module rdy--modules)
     (let ((submodules))
-      (eval `(defvar ,(intern (concat "rdy/"
+      (eval `(defvar ,(intern (concat "rdy--"
                                       (substring (symbol-name module) 1)
                                       "-sub-all"))
                ',(mapcar (lambda (submodule)
@@ -103,7 +122,7 @@
   (dolist (pkg-assoc pkg-defaults)
     (let ((module (car pkg-assoc))
           (defaults (cdr pkg-assoc)))
-      (eval `(defvar ,(intern (concat "rdy/"
+      (eval `(defvar ,(intern (concat "rdy--"
                                       (symbol-name module)
                                       "-pkg-defaults"))
                ',defaults)))))
