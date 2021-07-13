@@ -24,11 +24,17 @@
                              file)) t t)))))
 
 (defun rdy--enable-module-all (module)
-  (rdy--enable-files module (eval
-                             (intern (concat "rdy/"
-                                             (substring (symbol-name module) 1)
-                                             "-sub-all"))))
-  (rdy--enable-files module '(defaults) t))
+  (rdy--enable-files module
+                     (eval
+                      (intern (concat "rdy/"
+                                      (substring (symbol-name module) 1)
+                                      "-sub-all"))))
+  (rdy--enable-files module
+                     (eval
+                      (intern (concat "rdy/"
+                                      (substring (symbol-name module) 1)
+                                      "-pkg-defaults")))
+                     t))
 
 (defun rdy--enable-all ()
   (dolist (module rdy--modules)
@@ -62,7 +68,11 @@
                 ((eq expr :pkg)
                  (if (not (listp (car args)))
                      (error "`:pkg' arg is not a list for `%s' in `rdy-enable'" module)
-                   (push `(rdy--enable-files ,module ',(car args) t) load-list))))
+                   (if (not (eq 'defaults (caar args)))
+                       (push `(rdy--enable-files ,module ',(car args) t) load-list)
+                     (push `(rdy--enable-files ,module ,(intern (concat "rdy/"
+                                                                        (substring (symbol-name module) 1)
+                                                                        "-pkg-defaults"))) load-list)))))
                (setq expr (car args)
                      args (cdr args)))
              (macroexp-progn load-list)))))
