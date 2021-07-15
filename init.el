@@ -1,7 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
 ;; TODO: Prepare Windows & Mac support
-;; TODO: Handle backup and autosave files
 ;; Meow change save not working for chars
 ;; Meow goto old position
 

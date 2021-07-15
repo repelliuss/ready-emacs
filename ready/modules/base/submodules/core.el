@@ -2,13 +2,22 @@
 
 (defvar rdy--finalize-hook)
 
-;; Get rid of "For information about GNU Emacs..." message at startup, unless
-;; we're in a daemon session where it'll say "Starting Emacs daemon." instead,
-;; which isn't so bad.
 (unless (daemonp)
   (advice-add #'display-startup-echo-area-message :override #'ignore))
 
-;; Contrary to what many Emacs users have in their configs, you don't need more
-;; than this to make UTF-8 the default coding system:
 (set-language-environment "UTF-8")
 (setq selection-coding-system 'utf-8) ; with sugar on top
+
+(setq create-lockfiles nil
+      make-backup-files nil)
+
+;; Use `recover-file' or `recover-session' to recover them.
+(setq auto-save-default t
+      auto-save-include-big-deletions t
+      auto-save-list-file-prefix (concat rdy--cache-directory "autosave/")
+      tramp-auto-save-directory  (concat rdy--cache-directory "tramp-autosave/")
+      auto-save-file-name-transforms
+      (list (list "\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
+                  ;; Prefix tramp autosaves to prevent conflicts with local ones
+                  (concat auto-save-list-file-prefix "tramp-\\2") t)
+            (list ".*" auto-save-list-file-prefix t)))
