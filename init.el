@@ -2,11 +2,10 @@
 
 ;; TODO: Prepare Windows & Mac support
 ;; TODO: Handle backup and autosave files
-;; TODO: Gen macro symbols
 ;; Meow change save not working for chars
 ;; Meow goto old position
 
-(load (concat user-emacs-directory "ready/base/config") t t)
+(load (concat user-emacs-directory "ready/modules/base/config") t t)
 
 (load (concat user-emacs-directory "config") t t)
 

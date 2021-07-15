@@ -1,9 +1,10 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
 (defvar rdy--emacs-directory (concat user-emacs-directory "ready/"))
+(defvar rdy--modules-directory (concat rdy--emacs-directory "modules/"))
 
 (defun rdy--get-files (&optional path)
-  (directory-files (concat rdy--emacs-directory path)
+  (directory-files (concat rdy--modules-directory path)
                    nil directory-files-no-dot-files-regexp t))
 
 (defvar rdy--modules (mapcar (lambda (module-name)
@@ -13,7 +14,7 @@
 
 (defun rdy--enable-files  (module files &optional packages-p)
   (let* ((module-name (substring (symbol-name module) 1))
-         (module-path (concat rdy--emacs-directory module-name "/")))
+         (module-path (concat rdy--modules-directory module-name "/")))
     (require (intern (concat "rdy/" module-name)) (concat module-path "config"))
     (let ((path (concat module-path (if packages-p
                                         "packages/"
