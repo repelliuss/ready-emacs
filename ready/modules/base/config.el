@@ -2,6 +2,7 @@
 
 (defvar rdy--emacs-directory (concat user-emacs-directory "ready/"))
 (defvar rdy--modules-directory (concat rdy--emacs-directory "modules/"))
+(defvar rdy--cache-directory (concat rdy--emacs-directory "cache/"))
 
 (defun rdy--get-files (&optional path)
   (directory-files (concat rdy--modules-directory path)
