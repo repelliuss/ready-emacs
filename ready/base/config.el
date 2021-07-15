@@ -44,10 +44,10 @@
   (mapc (lambda (subarg)
           (cond
            ((char-equal ?- (elt (symbol-name subarg) 0))
-            (setq var (delq (intern (substring (symbol-name subarg) 1))
+            (setq var (delq (make-symbol (substring (symbol-name subarg) 1))
                             var)))
            ((char-equal ?+ (elt (symbol-name subarg) 0))
-            (push (intern (substring (symbol-name subarg) 1))
+            (push (make-symbol (substring (symbol-name subarg) 1))
                   var))))
         modifications)
   var)
@@ -103,7 +103,7 @@
                                       (substring (symbol-name module) 1)
                                       "-sub-all"))
                ',(mapcar (lambda (submodule)
-                           (intern (file-name-sans-extension submodule)))
+                           (make-symbol (file-name-sans-extension submodule)))
                          (rdy--get-files (concat (substring (symbol-name module) 1)
                                                  "/submodules/"))))))))
 
