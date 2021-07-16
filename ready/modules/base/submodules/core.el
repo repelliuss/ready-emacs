@@ -21,3 +21,5 @@
                   ;; Prefix tramp autosaves to prevent conflicts with local ones
                   (concat auto-save-list-file-prefix "tramp-\\2") t)
             (list ".*" auto-save-list-file-prefix t)))
+
+(setq dired-listing-switches "-ahl -v --group-directories-first")

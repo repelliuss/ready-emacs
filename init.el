@@ -1,8 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
 ;; TODO: Prepare Windows & Mac support
-;; Meow change save not working for chars
-;; Meow goto old position
 
 (load (concat user-emacs-directory "ready/modules/base/config") t t)
 
