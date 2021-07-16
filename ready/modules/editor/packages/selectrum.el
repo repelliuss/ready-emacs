@@ -26,5 +26,6 @@
     (setq orderless-skip-highlighting (lambda () selectrum-is-active)
           selectrum-refine-candidates-function #'orderless-filter
           selectrum-highlight-candidates-function #'orderless-highlight-matches))
+  (setq selectrum-fix-vertical-window-height 10)
   (savehist-mode)
   (selectrum-mode))
