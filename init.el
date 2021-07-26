@@ -4,6 +4,8 @@
 
 (load (concat user-emacs-directory "ready/modules/base/config") t t)
 
+;; base module is available after here
+
 (load (concat user-emacs-directory "config") t t)
 
 (run-hooks 'rdy--finalize-hook)
