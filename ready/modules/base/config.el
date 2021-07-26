@@ -1,11 +1,11 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
-(defvar rdy--emacs-directory (concat user-emacs-directory "ready/"))
-(defvar rdy--modules-directory (concat rdy--emacs-directory "modules/"))
-(defvar rdy--cache-directory (concat rdy--emacs-directory "cache/"))
+(defvar rdy/emacs-directory (concat user-emacs-directory "ready/"))
+(defvar rdy/modules-directory (concat rdy/emacs-directory "modules/"))
+(defvar rdy/cache-directory (concat rdy/emacs-directory "cache/"))
 
 (defun rdy--get-files (&optional path)
-  (directory-files (concat rdy--modules-directory path)
+  (directory-files (concat rdy/modules-directory path)
                    nil directory-files-no-dot-files-regexp t))
 
 (defvar rdy--modules (mapcar (lambda (module-name)
@@ -15,7 +15,7 @@
 
 (defun rdy--enable-files  (module files &optional packages-p)
   (let* ((module-name (substring (symbol-name module) 1))
-         (module-path (concat rdy--modules-directory module-name "/")))
+         (module-path (concat rdy/modules-directory module-name "/")))
     (require (intern (concat "rdy/" module-name)) (concat module-path "config"))
     (let ((path (concat module-path (if packages-p
                                         "packages/"
@@ -119,7 +119,11 @@
                                  ace-window
                                  golden-ratio))
 
-                      (ui     . (mood-line)))))
+                      (ui     . (mood-line))
+
+                      (ux     . nil)
+
+                      (lang   . (org)))))
 
   (dolist (pkg-assoc pkg-defaults)
     (let ((module (car pkg-assoc))
