@@ -10,3 +10,5 @@ history
 # Our package manager, straight specific. We only want our version lockfiles.
 straight/*
 !straight/versions
+
+ready/cache/
