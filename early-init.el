@@ -1,8 +1,11 @@
 ;;; early-init.el --- -*- lexical-binding: t; -*-
 
-(setq package-enable-at-startup nil
-      native-comp-deferred-compilation nil
-      gc-cons-threshold most-positive-fixnum
-      load-prefer-newer noninteractive)
+(setq gc-cons-threshold most-positive-fixnum)
+
+(setq package-enable-at-startup nil)
+
+(setq native-comp-deferred-compilation nil)
+
+(setq load-prefer-newer t)
 
 (load (concat user-emacs-directory "early-config") t t)
