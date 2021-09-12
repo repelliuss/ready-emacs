@@ -1,6 +1,25 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
-(enable! all)
+(enable!
+ :editor
+ :pkg (defaults)
+ :sub (all)
+
+ :lang
+ :pkg (defaults)
+ :sub (all)
+
+ :tools
+ :pkg (defaults)
+ :sub (all)
+
+ :ui
+ :pkg (defaults -mood-line)
+ :sub (all)
+
+ :ux
+ :pkg (defaults)
+ :sub (all))
 
 (setq user-full-name "repelliuss"
       user-mail-address "repelliuss@gmail.com")

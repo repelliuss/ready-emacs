@@ -1,13 +1,5 @@
 ;;; optimize.el -*- lexical-binding: t; -*-
 
-;; Reduce *Message* noise at startup. An empty scratch buffer (or the dashboard)
-;; is more than enough.
-(setq inhibit-startup-message t
-      inhibit-startup-echo-area-message user-login-name
-      inhibit-default-init t
-      initial-major-mode 'fundamental-mode
-      initial-scratch-message nil)
-
 ;; A second, case-insensitive pass over `auto-mode-alist' is time wasted, and
 ;; indicates misconfiguration (don't rely on case insensitivity for file names).
 (setq auto-mode-case-fold nil)
@@ -49,7 +41,3 @@
 ;; Introduced in Emacs HEAD (b2f8c9f), this inhibits fontification while
 ;; receiving input, which should help a little with scrolling performance.
 (setq redisplay-skip-fontification-on-input t)
-
-;; Remove command line options that aren't relevant to our current OS; means
-;; slightly less to process at startup.
-(unless (eq system-type 'darwin) (setq command-line-ns-option-alist nil))

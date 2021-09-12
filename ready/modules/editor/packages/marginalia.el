@@ -2,7 +2,7 @@
 
 (use-package marginalia
   :init
-  (after! 'selectrum
+  (after! selectrum
     (general-def
       :keymaps 'selectrum-minibuffer-map
       "M-m" #'marginalia-cycle)

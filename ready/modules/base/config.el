@@ -44,7 +44,7 @@
   (mapc (lambda (subarg)
           (cond
            ((char-equal ?- (elt (symbol-name subarg) 0))
-            (setq var (delq (make-symbol (substring (symbol-name subarg) 1))
+            (setq var (delq (intern (substring (symbol-name subarg) 1))
                             var)))
            ((char-equal ?+ (elt (symbol-name subarg) 0))
             (push (make-symbol (substring (symbol-name subarg) 1))
@@ -89,7 +89,7 @@
                                                                (substring (symbol-name module) 1)
                                                                "-pkg-defaults")))))
                        (push `(rdy--enable-files ,module
-                                                 ',(rdy--modify-list pkg-defaults (cdar args)) t)
+                                                 ',(rdy--modify-list pkg-defaults (cdar args)) 'packages)
                              load-list))
                      (setq args (cdr args))))))
                (setq expr (car args)
@@ -119,6 +119,8 @@
                       (ui     . (mood-line))
 
                       (ux     . nil)
+
+                      (tools  . nil)
 
                       (lang   . (org)))))
 

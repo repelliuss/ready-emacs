@@ -1,7 +1,7 @@
 ;;; package.el -*- lexical-binding: t; -*-
 
-(defvar straight-check-for-modifications '(check-on-save find-when-checking))
-(defvar bootstrap-version)
+(setq straight-use-package-by-default t
+      straight-check-for-modifications '(check-on-save find-when-checking))
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
@@ -14,9 +14,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(setq use-package-always-defer t)
 (straight-use-package 'use-package)
-
-(setq use-package-always-defer t
-      straight-use-package-by-default t)
 
 (use-package general :demand t)

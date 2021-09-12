@@ -2,7 +2,7 @@
 
 ;; TODO: Prepare Windows & Mac support
 
-(load (concat user-emacs-directory "ready/base/config") nil 'nomessage)
+(load (concat user-emacs-directory "ready/modules/base/config") nil 'nomessage)
 
 (load (concat user-emacs-directory "config") nil 'nomessage)
 

@@ -2,7 +2,7 @@
 
 (use-package ace-window
   :init
-  (after! 'meow
+  (after! meow
     (general-def
      :keymaps 'meow-leader-keymap
      :prefix "w"
@@ -18,5 +18,5 @@
           (?m aw-move-window "Move")
           (?c aw-copy-window "Copy")
           (?? aw-show-dispatch-help)))
-  (after! 'golden-ratio
+  (after! golden-ratio
     (advice-add #'ace-window :after #'golden-ratio)))

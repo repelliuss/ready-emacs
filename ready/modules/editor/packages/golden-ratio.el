@@ -3,7 +3,7 @@
 (use-package golden-ratio
   :demand t
   :config
-  (after! 'which-key
+  (after! which-key
     (add-to-list 'golden-ratio-inhibit-functions
                  (lambda ()
                    (and which-key--buffer
