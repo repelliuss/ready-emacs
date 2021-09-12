@@ -2,11 +2,9 @@
 
 ;; TODO: Prepare Windows & Mac support
 
-(load (concat user-emacs-directory "ready/modules/base/config") t t)
+(load (concat user-emacs-directory "ready/base/config") nil 'nomessage)
 
-;; base module is available after here
-
-(load (concat user-emacs-directory "config") t t)
+(load (concat user-emacs-directory "config") nil 'nomessage)
 
 (run-hooks 'rdy--finalize-hook)
 

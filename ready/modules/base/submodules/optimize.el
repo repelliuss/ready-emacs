@@ -5,10 +5,6 @@
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message user-login-name
       inhibit-default-init t
-      ;; Shave seconds off startup time by starting the scratch buffer in
-      ;; `fundamental-mode', rather than, say, `org-mode' or `text-mode', which
-      ;; pull in a ton of packages. `doom/open-scratch-buffer' provides a better
-      ;; scratch buffer anyway.
       initial-major-mode 'fundamental-mode
       initial-scratch-message nil)
 

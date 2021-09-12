@@ -7,6 +7,6 @@
 (setq native-comp-deferred-compilation nil)
 (add-to-list 'native-comp-eln-load-path (concat user-emacs-directory "ready/cache/eln/"))
 
-(setq load-prefer-newer t)
+(setq load-prefer-newer noninteractive)
 
-(load (concat user-emacs-directory "early-config") t t)
+(load (concat user-emacs-directory "early-config") nil 'nomessage)

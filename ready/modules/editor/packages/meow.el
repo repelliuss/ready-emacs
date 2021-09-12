@@ -96,11 +96,11 @@
   (:keymaps 'meow-insert-state-keymap
    "C-g" #'meow-insert-exit)
   :config
-  (after! which-key
+  (after! 'which-key
     (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))
     (add-to-list 'which-key-replacement-alist '(("0" . "meow-digit-argument") . ("[0-9]")))
     (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t)))
-  (after! rdy/window/editor
+  (after! 'rdy/window/editor
     (set-keymap-parent meow-leader-keymap rdy/window-map))
   (meow-setup)
   (meow-global-mode))

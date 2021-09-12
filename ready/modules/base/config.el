@@ -9,8 +9,7 @@
                    nil directory-files-no-dot-files-regexp t))
 
 (defvar rdy--modules (mapcar (lambda (module-name)
-                               (intern (concat ":"
-                                               (file-name-sans-extension module-name))))
+                               (intern (concat ":" (file-name-sans-extension module-name))))
                              (rdy--get-files)))
 
 (defun rdy--enable-files  (module files &optional packages-p)
@@ -23,20 +22,19 @@
       (dolist (file files)
         (load (concat path (if (symbolp file)
                                (symbol-name file)
-                             file)) t t)))))
+                             file)) nil 'nomessage)))))
 
 (defun rdy--enable-module-all (module)
   (rdy--enable-files module
-                     (eval
-                      (intern (concat "rdy--"
-                                      (substring (symbol-name module) 1)
-                                      "-sub-all"))))
+                     (eval (intern (concat "rdy--"
+                                           (substring (symbol-name module) 1)
+                                           "-sub-all"))))
   (rdy--enable-files module
                      (eval
                       (intern (concat "rdy--"
                                       (substring (symbol-name module) 1)
                                       "-pkg-defaults")))
-                     t))
+                     'packages))
 
 (defun rdy--enable-all ()
   (dolist (module rdy--modules)
@@ -98,16 +96,15 @@
                      args (cdr args)))
              (macroexp-progn load-list)))))
 
-(let ((_))
-  (dolist (module rdy--modules)
-    (let ((submodules))
-      (eval `(defvar ,(intern (concat "rdy--"
-                                      (substring (symbol-name module) 1)
-                                      "-sub-all"))
-               ',(mapcar (lambda (submodule)
-                           (make-symbol (file-name-sans-extension submodule)))
-                         (rdy--get-files (concat (substring (symbol-name module) 1)
-                                                 "/submodules/"))))))))
+(dolist (module rdy--modules)
+  (let ((submodules))
+    (eval `(defvar ,(intern (concat "rdy--"
+                                    (substring (symbol-name module) 1)
+                                    "-sub-all"))
+             ',(mapcar (lambda (submodule)
+                         (intern (file-name-sans-extension submodule)))
+                       (rdy--get-files (concat (substring (symbol-name module) 1)
+                                               "/submodules/")))))))
 
 (let ((pkg-defaults '((base   . (gcmh))
 
