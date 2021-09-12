@@ -16,7 +16,7 @@
  "s" #'split-window-below
  "v" #'split-window-right)
 
-(after! which-key
+(after! 'which-key
   (add-to-list 'which-key-replacement-alist '(("w$" . "prefix") . (nil . "Window")))
   (add-to-list 'which-key-replacement-alist '(("w .$" . "\\(?:-\\(?:states\\|windows?\\)\\|wind\\(?:ow\\)?\\)") . (nil . ""))))
 
