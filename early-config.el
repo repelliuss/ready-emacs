@@ -1,4 +1,4 @@
 ;;; early-config.el -*- lexical-binding: t; -*-
 
 (add-to-list 'default-frame-alist
-             '(font . "-*-JetBrainsMono-regular-r-*--18-*-*-*-*-*-*-*"))
+             '(font . "-*-Iosevka Term SS04-regular-r-*--18-*-*-*-*-*-*-*"))

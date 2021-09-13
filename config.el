@@ -46,3 +46,5 @@
 
 (set-face-attribute 'fixed-pitch nil :family "JetBrainsMono" :height 180)
 (set-face-attribute 'variable-pitch nil :family "SF Pro Text" :height 180)
+
+(setq native-comp-async-report-warnings-errors nil)
