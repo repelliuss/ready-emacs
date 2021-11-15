@@ -1,9 +1,9 @@
 ;;; marginalia.el -*- lexical-binding: t; -*-
 
 (use-package marginalia
+  :after (selectrum)
   :init
-  (after! selectrum
-    (general-def
-      :keymaps 'selectrum-minibuffer-map
-      "M-m" #'marginalia-cycle)
-    (marginalia-mode)))
+  (marginalia-mode 1)
+  :general
+  (selectrum-minibuffer-map
+   "M-m" #'marginalia-cycle))

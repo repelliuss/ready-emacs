@@ -25,8 +25,9 @@
       user-mail-address "repelliuss@gmail.com")
 
 (use-package modus-themes
-  :demand t
   :init
+  (modus-themes-load-themes)
+  :config
   (setq modus-themes-inhibit-reload t
         modus-themes-success-deuteranopia t
         modus-themes-syntax 'yellow-comments
@@ -40,8 +41,6 @@
         modus-themes-scale-headings t
         modus-themes-variable-pitch-headings t
         modus-themes-region 'bg-only)
-  :config
-  (modus-themes-load-themes)
   (modus-themes-load-operandi))
 
 (set-face-attribute 'fixed-pitch nil :family "JetBrainsMono" :height 180)

@@ -4,8 +4,9 @@
 
 (setq package-enable-at-startup nil)
 
-(setq native-comp-deferred-compilation nil)
-(add-to-list 'native-comp-eln-load-path (concat user-emacs-directory "ready/cache/eln/"))
+(when (featurep 'native-compile)
+  (setq native-comp-deferred-compilation nil)
+  (add-to-list 'native-comp-eln-load-path (concat user-emacs-directory "ready/cache/eln/")))
 
 (setq load-prefer-newer noninteractive)
 

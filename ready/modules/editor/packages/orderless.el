@@ -10,3 +10,5 @@
         orderless-matching-styles '(orderless-regexp
                                     orderless-strict-initialism
                                     orderless-literal)))
+
+;; TODO: Check orderless without demand
