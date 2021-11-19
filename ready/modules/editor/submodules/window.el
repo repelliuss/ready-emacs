@@ -1,7 +1,7 @@
 ;;; window.el -*- lexical-binding: t; -*-
 
 (general-def
- :keymaps (defvar rdy/window-map (make-sparse-keymap))
+ :keymaps (defvar ready/window-map (make-sparse-keymap))
  :prefix "w"
  "h" #'windmove-left
  "j" #'windmove-down
@@ -20,4 +20,4 @@
   (add-to-list 'which-key-replacement-alist '(("w$" . "prefix") . (nil . "Window")))
   (add-to-list 'which-key-replacement-alist '(("w .$" . "\\(?:-\\(?:states\\|windows?\\)\\|wind\\(?:ow\\)?\\)") . (nil . ""))))
 
-(provide 'rdy/editor/window)
+(provide 'ready/editor/window)

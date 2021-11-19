@@ -6,6 +6,10 @@
 # backup files.
 *~
 
+
+/elpa
+
+
 # only keep lockfiles
 straight/*
 !straight/versions

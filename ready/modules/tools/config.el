@@ -1,3 +1,0 @@
-;;; config.el -*- lexical-binding: t; -*-
-
-(provide 'rdy/tools)

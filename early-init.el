@@ -11,3 +11,5 @@
 (setq load-prefer-newer noninteractive)
 
 (load (concat user-emacs-directory "early-config") nil 'nomessage)
+
+;; TODO: Put this file in ready-early-setup

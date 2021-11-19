@@ -102,7 +102,7 @@
   (nconc which-key-replacement-alist '(((nil . "^meow-") . (nil . ""))
                                        (("0" . "meow-digit-argument") . ("[0-9]"))
                                        (("[1-9]" . "meow-digit-argument") . t)))
-  :extend (rdy/editor/window)
-  (set-keymap-parent meow-leader-keymap rdy/window-map))
+  :extend (ready/editor/window)
+  (set-keymap-parent meow-leader-keymap ready/window-map))
 
 ;; TODO: Set keypad window height here

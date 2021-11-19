@@ -20,4 +20,4 @@
           w32-pipe-read-delay 0               ; faster IPC
           w32-pipe-buffer-size (* 64 1024)))) ; read more at a time (was 4K)
 
-(provide 'rdy/ux/os)
+(provide 'ready/ux/os)
