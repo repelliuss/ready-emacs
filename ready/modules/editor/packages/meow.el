@@ -65,6 +65,8 @@
    '("T" . meow-till-expand)
    '("<" . scroll-down-command)
    '(">" . scroll-up-command)
+   '("C->" . scroll-other-window)
+   '("C-<" . scroll-other-window-down)
    '("u" . meow-undo)
    '("U" . undo-redo)
    '("M-u" . meow-undo-in-selection)
@@ -95,13 +97,16 @@
    "." #'find-file)
   (meow-insert-state-keymap
    "C-g" #'meow-insert-exit)
+
   :config
   (meow-setup)
   (meow-global-mode 1)
+
   :extend (which-key)
   (nconc which-key-replacement-alist '(((nil . "^meow-") . (nil . ""))
                                        (("0" . "meow-digit-argument") . ("[0-9]"))
                                        (("[1-9]" . "meow-digit-argument") . t)))
+
   :extend (ready/editor/window)
   (set-keymap-parent meow-leader-keymap ready/window-map))
 

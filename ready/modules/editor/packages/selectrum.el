@@ -5,12 +5,11 @@
   (selectrum-minibuffer-map
    "M-j" #'selectrum-next-candidate
    "M-k" #'selectrum-previous-candidate
-   "M-d" #'selectrum-next-page
-   "M-u" #'selectrum-previous-page
+   "M->" #'selectrum-next-page
+   "M-<" #'selectrum-previous-page
    "M-s" #'selectrum-quick-select
-   "M-c" #'selectrum-cycle-display-style
+   "<backspace>" #'selectrum-backward-kill-sexp
    "M-<backspace>" #'kill-whole-line
-   "C-<backspace>" #'selectrum-backward-kill-sexp
    "M-w" #'kill-ring-save
    "M-y" #'yank-pop
    "M-RET" #'selectrum-submit-exact-input)

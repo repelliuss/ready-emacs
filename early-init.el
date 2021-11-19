@@ -10,6 +10,12 @@
 
 (setq load-prefer-newer noninteractive)
 
+(load (concat user-emacs-directory "ready/core") nil 'nomessage)
+
 (load (concat user-emacs-directory "early-config") nil 'nomessage)
+
+(enable!
+ :ui
+ :sub (no-bar))
 
 ;; TODO: Put this file in ready-early-setup

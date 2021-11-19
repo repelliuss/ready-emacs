@@ -115,7 +115,8 @@
 
 (let ((pkg-defaults '((editor . (meow
                                  selectrum
-                                 ace-window))
+                                 ace-window
+                                 embark))
 
                       (ui     . (mood-line))
 

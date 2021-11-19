@@ -22,3 +22,6 @@ straight/*
 
 # recentf-mode
 /recentf
+
+# eshell
+/eshell
