@@ -21,7 +21,6 @@
   (advice-add #'embark-completing-read-prompter
               :around #'embark-hide-which-key-indicator)
 
-;;;###autoload
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the
@@ -45,7 +44,6 @@ targets."
          nil nil t (lambda (binding)
                      (not (string-suffix-p "-argument" (cdr binding))))))))
 
-;;;###autoload
   (defun embark-hide-which-key-indicator (fn &rest args)
     "Hide the which-key indicator immediately when using the completing-read prompter."
     (which-key--hide-popup-ignore-command)
@@ -56,7 +54,6 @@ targets."
   :extend (vertico)
   (add-to-list 'embark-indicators #'embark-vertico-indicator)
 
-;;;###autoload
   (defun embark-vertico-indicator ()
     (let ((fr face-remapping-alist))
       (lambda (&optional keymap _targets prefix)

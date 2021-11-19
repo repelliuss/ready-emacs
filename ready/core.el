@@ -114,7 +114,7 @@
                                                "/submodules/")))))))
 
 (let ((pkg-defaults '((editor . (meow
-                                 selectrum
+                                 vertico
                                  ace-window
                                  embark))
 
@@ -167,6 +167,7 @@
   (defun use-package-normalize/:extend (_ _ args)
     (list args))
 
+  ;; TODO: add :before support and put it before kw :init
   (defun use-package-handler/:extend (name-symbol keyword forms rest state)
     (let  ((body (use-package-process-keywords name-symbol rest state))
            extensions)

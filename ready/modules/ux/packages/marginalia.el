@@ -7,3 +7,5 @@
   :general
   (selectrum-minibuffer-map
    "M-m" #'marginalia-cycle))
+
+;; TODO: check doom's enhancements

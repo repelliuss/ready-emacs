@@ -7,4 +7,4 @@
       mouse-wheel-scroll-amount '(2 ((shift) . hscroll))
       mouse-wheel-scroll-amount-horizontal 2)
 
-(provide 'ready/ux/scroll)
+(provide 'ready/editor/scroll)
