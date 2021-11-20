@@ -73,8 +73,8 @@
    '("v" . meow-visit)
    '("q" . meow-start-kmacro-or-insert-counter)
    '("Q" . meow-end-or-call-kmacro)
-   '("z" . meow-kmacro-lines)
-   '("Z" . meow-kmacro-matches)
+   '("z" . meow-kmacro-matches)
+   '("Z" . meow-kmacro-lines)
    '("m" . meow-mark-word)
    '("M" . meow-mark-symbol)
    '("x" . meow-line)
@@ -83,8 +83,8 @@
    '("Y" . meow-sync-grab)
    '("s" . meow-pop-selection)
    '("S" . meow-pop-all-selection)
-   '("&" . meow-query-replace)
    '("%" . meow-query-replace-regexp)
+   '("M-%" . meow-query-replace)
    '("/" . repeat)
    '("'" . negative-argument)
    '("=" . meow-indent)
@@ -99,15 +99,26 @@
    "C-g" #'meow-insert-exit)
 
   :config
+  ;; TODO: consider this later on
+  (general-unbind meow-leader-keymap
+    "c" "g" "h" "x" "m")
+
   (meow-setup)
   (meow-global-mode 1)
 
   :extend (which-key)
-  (nconc which-key-replacement-alist '(((nil . "^meow-") . (nil . ""))
-                                       (("0" . "meow-digit-argument") . ("[0-9]"))
-                                       (("[1-9]" . "meow-digit-argument") . t)))
+  (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))
+  (add-to-list 'which-key-replacement-alist '(("0" . "meow-digit-argument") . ("[0-9]")))
+  (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t))
 
   :extend (ready/editor/window)
-  (set-keymap-parent meow-leader-keymap ready/window-map))
+  (set-keymap-parent meow-leader-keymap
+                     (make-composed-keymap (keymap-parent meow-leader-keymap)
+                                           ready/window-map))
+
+  :extend (ready/editor/search)
+  (set-keymap-parent meow-leader-keymap
+                     (make-composed-keymap (keymap-parent meow-leader-keymap)
+                                           ready/search-map)))
 
 ;; TODO: Set keypad window height here

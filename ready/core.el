@@ -17,8 +17,8 @@
                    nil directory-files-no-dot-files-regexp t))
 
 (defvar ready--modules (mapcar (lambda (module-name)
-                               (intern (concat ":" (file-name-sans-extension module-name))))
-                             (ready--get-files)))
+                                 (intern (concat ":" (file-name-sans-extension module-name))))
+                               (ready--get-files)))
 
 (defun ready--enable-files  (module files &optional packages-p)
   (let* ((module-name (substring (symbol-name module) 1))
@@ -33,15 +33,15 @@
 
 (defun ready--enable-module-all (module)
   (ready--enable-files module
-                     (eval (intern (concat "ready--"
-                                           (substring (symbol-name module) 1)
-                                           "-sub-all"))))
+                       (eval
+                        (intern (concat "ready--"
+                                        (substring (symbol-name module) 1)
+                                        "-pkg-defaults")))
+                       'packages)
   (ready--enable-files module
-                     (eval
-                      (intern (concat "ready--"
-                                      (substring (symbol-name module) 1)
-                                      "-pkg-defaults")))
-                     'packages))
+                       (eval (intern (concat "ready--"
+                                             (substring (symbol-name module) 1)
+                                             "-sub-all")))))
 
 (defun ready--enable-all ()
   (dolist (module ready--modules)
@@ -79,13 +79,13 @@
                  (if (not (listp (car args)))
                      (error "`:sub' arg is not a list for `%s' in `ready-enable'" module)
                    (if (not (eq 'all (caar args)))
-                       (push `(ready--enable-files ,module ',(car args)) load-list)
+                       (setq load-list (nconc load-list `((ready--enable-files ,module ',(car args)))))
                      (let ((sub-all (eval (intern (concat "ready--"
                                                           (substring (symbol-name module) 1)
                                                           "-sub-all")))))
-                       (push `(ready--enable-files ,module
-                                                 ',(ready--modify-list sub-all (cdar args)))
-                             load-list))
+                       (setq load-list (nconc load-list
+                                             `((ready--enable-files ,module
+                                                                    ',(ready--modify-list sub-all (cdar args)))))))
                      (setq args (cdr args)))))
                 ((eq expr :pkg)
                  (if (not (listp (car args)))
@@ -96,7 +96,7 @@
                                                                (substring (symbol-name module) 1)
                                                                "-pkg-defaults")))))
                        (push `(ready--enable-files ,module
-                                                 ',(ready--modify-list pkg-defaults (cdar args)) 'packages)
+                                                   ',(ready--modify-list pkg-defaults (cdar args)) 'packages)
                              load-list))
                      (setq args (cdr args))))))
                (setq expr (car args)
@@ -111,14 +111,15 @@
              ',(mapcar (lambda (submodule)
                          (intern (file-name-sans-extension submodule)))
                        (ready--get-files (concat (substring (symbol-name module) 1)
-                                               "/submodules/")))))))
+                                                 "/submodules/")))))))
 
 (let ((pkg-defaults '((editor . (meow
-                                 vertico
                                  ace-window
-                                 embark))
+                                 embark
+                                 consult
+                                 vertico))
 
-                      (ui     . (mood-line))
+                      (ui     . ())
 
                       (ux     . (gcmh
                                  which-key

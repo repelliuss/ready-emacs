@@ -9,8 +9,7 @@
   (vertico-mode 1)
 
   :extend (meow)
-  (general-def
-    :keymaps 'vertico-map
+  (general-def vertico-map
     "M-j" #'vertico-next
     "M-k" #'vertico-previous
     "M-J" #'vertico-next-group
