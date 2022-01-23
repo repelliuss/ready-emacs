@@ -18,11 +18,10 @@
     "M-<" #'vertico-scroll-down
     "C->" #'vertico-last
     "C-<" #'vertico-first
-    ;; "M-s" #'selectrum-quick-select
     "<backspace>" #'backward-kill-sexp
     "M-<backspace>" #'meow-kill-whole-line
     "M-w" #'vertico-clipboard-save
-    "M-y" #'meow-clipboard-yank
+    "M-y" #'meow-yank
     "M-Y" #'yank-pop
     "M-RET" #'vertico-exit-input)
 
@@ -43,8 +42,7 @@
   :init
   ;; TODO: pending feat/extend
   (with-eval-after-load 'meow
-    (general-def
-      :keymaps 'vertico-map
+    (general-def vertico-map
       "M-s" #'vertico-quick-jump)))
 
 (use-package vertico-repeat
@@ -60,8 +58,7 @@
 
   ;; TODO: pending feat/extend
   (with-eval-after-load 'meow
-    (general-def
-      :keymaps 'meow-leader-keymap
+    (general-def meow-leader-keymap
       "r" #'vertico-repeat)))
 
 ;; TODO: move savehist-mode to a submodule, also from selectrum

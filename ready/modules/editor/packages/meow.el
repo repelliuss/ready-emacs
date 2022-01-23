@@ -30,7 +30,7 @@
    '("a" . meow-insert)
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)
-   '("c" . meow-change-save)
+   '("c" . meow-change)
    '("C" . meow-comment)
    '("w" . meow-next-word)
    '("W" . meow-next-symbol)
@@ -53,13 +53,13 @@
    '("n" . meow-search)
    '("N" . meow-pop-search)
    '("e" . meow-block)
-   '("E" . meow-block-expand)
-   '("p" . meow-clipboard-yank)
+   '("E" . meow-to-block)
+   '("p" . meow-yank)
    '("P" . meow-yank-pop)
    '("M-g" . meow-goto-line)
    '("r" . meow-replace-save)
    '("R" . meow-swap-grab)
-   '("d" . meow-clipboard-kill)
+   '("d" . meow-kill)
    '("D" . meow-kill-whole-line)
    '("t" . meow-till)
    '("T" . meow-till-expand)
@@ -79,7 +79,7 @@
    '("M" . meow-mark-symbol)
    '("x" . meow-line)
    '("X" . meow-line-expand)
-   '("y" . meow-clipboard-save)
+   '("y" . meow-save)
    '("Y" . meow-sync-grab)
    '("s" . meow-pop-selection)
    '("S" . meow-pop-all-selection)
@@ -88,20 +88,23 @@
    '("/" . repeat)
    '("'" . negative-argument)
    '("=" . meow-indent)
-   '("\\" . quoted-insert)))
+   '("\\" . quoted-insert)
+   '("$" . shell-command)
+   '("&" . async-shell-command)))
 
 (use-package meow
   :demand t
   :general
   (meow-leader-keymap
-   "." #'find-file)
+   "." #'find-file
+   "," #'switch-to-buffer)
   (meow-insert-state-keymap
    "C-g" #'meow-insert-exit)
 
   :config
   ;; TODO: consider this later on
-  (general-unbind meow-leader-keymap
-    "c" "g" "h" "x" "m")
+  ;; (general-unbind meow-leader-keymap
+  ;;   "c" "g" "h" "x" "m")
 
   (meow-setup)
   (meow-global-mode 1)
@@ -115,7 +118,19 @@
   (set-keymap-parent meow-leader-keymap
                      (make-composed-keymap (keymap-parent meow-leader-keymap)
                                            ready/window-map))
-
+  :extend (ready/editor/project)
+  (set-keymap-parent meow-leader-keymap
+                     (make-composed-keymap (keymap-parent meow-leader-keymap)
+                                           ready/project-map))
+  
+  :extend (ready/editor/file)
+  (set-keymap-parent meow-leader-keymap
+                     (make-composed-keymap (keymap-parent meow-leader-keymap)
+                                           ready/file-map))
+  :extend (ready/editor/buffer)
+  (set-keymap-parent meow-leader-keymap
+                     (make-composed-keymap (keymap-parent meow-leader-keymap)
+                                           ready/buffer-map))
   :extend (ready/editor/search)
   (set-keymap-parent meow-leader-keymap
                      (make-composed-keymap (keymap-parent meow-leader-keymap)

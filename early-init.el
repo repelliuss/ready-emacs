@@ -14,8 +14,8 @@
 
 (load (concat user-emacs-directory "early-config") nil 'nomessage)
 
-(enable!
- :ui
- :sub (no-bar))
+;; (enable!
+;;  :ui
+;;  :sub (no-bar))
 
 ;; TODO: Put this file in ready-early-setup

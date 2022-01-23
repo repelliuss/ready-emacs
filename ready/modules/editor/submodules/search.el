@@ -9,8 +9,8 @@
   "f" #'find-name-dired
   "F" #'locate
   "g" #'find-grep-dired
-  "l" #'flush-lines
-  "L" #'keep-lines)
+  "l" #'keep-lines
+  "L" #'flush-lines)
 
 (with-eval-after-load 'which-key
   (add-to-list 'which-key-replacement-alist '(("s$" . "prefix") . (nil . "search"))))

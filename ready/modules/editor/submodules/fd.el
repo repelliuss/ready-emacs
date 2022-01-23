@@ -1,6 +1,6 @@
 ;;; fd.el -*- lexical-binding: t; -*-
 
-(defvar consult-fd-args "fd --color=never -i -H -E .git --regex")
+(defvar consult-fd-args "fd --color=never --full-path -i -H -E .git --regex")
 
 (defun consult--fd-builder (input)
   "Build command line given INPUT."
@@ -21,17 +21,18 @@
 The find process is started asynchronously, similar to `consult-grep'.
 See `consult-grep' for more details regarding the asynchronous search."
   (interactive "P")
-  (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
+  (let* ((prompt-dir (consult--directory-prompt "Find" dir))
          (default-directory (cdr prompt-dir)))
     (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
 
 (use-package consult
+  :straight nil
   :after (ready/editor/search)
   :general
   (ready/search-map
-   :prefix "s"
-   "f" #'consult-fd))
+   "s f" #'consult-fd))
 
 (provide 'ready/editor/fd)
 
 ;; TODO: autoload things
+;; TODO: beautify :straight nil somehow and support emacs package backend

@@ -1,0 +1,81 @@
+;;; -*- coding: utf-8; mode: lisp-data -*-
+(("/home/repelliuss/workspace/repos/ready-emacs/ready/cache/enable.el" . 202)
+ ("/home/repelliuss/workspace/repos/ready-emacs/early-init.el" . 514)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/core.el" . 2637)
+ ("/home/repelliuss/workspace/repos/ready-emacs/straight/repos/meow/meow-command.el" . 11583)
+ ("/home/"
+  (dired-filename . "/home/repelliuss"))
+ ("/home/repelliuss/.cache/"
+  (dired-filename . "/home/repelliuss/.cache/.dbus-proxy"))
+ ("/home/repelliuss/.cache/.dbus-proxy/" . 207)
+ ("/home/repelliuss/"
+  (dired-filename . "/home/repelliuss/.log"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/cache"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools/submodules/dired.el" . 210)
+ ("/home/repelliuss/workspace/repos/ready-emacs/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools/packages/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools/packages/.."))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools/submodules"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools/submodules/" . 308)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/submodules/window.el" . 415)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/packages/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/packages/cape.el"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/packages/cape.el" . 42)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/packages/embark.el" . 75)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/packages/consult.el" . 1877)
+ ("/home/repelliuss/workspace/tmp/csharp/"
+  (dired-filename . "/home/repelliuss/workspace/tmp/csharp/main.cs"))
+ ("/home/repelliuss/workspace/game/unity/editors/2020.3.20f1/Editor/Data/Documentation/Documentation/en/ScriptReference/Bounds.html" . 17)
+ ("/home/repelliuss/workspace/tmp/csharp/main.cs" . 128)
+ ("/home/repelliuss/documents/downloads/"
+  (dired-filename . "/home/repelliuss/documents/downloads/TreesV2"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/packages/meow.el" . 2028)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/packages/ace-window.el" . 183)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/packages/golden-ratio.el" . 203)
+ ("/home/repelliuss/.config/doom/rps.el" . 41)
+ ("/home/repelliuss/.config/doom/config.el" . 40868)
+ ("/home/repelliuss/workspace/repos/ready-emacs/.cache/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn/latest"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn/latest/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn/latest/omnisharp-roslyn"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn/latest/omnisharp-roslyn/omnisharp/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn/latest/omnisharp-roslyn/omnisharp/Cake.Scripting.Abstractions.dll"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn/latest/omnisharp-roslyn/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/.cache/lsp/omnisharp-roslyn/latest/omnisharp-roslyn/run"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ui/packages/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ui/packages/mood-line.el"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ui/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ui/packages"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/packages/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/packages/.."))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/lang/submodules/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/lang/submodules/.."))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/lang/packages/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/lang/packages/.."))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/lang/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/lang/.."))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/submodules/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/submodules/ripgrep.el"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/submodules"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/"
+  (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/os.el"))
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/os.el" . 39)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools/packages/magit.el" . 165)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/save-place.el" . 99)
+ ("/home/repelliuss/workspace/repos/ready-emacs/init.el" . 234)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/submodules/completion.el" . 238)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/submodules/scroll.el" . 213)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/safety.el" . 111)
+ ("/usr/share/emacs/28.0.60/lisp/files.el.gz" . 14748))

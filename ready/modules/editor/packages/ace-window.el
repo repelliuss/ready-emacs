@@ -6,6 +6,4 @@
   (meow-leader-keymap
    :prefix "w"
    "w" #'ace-window
-   "f" #'aw-flip-window)
-  :extend (golden-ratio)
-  (advice-add #'ace-window :after #'golden-ratio))
+   "f" #'aw-flip-window))

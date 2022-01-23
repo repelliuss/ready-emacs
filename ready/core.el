@@ -12,6 +12,8 @@
 (defvar ready/modules-directory (concat ready/emacs-directory "modules/"))
 (defvar ready/cache-directory (concat ready/emacs-directory "cache/"))
 
+(defvar ready--cache-file (concat ready/cache-directory "ready-cache.el"))
+
 (defun ready--get-files (&optional path)
   (directory-files (concat ready/modules-directory path)
                    nil directory-files-no-dot-files-regexp t))
@@ -60,6 +62,15 @@
   var)
 
 (defmacro enable! (&rest args)
+  (with-current-buffer (find-file-noselect (concat ready/cache-directory "enable.el") 'nowarn 'literal)
+    (if (and (file-exists-p ready--cache-file)
+             (equal args (ignore-errors (read (current-buffer)))))
+        (load ready--cache-file nil 'nomessage)
+      (erase-buffer)
+      (print args (current-buffer))
+      (save-buffer)
+      (print "RDY: Building cache...")))
+
   (cond ((eq 'all (car args))
          '(ready--enable-all))
         ((not (memq (car args) ready--modules))
@@ -84,8 +95,8 @@
                                                           (substring (symbol-name module) 1)
                                                           "-sub-all")))))
                        (setq load-list (nconc load-list
-                                             `((ready--enable-files ,module
-                                                                    ',(ready--modify-list sub-all (cdar args)))))))
+                                              `((ready--enable-files ,module
+                                                                     ',(ready--modify-list sub-all (cdar args)))))))
                      (setq args (cdr args)))))
                 ((eq expr :pkg)
                  (if (not (listp (car args)))

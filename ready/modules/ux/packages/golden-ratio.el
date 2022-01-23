@@ -7,4 +7,6 @@
   (add-to-list 'golden-ratio-inhibit-functions
                (lambda ()
                  (and which-key--buffer
-                      (window-live-p (get-buffer-window which-key--buffer))))))
+                      (window-live-p (get-buffer-window which-key--buffer)))))
+  :extend (ace-window)
+  (advice-add #'ace-window :after #'golden-ratio))

@@ -14,8 +14,7 @@
         selectrum-highlight-candidates-function #'orderless-highlight-matches)
 
   :extend (meow)
-  (general-def
-    :keymaps 'selectrum-minibuffer-map
+  (general-def selectrum-minibuffer-map
     "M-j" #'selectrum-next-candidate
     "M-k" #'selectrum-previous-candidate
     "M->" #'selectrum-next-page
@@ -25,13 +24,12 @@
     "M-s" #'selectrum-quick-select
     "<backspace>" #'selectrum-backward-kill-sexp
     "M-<backspace>" #'meow-kill-whole-line
-    "M-w" #'meow-clipboard-save
-    "M-y" #'meow-clipboard-yank
+    "M-w" #'meow-save
+    "M-y" #'meow-yank
     "M-Y" #'yank-pop
     "M-RET" #'selectrum-submit-exact-input)
 
-  (general-def
-    :keymaps 'meow-leader-keymap
+  (general-def meow-leader-keymap
     "r" #'selectrum-repeat))
 
 ;; TODO: M-w should work as vertico

@@ -66,3 +66,4 @@ targets."
 ;; TODO: check doom how it handles autoloads
 ;; TODO: add embark-consult
 ;; TODO: consider a preview key like in doom
+;; BUG: xref-find-references doesn't work

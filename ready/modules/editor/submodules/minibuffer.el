@@ -9,4 +9,6 @@
 (setq read-extended-command-predicate
       #'command-completion-default-include-p)
 
+(fset #'yes-or-no-p #'y-or-n-p)
+
 (provide 'ready/editor/minibuffer)

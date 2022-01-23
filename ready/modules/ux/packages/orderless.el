@@ -9,10 +9,12 @@
         orderless-matching-styles '(orderless-regexp
                                     orderless-strict-initialism
                                     orderless-literal)
-        orderless-style-dispatchers '(without-if-bang))
+        orderless-style-dispatchers '(orderless-default-dispatcher))
 
   (add-to-list 'completion-styles-alist
                '(basic-remote basic-remote-try-completion basic-remote-all-completions))
+
+  (set-face-attribute 'completions-first-difference nil :inherit nil)
 
   (defun file-path-remote-p (path)
     (string-match-p "\\`/[^/|:]+:" (substitute-in-file-name path)))
@@ -26,12 +28,23 @@
          (completion-basic-all-completions string table pred point)))
 
   :config
-  (defun without-if-bang (pattern _index _total)
+  (defun orderless-default-dispatcher (pattern _index _total)
     (cond
-     ((string= "!" pattern) '(orderless-literal . ""))
-     ((string-prefix-p "!" pattern)
-      `(orderless-without-literal . ,(substring pattern 1))))))
+     ;; Ensure $ works with Consult commands, which add disambiguation suffixes
+     ((string-suffix-p "$" pattern)
+      `(orderless-regexp . ,(concat (substring pattern 0 -1) "[\x100000-\x10FFFD]*$")))
+     ;; Ignore single !
+     ((string= "!" pattern) `(orderless-literal . ""))
+     ;; Without literal
+     ((string-prefix-p "!" pattern) `(orderless-without-literal . ,(substring pattern 1)))
+     ;; Character folding
+     ((string-prefix-p "%" pattern) `(char-fold-to-regexp . ,(substring pattern 1)))
+     ((string-suffix-p "%" pattern) `(char-fold-to-regexp . ,(substring pattern 0 -1)))
+     ;; Initialism matching
+     ((string-prefix-p "`" pattern) `(orderless-initialism . ,(substring pattern 1)))
+     ((string-suffix-p "`" pattern) `(orderless-initialism . ,(substring pattern 0 -1)))
+     ;; Literal matching
+     ((string-prefix-p "=" pattern) `(orderless-literal . ,(substring pattern 1)))
+     ((string-suffix-p "=" pattern) `(orderless-literal . ,(substring pattern 0 -1))))))
 
-;; TODO: check usage again and check +orderless-dispatch in consult wiki
-
-;; TODO: replace _ ignored varibales with _NAME
+  ;; TODO: replace _ ignored varibales with _NAME

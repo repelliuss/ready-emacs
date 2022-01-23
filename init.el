@@ -14,7 +14,7 @@
  :sub (all)
 
  :ui
- :pkg (defaults)
+ :pkg (defaults +nano-theme +nano-modeline)
  :sub (all -no-bar)
 
  :ux
@@ -53,8 +53,35 @@
 
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
+(c-add-style
+ "csharp-unity"
+ '("csharp"
+   (c-offsets-alist
+    (func-decl-cont . 0)
+    (substatement . 0))))
+
+(with-eval-after-load 'lsp-mode
+  (setq lsp-lens-enable nil
+	lsp-headerline-breadcrumb-enable nil))
+
+(with-eval-after-load 'flymake
+  (setq flymake-fringe-indicator-position nil))
+
 ;; TODO: Remove this
 (message "*** Emacs loaded in %s with %d garbage collections."
          (format "%.2f seconds"
                  (float-time
                   (time-subtract after-init-time before-init-time))) gcs-done)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("f0eb51d80f73b247eb03ab216f94e9f86177863fb7e48b44aacaddbfe3357cf1" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

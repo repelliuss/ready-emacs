@@ -11,55 +11,61 @@
    [remap view-register] #'consult-register
    [remap goto-line] #'consult-goto-line
    [remap pop-global-mark] #'consult-global-mark
+   [remap multi-occur] #'consult-multi-occur
    [remap imenu] #'consult-imenu
-   [remap apropos] #'consult-apropos
    [remap locate] #'consult-locate
    [remap load-theme] #'consult-theme
-   [remap man] #'consult-man)
+   [remap apropos] #'consult-apropos
+   [remap man] #'consult-man
+   [remap keep-lines] #'consult-keep-lines
+   [remap find-name-dired] #'consult-find
+   [remap find-grep-dired] #'consult-grep)
+
+  (help-map
+   "a" #'consult-apropos                ; BUG: remapping above doesn't work
+   "M" #'consult-man)
 
   :init
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-  (advice-add #'multi-occur :override #'consult-multi-occur)
 
   (setq register-preview-delay 0
         register-preview-function #'consult-register-format)
 
   (advice-add #'register-preview :override #'consult-register-window)
 
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
   (recentf-mode 1)
 
   (with-eval-after-load 'meow
     (general-def meow-normal-state-keymap
       "M-z" #'consult-kmacro
-
       "`" #'consult-register-load
       "~" #'consult-register-store
       "M-`" #'consult-register
-
       "M-g" #'consult-goto-line
-
       "M-m" #'consult-mark
       "M-M" #'consult-global-mark
-
       "M-o" #'consult-outline
-
       "M-i" #'consult-imenu
-      "M-I" #'consult-imenu-multi))
+      "M-I" #'consult-imenu-multi
+      "!" #'consult-flymake
+      "M-!" #'consult-compile-error))
 
   (with-eval-after-load 'ready/editor/search
     (general-def ready/search-map
       :prefix "s"
       "s" #'consult-line
       "S" #'consult-line-multi
+      "G" #'consult-git-grep
+      "L" #'consult-focus-lines))
 
-      "o" #'occur
-      "O" #'consult-multi-occur
-
-      "l" #'consult-keep-lines
-      "L" #'consult-focus-lines
-
-      "f" #'consult-find
-      "F" #'consult-locate))
+  ;; TODO: add open externally THIS file
+  (with-eval-after-load 'ready/editor/file
+    (general-def ready/file-map
+      :prefix "f"
+      "e" #'consult-file-externally))
 
   :config
   (setq consult-project-root-function (lambda ()
@@ -77,11 +83,41 @@
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file
    consult--source-file consult--source-project-file consult--source-bookmark
-   :preview-key (kbd "C-SPC"))
+   :preview-key (kbd "M-P"))
 
   (consult-customize
    consult-theme
-   :preview-key (list (kbd "C-SPC") :debounce 0.5 'any))
+   :preview-key (list (kbd "M-P") :debounce 0.5 'any))
+
+  :extend (orderless)
+  (defun consult--orderless-regexp-compiler (input type)
+    (setq input (orderless-pattern-compiler input))
+    (cons
+     (mapcar (lambda (r) (consult--convert-regexp r type)) input)
+     (lambda (str) (orderless--highlight input str))))
+
+  (setq consult--regexp-compiler #'consult--orderless-regexp-compiler)
+
+  :extend (which-key)
+  (defun immediate-which-key-for-narrow (fun &rest args)
+    (let* ((refresh t)
+           (timer (and consult-narrow-key
+                       (memq :narrow args)
+                       (run-at-time 0.05 0.05
+                                    (lambda ()
+                                      (if (eq last-input-event (elt consult-narrow-key 0))
+                                          (when refresh
+                                            (setq refresh nil)
+                                            (which-key--update))
+                                        (setq refresh t)))))))
+      (unwind-protect
+          (apply fun args)
+        (when timer
+          (cancel-timer timer)))))
+  (advice-add #'consult--read :around #'immediate-which-key-for-narrow)
+
+  :extend (eshell)
+  (add-hook 'eshell-mode-hook (lambda () (setq outline-regexp eshell-prompt-regexp)))
 
   :extend (org)
   (defvar consult--org-source
@@ -95,13 +131,29 @@
   (add-to-list 'consult-buffer-sources 'consult--org-source 'append)
 
   :extend (meow)
-  (advice-add #'consult-goto-line :after (lambda (&optional _arg) (meow-line 1))))
+  (advice-add #'consult-goto-line :after (lambda (&optional _arg) (meow-line 1)))
+
+  :extend (vertico)
+  (setq completion-in-region-function
+        (lambda (&rest args)
+          (apply (if vertico-mode
+                     #'consult-completion-in-region
+                   #'completion--in-region)
+                 args))))
+
+(use-package embark-consult
+  :after (embark consult))
 
 ;; TODO: integrate fd and rg
 ;; TODO: check fd in doom and also for consult
 ;; TODO: general-def keymaps remove
 ;; TODO: make a search map like window
-;; TODO: check xref and integrate
-;; TODO: integrate compilation, org mode, Miscellaneous
+;; TODO: integrate org mode, Miscellaneous
 ;; TODO: add preview to meow-visit
 ;; TODO: integrate embark
+;; TODO: add flycheck support
+;; TODO: add open externally to file map
+;; TODO: add theme to something
+;; TODO: what consult completion preview does for embark collect buffers
+;; TODO: integrate which-key to search map
+;; TODO: integrate extensions
