@@ -34,3 +34,6 @@ straight/*
 
 # bookmarks
 /bookmarks
+
+# TODO: change this
+.cache/
