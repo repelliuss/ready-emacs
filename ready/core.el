@@ -13,6 +13,9 @@
 (defvar ready/cache-directory (concat ready/emacs-directory "cache/"))
 
 (defvar ready--cache-file (concat ready/cache-directory "ready-cache.el"))
+(defvar ready--early-cache-file (concat ready/cache-directory "ready-early-cache.el"))
+(defvar ready--cache-state-file (concat ready/cache-directory "ready-cache-state.el"))
+(defvar ready--early-cache-state-file (concat ready/cache-directory "ready-early-cache-state.el"))
 
 (defun ready--get-files (&optional path)
   (directory-files (concat ready/modules-directory path)
@@ -22,38 +25,37 @@
                                  (intern (concat ":" (file-name-sans-extension module-name))))
                                (ready--get-files)))
 
-(defun ready--enable-files  (module files &optional packages-p)
-  (let* ((module-name (substring (symbol-name module) 1))
-         (module-path (concat ready/modules-directory module-name "/")))
-    (let ((path (concat module-path (if packages-p
-                                        "packages/"
-                                      "submodules/"))))
-      (with-current-buffer (find-file-noselect ready--cache-file 'nowarn 'literal)
-        (dolist (file files)
-          (let ((file-buffer (find-file-noselect (concat path
-                                                         (if (symbolp file)
-                                                             (symbol-name file)
-                                                           file)
-                                                         ".el")
-                                                 'nowarn 'literal)))
-            (ignore-errors (while t (print (read file-buffer) (current-buffer))))
-            (kill-buffer file-buffer)))))))
+(defun ready--enable-files  (module files cache-file &optional packages-p)
+  (let* ((module-path (concat ready/modules-directory (substring (symbol-name module) 1) "/"))
+         (path (concat module-path (if packages-p "packages/" "submodules/"))))
+    (with-current-buffer (find-file-noselect cache-file nil 'literal)
+      (dolist (file files)
+        (let ((file-buffer (find-file-noselect (concat path
+                                                       (if (symbolp file)
+                                                           (symbol-name file)
+                                                         file)
+                                                       ".el")
+                                               nil 'literal)))
+          (ignore-errors (while t (print (read file-buffer) (current-buffer))))
+          (kill-buffer file-buffer))))))
 
-(defun ready--enable-module-all (module)
+(defun ready--enable-module-all (module cache-file)
   (ready--enable-files module
                        (eval
                         (intern (concat "ready--"
                                         (substring (symbol-name module) 1)
                                         "-pkg-defaults")))
+                       cache-file
                        'packages)
   (ready--enable-files module
                        (eval (intern (concat "ready--"
                                              (substring (symbol-name module) 1)
-                                             "-sub-all")))))
+                                             "-sub-all")))
+                       cache-file))
 
-(defun ready--enable-all ()
+(defun ready--enable-all (cache-file)
   (dolist (module ready--modules)
-    (ready--enable-module-all module)))
+    (ready--enable-module-all module cache-file)))
 
 (defun ready--modify-list (var modifications)
   (mapc (lambda (subarg)
@@ -68,22 +70,26 @@
   var)
 
 (defmacro enable! (&rest args)
-  (with-current-buffer (find-file-noselect (concat ready/cache-directory "ready-state.el") 'nowarn 'literal)
-    (if (and (file-exists-p ready--cache-file)
-             (equal args (ignore-errors (read (current-buffer)))))
-        `(load ready--cache-file nil 'nomessage)
-      (print "RDY: Saving state...")
-      (erase-buffer)
-      (print args (current-buffer))
-      (save-buffer)
-      (kill-buffer)
-      (print "RDY: Building cache...")
+  `(enable--with-cache ,ready--cache-file ,ready--cache-state-file ,args))
+
+(defmacro enable-early! (&rest args)
+  `(enable--with-cache ,ready--early-cache-file ,ready--early-cache-state-file ,args))
+
+(defmacro enable--with-cache (cache-file state-file args)
+  (let ((state-buffer (find-file-noselect state-file nil 'literal))
+        load-list)
+    (if (and (file-exists-p cache-file)
+             (equal args (ignore-errors (read state-buffer))))
+        (setq load-list `((load ,cache-file nil 'nomessage)))
+      (with-current-buffer state-buffer
+        (erase-buffer)
+        (print args (current-buffer))
+        (save-buffer))
       (cond ((eq 'all (car args))
-             '(ready--enable-all))
+             '(ready--enable-all ,cache-file))
             ((not (memq (car args) ready--modules))
              (error "No module name given to `ready-enable'"))
-            (t (let ((module)
-                     (load-list)
+            (t (let (module
                      (expr (car args))
                      (args (cdr args)))
                  (while expr
@@ -91,39 +97,43 @@
                     ((memq expr ready--modules)
                      (setq module expr)
                      (when (eq 'all (car args))
-                       (push `(ready--enable-module-all ,module) load-list)
+                       (push `(ready--enable-module-all ,module ,cache-file) load-list)
                        (setq args (cdr args))))
                     ((eq expr :sub)
                      (if (not (listp (car args)))
                          (error "`:sub' arg is not a list for `%s' in `ready-enable'" module)
                        (if (not (eq 'all (caar args)))
-                           (setq load-list (nconc load-list `((ready--enable-files ,module ',(car args)))))
+                           (setq load-list (nconc load-list `((ready--enable-files ,module ',(car args) ,cache-file))))
                          (let ((sub-all (eval (intern (concat "ready--"
                                                               (substring (symbol-name module) 1)
                                                               "-sub-all")))))
                            (setq load-list (nconc load-list
                                                   `((ready--enable-files ,module
-                                                                         ',(ready--modify-list sub-all (cdar args)))))))
+                                                                         ',(ready--modify-list sub-all (cdar args))
+                                                                         ,cache-file)))))
                          (setq args (cdr args)))))
                     ((eq expr :pkg)
                      (if (not (listp (car args)))
                          (error "`:pkg' arg is not a list for `%s' in `ready-enable'" module)
                        (if (not (eq 'defaults (caar args)))
-                           (push `(ready--enable-files ,module ',(car args) t) load-list)
+                           (push `(ready--enable-files ,module ',(car args) ,cache-file 'packages) load-list)
                          (let ((pkg-defaults (eval (intern (concat "ready--"
                                                                    (substring (symbol-name module) 1)
                                                                    "-pkg-defaults")))))
                            (push `(ready--enable-files ,module
-                                                       ',(ready--modify-list pkg-defaults (cdar args)) 'packages)
+                                                       ',(ready--modify-list pkg-defaults (cdar args))
+                                                       ,cache-file
+                                                       'packages)
                                  load-list))
                          (setq args (cdr args))))))
                    (setq expr (car args)
                          args (cdr args)))
-                 (setq load-list (nconc load-list '((with-current-buffer (find-file-noselect ready--cache-file 'nowarn 'literal)
+                 (setq load-list (nconc load-list `((with-current-buffer (find-file-noselect ,cache-file nil 'literal)
                                                       (save-buffer)
                                                       (eval-buffer)
-                                                      (kill-buffer)))))
-                 (macroexp-progn load-list)))))))
+                                                      (kill-buffer)))))))))
+    (kill-buffer state-buffer)
+    (macroexp-progn load-list)))
 
 (dolist (module ready--modules)
   (let ((submodules))
@@ -201,5 +211,3 @@
 
 ;; TODO: remove this, general is a dependency
 (use-package general :demand t)
-
-;; TODO: Put this file in ready-setup

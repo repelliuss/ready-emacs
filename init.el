@@ -18,7 +18,7 @@
  :sub (all -no-bar)
 
  :ux
- :pkg (defaults)
+ :pkg (defaults -which-key)
  :sub (all))
 
 (setq user-full-name "repelliuss"

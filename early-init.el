@@ -5,7 +5,7 @@
 (setq package-enable-at-startup nil)
 
 (when (featurep 'native-compile)
-  (setq native-comp-deferred-compilation nil)
+  (setq native-comp-deferred-compilation t)
   (add-to-list 'native-comp-eln-load-path (concat user-emacs-directory "ready/cache/eln/")))
 
 (setq load-prefer-newer noninteractive)
@@ -14,8 +14,8 @@
 
 (load (concat user-emacs-directory "early-config") nil 'nomessage)
 
-;; (enable!
-;;  :ui
-;;  :sub (no-bar))
+(enable-early!
+ :ui
+ :sub (no-bar))
 
 ;; TODO: Put this file in ready-early-setup

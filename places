@@ -1,5 +1,10 @@
 ;;; -*- coding: utf-8; mode: lisp-data -*-
-(("/home/repelliuss/workspace/repos/ready-emacs/ready/cache/enable.el" . 202)
+(("/home/repelliuss/workspace/repos/ready-emacs/ready/cache/ready-cache-state.el" . 213)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/cache/ready-early-cache-state.el" . 21)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/cache/ready-cache.el" . 22236)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/os.el" . 1058)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/save-place.el" . 99)
+ ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/safety.el" . 553)
  ("/home/repelliuss/workspace/repos/ready-emacs/early-init.el" . 514)
  ("/home/repelliuss/workspace/repos/ready-emacs/ready/core.el" . 2637)
  ("/home/repelliuss/workspace/repos/ready-emacs/straight/repos/meow/meow-command.el" . 11583)
@@ -71,11 +76,8 @@
   (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules"))
  ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/"
   (dired-filename . "/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/os.el"))
- ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/os.el" . 39)
  ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/tools/packages/magit.el" . 165)
- ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/save-place.el" . 99)
  ("/home/repelliuss/workspace/repos/ready-emacs/init.el" . 234)
  ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/submodules/completion.el" . 238)
  ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/editor/submodules/scroll.el" . 213)
- ("/home/repelliuss/workspace/repos/ready-emacs/ready/modules/ux/submodules/safety.el" . 111)
  ("/usr/share/emacs/28.0.60/lisp/files.el.gz" . 14748))
