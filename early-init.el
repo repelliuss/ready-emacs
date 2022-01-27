@@ -10,9 +10,10 @@
 
 (setq load-prefer-newer noninteractive)
 
-(load (concat user-emacs-directory "ready/core") nil 'nomessage)
+(add-to-list 'default-frame-alist
+             '(font . "-*-Iosevka Term-regular-r-*--21-*-*-*-*-*-*-*"))
 
-(load (concat user-emacs-directory "early-config") nil 'nomessage)
+(load (concat user-emacs-directory "ready/core") nil 'nomessage)
 
 (enable-early!
  :ui
