@@ -51,12 +51,12 @@
   :general
   ("M-r" #'vertico-repeat)
 
-  :init
-  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
-
   :attach
   (general-def meow-leader-keymap
-    "r" #'vertico-repeat))
+    "r" #'vertico-repeat)
+
+  :init
+  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))
 
 ;; TODO: move savehist-mode to a submodule, also from selectrum
 ;; TODO: make :straight keyword no-op when backend is not straight

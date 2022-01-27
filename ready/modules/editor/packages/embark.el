@@ -1,20 +1,6 @@
 ;;; embark.el -*- lexical-binding: t; -*-
 
 (use-package embark
-  :attach (which-key)
-  (setq foo 3)
-  :attach (zoo)
-  (setq zoo 4)
-  :init
-  (setq boo 3)
-  :config
-  (setq loo 4)
-  :extend (boo)
-  (setq boo 5)
-  :extend (zoom)
-  (setq foo 6))
-
-(use-package embark
   :general
   ("M-." #'embark-act
    "C-." #'embark-dwim)
