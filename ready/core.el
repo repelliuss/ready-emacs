@@ -6,6 +6,9 @@
 (defcustom ready-package-backend 'straight
   "Package management handler for Ready Emacs.")
 
+(defcustom ready-force-build-cache nil
+  "Always re-build cache at initialization.")
+
 ;;; Module system handler
 
 (defvar ready/emacs-directory (concat user-emacs-directory "ready/"))
@@ -16,6 +19,8 @@
 (defvar ready--early-cache-file (concat ready/cache-directory "ready-early-cache.el"))
 (defvar ready--cache-state-file (concat ready/cache-directory "ready-cache-state.el"))
 (defvar ready--early-cache-state-file (concat ready/cache-directory "ready-early-cache-state.el"))
+
+;; TODO: add support for safe/unsafe submodules
 
 (defun ready--get-files (&optional path)
   (directory-files (concat ready/modules-directory path)
@@ -57,6 +62,7 @@
   (dolist (module ready--modules)
     (ready--build-cache-module module cache-file)))
 
+;; TODO: add support for package-name* -suffix +suffix feat
 (defun ready--modify-list (var modifications)
   (mapc (lambda (subarg)
           (cond
@@ -79,12 +85,14 @@
   (let ((state-buffer (find-file-noselect state-file nil 'literal))
         load-list)
     (if (and (file-exists-p cache-file)
-             (equal args (ignore-errors (read state-buffer))))
+             (equal args (ignore-errors (read state-buffer)))
+             (not ready-force-build-cache))
         (setq load-list `((load ,cache-file nil 'nomessage)))
       (with-current-buffer state-buffer
         (erase-buffer)
         (print args (current-buffer))
         (save-buffer))
+      (delete-file cache-file)
       (cond ((eq 'all (car args))
              '(ready--build-cache-all ,cache-file))
             ((not (memq (car args) ready--modules))
@@ -109,8 +117,8 @@
                                                               "-sub-all")))))
                            (setq load-list (nconc load-list
                                                   `((ready--build-cache ,module
-                                                                         ',(ready--modify-list sub-all (cdar args))
-                                                                         ,cache-file)))))
+                                                                        ',(ready--modify-list sub-all (cdar args))
+                                                                        ,cache-file)))))
                          (setq args (cdr args)))))
                     ((eq expr :pkg)
                      (if (not (listp (car args)))
@@ -121,9 +129,9 @@
                                                                    (substring (symbol-name module) 1)
                                                                    "-pkg-defaults")))))
                            (push `(ready--build-cache ,module
-                                                       ',(ready--modify-list pkg-defaults (cdar args))
-                                                       ,cache-file
-                                                       'packages)
+                                                      ',(ready--modify-list pkg-defaults (cdar args))
+                                                      ,cache-file
+                                                      'packages)
                                  load-list))
                          (setq args (cdr args))))))
                    (setq expr (car args)
@@ -156,8 +164,7 @@
                       (ux     . (gcmh
                                  which-key
                                  orderless
-                                 marginalia
-                                 golden-ratio))
+                                 marginalia))
 
                       (tools  . nil)
 
@@ -197,7 +204,7 @@
         (use-package-list-insert :extend
                                  (use-package-list-insert :attach
                                                           use-package-keywords
-                                                          :init 'after)
+                                                          :init)
                                  :config 'after))
 
   (defun use-package-normalize/:attach (_ _ args)

@@ -1,5 +1,7 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
+(setq ready-force-build-cache t)
+
 (enable!
  :editor
  :pkg (defaults)
@@ -18,7 +20,7 @@
  :sub (all -no-bar)
 
  :ux
- :pkg (defaults -which-key)
+ :pkg (defaults +which-key)
  :sub (all))
 
 (setq user-full-name "repelliuss"
@@ -66,6 +68,11 @@
 
 (with-eval-after-load 'flymake
   (setq flymake-fringe-indicator-position nil))
+
+(with-eval-after-load 'ace-window
+  (set-face-attribute 'aw-leading-char-face nil
+                      :foreground "white" :background "purple"
+                      :weight 'bold :height 3.5))
 
 ;; TODO: Remove this
 (message "*** Emacs loaded in %s with %d garbage collections."
