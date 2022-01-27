@@ -38,34 +38,34 @@
 
   (recentf-mode 1)
 
-  (with-eval-after-load 'meow
-    (general-def meow-normal-state-keymap
-      "M-z" #'consult-kmacro
-      "`" #'consult-register-load
-      "~" #'consult-register-store
-      "M-`" #'consult-register
-      "M-g" #'consult-goto-line
-      "M-m" #'consult-mark
-      "M-M" #'consult-global-mark
-      "M-o" #'consult-outline
-      "M-i" #'consult-imenu
-      "M-I" #'consult-imenu-multi
-      "!" #'consult-flymake
-      "M-!" #'consult-compile-error))
+  :attach (meow)
+  (general-def meow-normal-state-keymap
+    "M-z" #'consult-kmacro
+    "`" #'consult-register-load
+    "~" #'consult-register-store
+    "M-`" #'consult-register
+    "M-g" #'consult-goto-line
+    "M-m" #'consult-mark
+    "M-M" #'consult-global-mark
+    "M-o" #'consult-outline
+    "M-i" #'consult-imenu
+    "M-I" #'consult-imenu-multi
+    "!" #'consult-flymake
+    "M-!" #'consult-compile-error)
 
-  (with-eval-after-load 'ready/editor/search
-    (general-def ready/search-map
-      :prefix "s"
-      "s" #'consult-line
-      "S" #'consult-line-multi
-      "G" #'consult-git-grep
-      "L" #'consult-focus-lines))
+  :attach (ready/editor/search)
+  (general-def ready/search-map
+    :prefix "s"
+    "s" #'consult-line
+    "S" #'consult-line-multi
+    "G" #'consult-git-grep
+    "L" #'consult-focus-lines)
 
   ;; TODO: add open externally THIS file
-  (with-eval-after-load 'ready/editor/file
-    (general-def ready/file-map
-      :prefix "f"
-      "e" #'consult-file-externally))
+  :attach (ready/editor/file)
+  (general-def ready/file-map
+    :prefix "f"
+    "e" #'consult-file-externally)
 
   :config
   (setq consult-project-root-function (lambda ()

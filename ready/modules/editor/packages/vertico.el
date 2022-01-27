@@ -39,11 +39,9 @@
    "C-q" #'vertico-quick-insert
    "M-q" #'vertico-quick-exit)
 
-  :init
-  ;; TODO: pending feat/extend
-  (with-eval-after-load 'meow
-    (general-def vertico-map
-      "M-s" #'vertico-quick-jump)))
+  :attach (meow)
+  (general-def vertico-map
+    "M-s" #'vertico-quick-jump))
 
 (use-package vertico-repeat
   :straight (:host github :repo "minad/vertico"
@@ -56,10 +54,9 @@
   :init
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
 
-  ;; TODO: pending feat/extend
-  (with-eval-after-load 'meow
-    (general-def meow-leader-keymap
-      "r" #'vertico-repeat)))
+  :attach
+  (general-def meow-leader-keymap
+    "r" #'vertico-repeat))
 
 ;; TODO: move savehist-mode to a submodule, also from selectrum
 ;; TODO: make :straight keyword no-op when backend is not straight
