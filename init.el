@@ -1,6 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-(setq ready-force-build-cache t)
+(setq ready-force-build-cache nil)
 
 (enable!
  :editor
