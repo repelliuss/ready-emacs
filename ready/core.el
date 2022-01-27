@@ -25,7 +25,7 @@
                                  (intern (concat ":" (file-name-sans-extension module-name))))
                                (ready--get-files)))
 
-(defun ready--enable-files  (module files cache-file &optional packages-p)
+(defun ready--build-cache  (module files cache-file &optional packages-p)
   (let* ((module-path (concat ready/modules-directory (substring (symbol-name module) 1) "/"))
          (path (concat module-path (if packages-p "packages/" "submodules/"))))
     (with-current-buffer (find-file-noselect cache-file nil 'literal)
@@ -39,23 +39,23 @@
           (ignore-errors (while t (print (read file-buffer) (current-buffer))))
           (kill-buffer file-buffer))))))
 
-(defun ready--enable-module-all (module cache-file)
-  (ready--enable-files module
+(defun ready--build-cache-module (module cache-file)
+  (ready--build-cache module
                        (eval
                         (intern (concat "ready--"
                                         (substring (symbol-name module) 1)
                                         "-pkg-defaults")))
                        cache-file
                        'packages)
-  (ready--enable-files module
+  (ready--build-cache module
                        (eval (intern (concat "ready--"
                                              (substring (symbol-name module) 1)
                                              "-sub-all")))
                        cache-file))
 
-(defun ready--enable-all (cache-file)
+(defun ready--build-cache-all (cache-file)
   (dolist (module ready--modules)
-    (ready--enable-module-all module cache-file)))
+    (ready--build-cache-module module cache-file)))
 
 (defun ready--modify-list (var modifications)
   (mapc (lambda (subarg)
@@ -86,7 +86,7 @@
         (print args (current-buffer))
         (save-buffer))
       (cond ((eq 'all (car args))
-             '(ready--enable-all ,cache-file))
+             '(ready--build-cache-all ,cache-file))
             ((not (memq (car args) ready--modules))
              (error "No module name given to `ready-enable'"))
             (t (let (module
@@ -97,18 +97,18 @@
                     ((memq expr ready--modules)
                      (setq module expr)
                      (when (eq 'all (car args))
-                       (push `(ready--enable-module-all ,module ,cache-file) load-list)
+                       (push `(ready--build-cache-module ,module ,cache-file) load-list)
                        (setq args (cdr args))))
                     ((eq expr :sub)
                      (if (not (listp (car args)))
                          (error "`:sub' arg is not a list for `%s' in `ready-enable'" module)
                        (if (not (eq 'all (caar args)))
-                           (setq load-list (nconc load-list `((ready--enable-files ,module ',(car args) ,cache-file))))
+                           (setq load-list (nconc load-list `((ready--build-cache ,module ',(car args) ,cache-file))))
                          (let ((sub-all (eval (intern (concat "ready--"
                                                               (substring (symbol-name module) 1)
                                                               "-sub-all")))))
                            (setq load-list (nconc load-list
-                                                  `((ready--enable-files ,module
+                                                  `((ready--build-cache ,module
                                                                          ',(ready--modify-list sub-all (cdar args))
                                                                          ,cache-file)))))
                          (setq args (cdr args)))))
@@ -116,11 +116,11 @@
                      (if (not (listp (car args)))
                          (error "`:pkg' arg is not a list for `%s' in `ready-enable'" module)
                        (if (not (eq 'defaults (caar args)))
-                           (push `(ready--enable-files ,module ',(car args) ,cache-file 'packages) load-list)
+                           (push `(ready--build-cache ,module ',(car args) ,cache-file 'packages) load-list)
                          (let ((pkg-defaults (eval (intern (concat "ready--"
                                                                    (substring (symbol-name module) 1)
                                                                    "-pkg-defaults")))))
-                           (push `(ready--enable-files ,module
+                           (push `(ready--build-cache ,module
                                                        ',(ready--modify-list pkg-defaults (cdar args))
                                                        ,cache-file
                                                        'packages)
@@ -193,7 +193,6 @@
 
 (with-eval-after-load 'use-package-core
   (setq use-package-always-defer t)
-
   (setq use-package-keywords
         (use-package-list-insert :extend
                                  (use-package-list-insert :attach
