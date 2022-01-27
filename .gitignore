@@ -35,5 +35,8 @@ straight/*
 # bookmarks
 /bookmarks
 
+# save place
+/places
+
 # TODO: change this
 .cache/
