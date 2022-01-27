@@ -17,6 +17,7 @@
 (defvar ready/emacs-directory (concat user-emacs-directory "ready/"))
 (defvar ready/modules-directory (concat ready/emacs-directory "modules/"))
 (defvar ready/cache-directory (concat ready/emacs-directory "cache/"))
+(defvar ready/opt-directory (concat ready/emacs-directory "opt/"))
 
 (defvar ready--cache-file (concat ready/cache-directory "ready-cache.el"))
 (defvar ready--early-cache-file (concat ready/cache-directory "ready-early-cache.el"))
@@ -164,16 +165,16 @@
                                  consult
                                  vertico))
 
+                      (tools  . ())
+
+                      (lang   . (org))
+
                       (ui     . ())
 
-                      (ux     . (gcmh
-                                 which-key
+                      (ux     . (which-key
                                  orderless
-                                 marginalia))
-
-                      (tools  . nil)
-
-                      (lang   . (org)))))
+                                 marginalia
+                                 gcmh)))))
 
   (dolist (pkg-assoc pkg-defaults)
     (let ((module (car pkg-assoc))
