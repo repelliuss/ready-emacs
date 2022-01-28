@@ -9,9 +9,6 @@
 (defcustom ready-force-build-cache nil
   "Always re-build cache at initialization.")
 
-(defcustom ready-use-untrusted-submodules nil
-  "Use untrusted submodules.")
-
 (defcustom ready-theme-preferred-background 'light
   "Preferred background lightning for theme packages.")
 
@@ -27,12 +24,9 @@
 (defvar ready--cache-state-file (concat ready/cache-directory "ready-cache-state.el"))
 (defvar ready--early-cache-state-file (concat ready/cache-directory "ready-early-cache-state.el"))
 
-(defun ready--get-files (&optional path submodules-p)
-  (append (directory-files (concat ready/modules-directory path (if submodules-p "trusted/"))
-                           nil directory-files-no-dot-files-regexp t)
-          (if (and submodules-p ready-use-untrusted-submodules)
-              (directory-files (concat ready/modules-directory path "untrusted/")
-                               nil directory-files-no-dot-files-regexp t))))
+(defun ready--get-files (&optional path)
+  (directory-files (concat ready/modules-directory path)
+                   nil directory-files-no-dot-files-regexp t))
 
 (defvar ready--modules (mapcar (lambda (module-name)
                                  (intern (concat ":" (file-name-sans-extension module-name))))
@@ -40,18 +34,15 @@
 
 (defun ready--build-cache (module files cache-file &optional packages-p)
   (let* ((module-path (concat ready/modules-directory (substring (symbol-name module) 1) "/"))
-         (path (concat module-path (if packages-p "packages/" "submodules/*/"))))
+         (path (concat module-path (if packages-p "packages/" "submodules/"))))
     (with-current-buffer (find-file-noselect cache-file nil 'literal)
       (dolist (file files)
-        (let* ((matching-buffers (find-file-noselect (concat path
-                                                             (if (symbolp file)
-                                                                 (symbol-name file)
-                                                               file)
-                                                             ".el")
-                                                     nil 'literal (not packages-p)))
-               (file-buffer (if (listp matching-buffers)
-                                (car matching-buffers)
-                              matching-buffers)))
+        (let* ((file-buffer (find-file-noselect (concat path
+                                                        (if (symbolp file)
+                                                            (symbol-name file)
+                                                          file)
+                                                        ".el")
+                                                nil 'literal)))
           (ignore-errors (while t (print (read file-buffer) (current-buffer))))
           (kill-buffer file-buffer))))))
 
@@ -162,7 +153,7 @@
              ',(mapcar (lambda (submodule)
                          (intern (file-name-sans-extension submodule)))
                        (ready--get-files (concat (substring (symbol-name module) 1)
-                                                 "/submodules/") 'submodules))))))
+                                                 "/submodules/")))))))
 
 (let ((pkg-defaults '((editor . (meow
                                  ace-window
