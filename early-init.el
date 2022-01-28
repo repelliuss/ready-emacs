@@ -11,10 +11,6 @@
 
 (load (concat user-emacs-directory "ready/core") nil 'nomessage)
 
-(enable-early!
- :ui
- :sub (no-bar))
-
 (use-package modus-themes
   :init
   (modus-themes-load-themes)
@@ -33,6 +29,14 @@
         modus-themes-variable-pitch-headings t
         modus-themes-region 'bg-only)
   (modus-themes-load-operandi))
+
+(setq ready-force-build-cache t)
+
+(enable-early!
+ :ui
+ :sub (no-bar))
+
+(custom-set-variables '(nano-modeline-position 'bottom))
 
 (add-to-list 'default-frame-alist '(font . "-*-Iosevka Term-regular-r-*--21-*-*-*-*-*-*-*"))
 (set-face-attribute 'fixed-pitch nil :family "JetBrainsMono" :height 180)

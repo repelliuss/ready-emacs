@@ -12,6 +12,9 @@
 (defcustom ready-use-untrusted-submodules nil
   "Use untrusted submodules.")
 
+(defcustom ready-theme-preferred-background 'light
+  "Preferred background lightning for theme packages.")
+
 ;;; Module system handler
 
 (defvar ready/emacs-directory (concat user-emacs-directory "ready/"))
@@ -46,7 +49,9 @@
                                                                file)
                                                              ".el")
                                                      nil 'literal (not packages-p)))
-               (file-buffer (if packages-p matching-buffers (car matching-buffers))))
+               (file-buffer (if (listp matching-buffers)
+                                (car matching-buffers)
+                              matching-buffers)))
           (ignore-errors (while t (print (read file-buffer) (current-buffer))))
           (kill-buffer file-buffer))))))
 
