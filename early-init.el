@@ -6,7 +6,7 @@
 
 (setq enable-modules-dir (setq enable-dir (concat user-emacs-directory "enable/"))
       enable-cache-dir (concat user-emacs-directory "cache/enable/")
-      enable-force-build-cache nil)
+      enable-force-build-cache t)
 
 (load (concat user-emacs-directory "enable") nil 'nomessage)
 
@@ -31,5 +31,5 @@
  :init all
 
  :ui
- :pkg (modus-themes)
+ :pkg (nano-theme nano-modeline)
  :sub (no-bar font))

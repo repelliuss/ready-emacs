@@ -19,4 +19,7 @@
         modus-themes-region 'bg-only)
   (if (eq theme-preferred-background 'light)
       (modus-themes-load-operandi)
-    (modus-themes-load-vivendi)))
+    (modus-themes-load-vivendi))
+  :attach (rps/ui/theme)
+  (setq theme-default-light 'modus-operandi
+        theme-default-dark 'modus-vivendi))
