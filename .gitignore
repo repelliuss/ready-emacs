@@ -1,5 +1,7 @@
 /cache/
 
+/enable/secret/
+
 # auto-save files.
 \#*#
 

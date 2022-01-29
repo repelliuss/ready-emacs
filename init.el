@@ -19,34 +19,9 @@
 
  :ux
  :pkg (defaults)
- :sub (all))
+ :sub (all)
 
-(setq user-full-name "repelliuss"
-      user-mail-address "repelliuss@gmail.com")
-
-(setq create-lockfiles nil
-      make-backup-files nil)
-
-(add-hook 'dired-mode-hook #'dired-hide-details-mode)
-
-(c-add-style
- "csharp-unity"
- '("csharp"
-   (c-offsets-alist
-    (func-decl-cont . 0)
-    (substatement . 0))))
-
-(with-eval-after-load 'lsp-mode
-  (setq lsp-lens-enable nil
-	lsp-headerline-breadcrumb-enable nil))
-
-(with-eval-after-load 'flymake
-  (setq flymake-fringe-indicator-position nil))
-
-(with-eval-after-load 'ace-window
-  (set-face-attribute 'aw-leading-char-face nil
-                      :foreground "white" :background "purple"
-                      :weight 'bold :height 3.5))
+ :secret all)
 
 ;; TODO: Remove this
 (message "*** Emacs loaded in %s with %d garbage collections."

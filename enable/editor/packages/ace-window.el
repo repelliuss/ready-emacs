@@ -11,4 +11,8 @@
 
   :config
   (setq aw-keys '(?q ?e ?r ?u ?i ?o)
-        aw-scope 'frame))
+        aw-scope 'frame)
+
+  (set-face-attribute 'aw-leading-char-face nil
+                      :foreground "white" :background "purple"
+                      :weight 'bold :height 3.5))

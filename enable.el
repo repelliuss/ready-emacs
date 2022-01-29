@@ -157,6 +157,15 @@
                ',defaults)))))
 
 ;;;###autoload
+(defun enable-purge-cache ()
+  (interactive)
+  (dolist (file (list enable--cache-state-file
+                      enable--cache-file
+                      enable--early-cache-file
+                      enable--early-cache-state-file))
+    (delete-file file)))
+
+;;;###autoload
 (defun enable-init (pkg-defaults)
   (enable--make-pkg-defaults pkg-defaults)
   (dolist (module enable--modules)

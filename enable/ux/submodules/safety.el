@@ -6,7 +6,7 @@
       auto-save-list-file-prefix (concat enable-cache-dir "autosave/")
       auto-save-file-name-transforms
       (list (list "\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
-                  (concat enable-cache-dir "autosave/tramp/\\2") t)
+                  (concat cache-dir "autosave/tramp/\\2") t)
             (list ".*" auto-save-list-file-prefix t)))
 
 (setq auth-sources '("~/.authinfo.gpg" "~/.netrc.gpg"))
