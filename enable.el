@@ -5,8 +5,6 @@
   :group 'convenience
   :prefix "enable-")
 
-;;; Customizations
-
 ;; TODO: handle nil
 (defcustom enable-dir (concat user-emacs-directory "enable/")
   "Storage."
@@ -22,10 +20,8 @@
   :type 'file)
 
 (defcustom enable-force-build-cache nil
-  "Always re-build cache at initialization.")
-
-;;; Module system handler
-
+  "Always re-build cache at initialization."
+  :type 'bool)
 
 (defvar enable--cache-file (concat enable-cache-dir "enable-cache.el"))
 (defvar enable--cache-state-file (concat enable-cache-dir "enable-cache-state.el"))
@@ -85,12 +81,6 @@
                   var))))
         modifications)
   var)
-
-(defmacro enable (&rest args)
-  `(enable--with-cache ,enable--cache-file ,enable--cache-state-file ,args))
-
-(defmacro enable-early (&rest args)
-  `(enable--with-cache ,enable--early-cache-file ,enable--early-cache-state-file ,args))
 
 (defun enable--save-cache-state (args buffer)
   (with-current-buffer buffer
@@ -157,34 +147,7 @@
     (kill-buffer state-buffer)
     (macroexp-progn load-list)))
 
-(dolist (module enable--modules)
-  (let ((submodules))
-    (eval `(defvar ,(intern (concat "enable--"
-                                    (substring (symbol-name module) 1)
-                                    "-sub-all"))
-             ',(mapcar (lambda (submodule)
-                         (intern (file-name-sans-extension submodule)))
-                       (enable--get-files (concat (substring (symbol-name module) 1)
-                                                 "/submodules/")))))))
-
-(let ((pkg-defaults '(
-
-                      (editor . (meow
-                                 ace-window
-                                 embark
-                                 consult
-                                 vertico))
-
-                      (tools  . ())
-
-                      (lang   . (org))
-
-                      (ui     . ())
-
-                      (ux     . (which-key
-                                 orderless
-                                 marginalia
-                                 gcmh)))))
+(defun enable--make-pkg-defaults (pkg-defaults)
   (dolist (pkg-assoc pkg-defaults)
     (let ((module (car pkg-assoc))
           (defaults (cdr pkg-assoc)))
@@ -192,3 +155,24 @@
                                       (symbol-name module)
                                       "-pkg-defaults"))
                ',defaults)))))
+
+;;;###autoload
+(defun enable-init (pkg-defaults)
+  (enable--make-pkg-defaults pkg-defaults)
+  (dolist (module enable--modules)
+    (let ((submodules))
+      (eval `(defvar ,(intern (concat "enable--"
+                                      (substring (symbol-name module) 1)
+                                      "-sub-all"))
+               ',(mapcar (lambda (submodule)
+                           (intern (file-name-sans-extension submodule)))
+                         (enable--get-files (concat (substring (symbol-name module) 1)
+                                                    "/submodules/"))))))))
+
+;;;###autoload
+(defmacro enable (&rest args)
+  `(enable--with-cache ,enable--cache-file ,enable--cache-state-file ,args))
+
+;;;###autoload
+(defmacro enable-early (&rest args)
+  `(enable--with-cache ,enable--early-cache-file ,enable--early-cache-state-file ,args))
