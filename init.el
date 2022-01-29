@@ -1,6 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-(enable!
+(enable
  :editor
  :pkg (defaults)
  :sub (all)
@@ -15,7 +15,7 @@
 
  :ui
  :pkg (defaults)
- :sub (all)
+ :sub (all -no-bar -font)
 
  :ux
  :pkg (defaults)
@@ -23,8 +23,6 @@
 
 (setq user-full-name "repelliuss"
       user-mail-address "repelliuss@gmail.com")
-
-(setq native-comp-async-report-warnings-errors nil)
 
 (setq create-lockfiles nil
       make-backup-files nil)
