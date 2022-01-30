@@ -19,11 +19,7 @@
   "Where cache files are stored."
   :type 'file)
 
-(defcustom enable-force-build-cache nil
-  "Always re-build cache at initialization."
-  :type 'bool)
-
-(defcustom enable-loader #'enable-loader-cache
+(defcustom enable-loader #'enable-using-eval
   "Load style of enable."
   :type #'function)
 
@@ -40,35 +36,32 @@
                                  (intern (concat ":" (file-name-sans-extension module-name))))
                                (enable--get-files)))
 
-(defun enable--build-cache (module files cache-file &optional packages-p)
+(defun enable--build (module files &optional packages-p)
   (let* ((module-path (concat enable-modules-dir (substring (symbol-name module) 1) "/"))
          (path (concat module-path (if packages-p "packages/" "submodules/"))))
-    (with-current-buffer (find-file-noselect cache-file nil 'literal)
-      (dolist (file files)
-        (funcall enable-loader (concat path
-                                       (if (symbolp file)
-                                           (symbol-name file)
-                                         file)
-                                       ".el"))))))
+    (dolist (file files)
+      (funcall enable-loader (concat path
+                                     (if (symbolp file)
+                                         (symbol-name file)
+                                       file)
+                                     ".el")))))
 
-(defun enable--build-cache-module (module cache-file)
+(defun enable--build-module (module)
   (let ((pkg-defaults (intern (concat "enable--"
                                       (substring (symbol-name module) 1)
                                       "-pkg-defaults"))))
     (when (boundp pkg-defaults)
-      (enable--build-cache module
+      (enable--build module
                            (eval pkg-defaults)
-                           cache-file
                            'packages)))
-  (enable--build-cache module
+  (enable--build module
                        (eval (intern (concat "enable--"
                                              (substring (symbol-name module) 1)
-                                             "-sub-all")))
-                       cache-file))
+                                             "-sub-all")))))
 
-(defun enable--build-cache-all (cache-file)
+(defun enable--build-all ()
   (dolist (module enable--modules)
-    (enable--build-cache-module module cache-file)))
+    (enable--build-module module)))
 
 ;; TODO: add support for package-name* -suffix +suffix feat
 (defun enable--modify-list (var modifications)
@@ -83,19 +76,13 @@
         modifications)
   var)
 
-(defun enable--save-cache-state (args buffer)
-  (with-current-buffer buffer
-        (erase-buffer)
-        (print args buffer)
-        (save-buffer)))
-
-(defmacro enable--process (args cache-file)
+(defmacro enable--process (args)
   (let* (sexps
-         (add-sexp (lambda (enabler)
-                     (setq sexps (nconc sexps (list enabler))))))
-    (cond ((eq 'all (car args)) '(enable--build-cache-all ,cache-file))
+         (add-sexp (lambda (builder)
+                     (setq sexps (nconc sexps (list builder))))))
+    (cond ((eq 'all (car args)) '(enable--build-all))
           ((not (memq (car args) enable--modules))
-           (error "No module name given to `enable-enable'"))
+           (error "No module name given to `enable'"))
           (t (let (module
                    (expr (car args))
                    (args (cdr args)))
@@ -105,7 +92,7 @@
                    (setq module expr)
                    (when (eq 'all (car args))
                      (funcall add-sexp
-                              `(enable--build-cache-module ,module ,cache-file))
+                              `(enable--build-module ,module))
                      (setq args (cdr args))))
                   ((eq expr :sub)
                    (if (not (listp (car args)))
@@ -113,48 +100,53 @@
                               module)
                      (if (not (eq 'all (caar args)))
                          (funcall add-sexp
-                                  `(enable--build-cache ,module
-                                                        ',(car args)
-                                                        ,cache-file))
+                                  `(enable--build ,module
+                                                        ',(car args)))
                        (let ((sub-all (eval (intern (concat "enable--"
                                                             (substring (symbol-name module) 1)
                                                             "-sub-all")))))
-                         (funcall add-sexp `(enable--build-cache ,module
-                                                                 ',(enable--modify-list sub-all (cdar args))
-                                                                 ,cache-file)))
+                         (funcall add-sexp `(enable--build ,module
+                                                                 ',(enable--modify-list sub-all (cdar args)))))
                        (setq args (cdr args)))))
                   ((eq expr :pkg)
                    (if (not (listp (car args)))
                        (error "`:pkg' arg is not a list for `%s' in `enable'" module)
                      (if (not (eq 'defaults (caar args)))
-                         (funcall add-sexp `(enable--build-cache ,module ',(car args) ,cache-file 'packages))
+                         (funcall add-sexp `(enable--build ,module ',(car args) 'packages))
                        (let ((pkg-defaults (eval (intern (concat "enable--"
                                                                  (substring (symbol-name module) 1)
                                                                  "-pkg-defaults")))))
-                         (funcall add-sexp `(enable--build-cache ,module
+                         (funcall add-sexp `(enable--build ,module
                                                                  ',(enable--modify-list pkg-defaults (cdar args))
-                                                                 ,cache-file
                                                                  'packages)))
                        (setq args (cdr args))))))
                  (setq expr (car args)
-                       args (cdr args)))
-               (funcall add-sexp `(with-current-buffer (find-file-noselect ,cache-file nil 'literal)
-                                    (save-buffer)
-                                    (eval-buffer)
-                                    (kill-buffer))))))))
+                       args (cdr args))))))
+    sexps))
 
 (defmacro enable--with-cache (cache-file state-file args)
-  (let* (load-list
-         (state-buffer (find-file-noselect state-file nil 'literal)))
-    (if (and (file-exists-p cache-file)
-             (equal args (ignore-errors (read state-buffer)))
-             (not enable-force-build-cache))
-        (setq load-list `((load ,cache-file nil 'nomessage)))
-      (enable--save-cache-state args state-buffer)
-      (delete-file cache-file)
-      (setq load-list (macroexpand `(enable--process ,args ,cache-file)))
-    (kill-buffer state-buffer)
-    (macroexp-progn load-list))))
+  (let* (load-list)
+    (with-current-buffer (find-file-noselect state-file nil 'literal)
+      (unless (and (file-exists-p cache-file)
+                   (equal args (ignore-errors (read (current-buffer)))))
+        (erase-buffer)
+        (print args (current-buffer))
+        (save-buffer)
+        (delete-file cache-file)
+        (setq load-list (nconc (macroexpand `(enable--process ,args)) `((save-buffer)))))
+      (kill-buffer))
+    `(with-current-buffer (find-file-noselect ,cache-file nil 'literal)
+       ,@load-list
+       (eval-buffer)
+       (kill-buffer))))
+
+(defmacro enable--with-eval (args state-file)
+  (with-current-buffer (find-file-noselect state-file nil 'literal)
+    (erase-buffer)
+    (print args (current-buffer))
+    (save-buffer)
+    (kill-buffer))
+  (macroexp-progn (macroexpand `(enable--process ,args))))
 
 (defun enable--make-pkg-defaults (pkg-defaults)
   (dolist (pkg-assoc pkg-defaults)
@@ -165,15 +157,29 @@
                                       "-pkg-defaults"))
                ',defaults)))))
 
-(defun enable-loader-cache (file-path)
+;;; (current-buffer) visits cache-file
+(defun enable-using-cache (file-path)
   (let* ((file-buffer (find-file-noselect file-path nil 'literal)))
     (ignore-errors (while t (print (read file-buffer) (current-buffer))))
     (kill-buffer file-buffer)))
 
-(defun enable-loader-eval (file-path)
+(defun enable-using-eval (file-path)
   (load file-path nil 'nomessage))
 
-;;;###autoload
+(defun enable-reload-additively ()
+  (interactive)
+  (dolist (file (list enable--cache-file
+                      enable--early-cache-file))
+    (delete-file file))
+  (when (file-exists-p enable--early-cache-state-file)
+    (with-current-buffer (find-file-noselect enable--early-cache-state-file nil 'literal)
+      (eval `(enable-early ,@(read (current-buffer))))
+      (kill-buffer)))
+  (when (file-exists-p enable--early-cache-state-file)
+    (with-current-buffer (find-file-noselect enable--cache-state-file nil 'literal)
+      (eval `(enable ,@(read (current-buffer))))
+      (kill-buffer))))
+
 (defun enable-purge-cache ()
   (interactive)
   (dolist (file (list enable--cache-state-file
@@ -181,6 +187,16 @@
                       enable--early-cache-file
                       enable--early-cache-state-file))
     (delete-file file)))
+
+(defmacro enable (&rest args)
+  (if (eq enable-loader #'enable-using-cache)
+      `(enable--with-cache ,enable--cache-file ,enable--cache-state-file ,args)
+    `(enable--with-eval ,args ,enable--cache-state-file)))
+
+(defmacro enable-early (&rest args)
+  (if (eq enable-loader #'enable-using-cache)
+      `(enable--with-cache ,enable--early-cache-file ,enable--early-cache-state-file ,args)
+    `(enable--with-eval ,args ,enable--early-cache-state-file)))
 
 ;;;###autoload
 (defun enable-init (pkg-defaults)
@@ -194,11 +210,3 @@
                            (intern (file-name-sans-extension submodule)))
                          (enable--get-files (concat (substring (symbol-name module) 1)
                                                     "/submodules/"))))))))
-
-;;;###autoload
-(defmacro enable (&rest args)
-  `(enable--with-cache ,enable--cache-file ,enable--cache-state-file ,args))
-
-;;;###autoload
-(defmacro enable-early (&rest args)
-  `(enable--with-cache ,enable--early-cache-file ,enable--early-cache-state-file ,args))

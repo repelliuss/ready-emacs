@@ -6,7 +6,7 @@
 
 (setq enable-modules-dir (setq enable-dir (concat user-emacs-directory "enable/"))
       enable-cache-dir (concat user-emacs-directory "cache/enable/")
-      enable-force-build-cache t)
+      enable-loader #'enable-using-cache)
 
 (load (concat user-emacs-directory "enable") nil 'nomessage)
 
