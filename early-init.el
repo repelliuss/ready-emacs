@@ -31,5 +31,5 @@
  :init all
 
  :ui
- :pkg (nano-theme nano-modeline)
+ :pkg (modus-themes)
  :sub (no-bar font))
