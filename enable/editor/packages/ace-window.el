@@ -6,6 +6,7 @@
   :attach (meow)
   (general-def meow-leader-keymap
     :prefix "w"
+    "" nil
     "w" #'ace-window
     "f" #'aw-flip-window)
 
