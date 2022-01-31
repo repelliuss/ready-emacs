@@ -9,12 +9,14 @@
    "M-c" #'embark-collect-snapshot
    "M-e" #'embark-export)
 
+  :attach (which-key)
+  (setq which-key-use-C-h-commands nil)
+  
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
 
   :extend (which-key)
-  (setq which-key-use-C-h-commands nil
-        embark-indicators (cons #'embark-which-key-indicator
+  (setq embark-indicators (cons #'embark-which-key-indicator
                                 (delq 'embark-mixed-indicator
                                       embark-indicators)))
 

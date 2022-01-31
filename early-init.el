@@ -5,8 +5,7 @@
       load-prefer-newer noninteractive)
 
 (setq enable-modules-dir (setq enable-dir (concat user-emacs-directory "enable/"))
-      enable-cache-dir (concat user-emacs-directory "cache/enable/")
-      enable-loader #'enable-using-cache)
+      enable-cache-dir (concat user-emacs-directory "cache/enable/"))
 
 (load (concat user-emacs-directory "enable") nil 'nomessage)
 
@@ -14,7 +13,9 @@
                           ace-window
                           embark
                           consult
-                          vertico))
+                          vertico
+			  corfu
+			  cape))
 
                (tools . ())
 
@@ -27,9 +28,9 @@
                       marginalia
                       gcmh))))
 
+
 (enable-early
  :init all
-
  :ui
- :pkg (modus-themes)
- :sub (no-bar font))
+ :sub (no-bar font frame)
+ :pkg (modus-themes nano-modeline))

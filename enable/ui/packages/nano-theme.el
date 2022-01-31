@@ -8,11 +8,9 @@
 	     :repo "rougier/nano-theme")
   :commands (nano-mode nano-light nano-dark)
   :init
-  (nano-mode)
-
   (if (eq theme-preferred-background 'light)
-      (nano-light)
-    (nano-dark))
+      (load-theme 'nano-light 'no-confirm)
+    (load-theme 'nano-dark 'no-confirm))
 
   :attach (rps/ui/theme)
   (setq theme-default-light 'nano-light

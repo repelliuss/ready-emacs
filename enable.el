@@ -101,12 +101,12 @@
                      (if (not (eq 'all (caar args)))
                          (funcall add-sexp
                                   `(enable--build ,module
-                                                        ',(car args)))
+                                                  ',(car args)))
                        (let ((sub-all (eval (intern (concat "enable--"
                                                             (substring (symbol-name module) 1)
                                                             "-sub-all")))))
                          (funcall add-sexp `(enable--build ,module
-                                                                 ',(enable--modify-list sub-all (cdar args)))))
+                                                           ',(enable--modify-list sub-all (cdar args)))))
                        (setq args (cdr args)))))
                   ((eq expr :pkg)
                    (if (not (listp (car args)))
@@ -117,8 +117,8 @@
                                                                  (substring (symbol-name module) 1)
                                                                  "-pkg-defaults")))))
                          (funcall add-sexp `(enable--build ,module
-                                                                 ',(enable--modify-list pkg-defaults (cdar args))
-                                                                 'packages)))
+                                                           ',(enable--modify-list pkg-defaults (cdar args))
+                                                           'packages)))
                        (setq args (cdr args))))))
                  (setq expr (car args)
                        args (cdr args))))))
@@ -168,17 +168,9 @@
 
 (defun enable-reload-additively ()
   (interactive)
-  (dolist (file (list enable--cache-file
-                      enable--early-cache-file))
-    (delete-file file))
-  (when (file-exists-p enable--early-cache-state-file)
-    (with-current-buffer (find-file-noselect enable--early-cache-state-file nil 'literal)
-      (eval `(enable-early ,@(read (current-buffer))))
-      (kill-buffer)))
-  (when (file-exists-p enable--early-cache-state-file)
-    (with-current-buffer (find-file-noselect enable--cache-state-file nil 'literal)
-      (eval `(enable ,@(read (current-buffer))))
-      (kill-buffer))))
+  (enable-purge-cache)
+  (load early-init-file nil 'no-message)
+  (load user-init-file nil 'no-message))
 
 (defun enable-purge-cache ()
   (interactive)
