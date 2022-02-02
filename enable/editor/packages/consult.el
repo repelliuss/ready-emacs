@@ -8,7 +8,7 @@
    [remap recentf-open-files] #'consult-recent-file
    [remap bookmark-jump] #'consult-bookmark
    [remap yank-pop] #'consult-yank-pop
-   [remap view-register] #'consult-register
+   [remap view-register] #'consult-register ; BUG: preview buffer wrongly placed at first time
    [remap goto-line] #'consult-goto-line
    [remap pop-global-mark] #'consult-global-mark
    [remap multi-occur] #'consult-multi-occur
@@ -59,13 +59,10 @@
 
   (setq register-preview-delay 0
         register-preview-function #'consult-register-format)
-
   (advice-add #'register-preview :override #'consult-register-window)
 
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
-
-  (recentf-mode 1)
 
   :config
   (setq consult-project-root-function (lambda ()
@@ -87,7 +84,7 @@
 
   (consult-customize
    consult-theme
-   :preview-key (list (kbd "M-P") :debounce 0.5 'any))
+   :preview-key (list :debounce 0.5 'any))
 
   :extend (orderless)
   (defun consult--orderless-regexp-compiler (input type)
@@ -117,6 +114,7 @@
   (advice-add #'consult--read :around #'immediate-which-key-for-narrow)
 
   :extend (eshell)
+  ;; consult-outline support
   (add-hook 'eshell-mode-hook (lambda () (setq outline-regexp eshell-prompt-regexp)))
 
   :extend (org)
@@ -127,7 +125,6 @@
       :category buffer
       :state ,#'consult--buffer-state
       :items ,(lambda () (mapcar #'buffer-name (org-buffer-list)))))
-
   (add-to-list 'consult-buffer-sources 'consult--org-source 'append)
 
   :extend (meow)

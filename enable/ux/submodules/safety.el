@@ -10,3 +10,5 @@
             (list ".*" auto-save-list-file-prefix t)))
 
 (setq auth-sources '("~/.authinfo.gpg" "~/.netrc.gpg"))
+
+(setq epa-pinentry-mode 'loopback)

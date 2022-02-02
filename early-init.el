@@ -15,9 +15,10 @@
                           consult
                           vertico
 			  corfu
-			  cape))
+			  cape
+			  wgrep))
 
-               (tools . ())
+               (tools . (magit))
 
                (lang . (org))
 
@@ -34,3 +35,5 @@
  :ui
  :sub (no-bar font frame)
  :pkg (modus-themes nano-modeline))
+
+;; TODO: meow SPC G

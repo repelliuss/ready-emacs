@@ -4,6 +4,6 @@
   :init
   (which-key-mode 1)
   :config
-  (setq which-key-sort-order #'which-key-key-order-alpha
+  (setq which-key-sort-order #'which-key-description-order
         which-key-sort-uppercase-first nil
         which-key-allow-multiple-replacements t))

@@ -23,6 +23,8 @@
 
  :secret all)
 
+;; TODO: make bookmark system
+
 ;; TODO: Remove this
 (message "*** Emacs loaded in %s with %d garbage collections."
          (format "%.2f seconds"

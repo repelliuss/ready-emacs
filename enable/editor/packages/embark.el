@@ -65,7 +65,14 @@ targets."
                           (cons '(vertico-current . embark-target) fr)
                         fr)))))))
 
-;; TODO: check doom how it handles autoloads
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
 ;; TODO: add embark-consult
-;; TODO: consider a preview key like in doom
 ;; BUG: xref-find-references doesn't work

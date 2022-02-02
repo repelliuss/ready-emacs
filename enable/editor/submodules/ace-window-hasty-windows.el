@@ -18,7 +18,8 @@
                             (?c aw-copy-window "Copy")
                             (?d aw--delete-current-window)
                             (?D aw--delete-other-windows)
-                            (?p aw--split-current-window-fair) ; pop window
+                            (?p aw--split-current-window-fair-switch-buffer) ; pop window
+                            (?P aw--split-current-window-fair) ; pop window
                             (?w aw--switch-to-next-window) ; will only work if there are 2 windows
                             (?l maximize-window)
                             (?= balance-windows)
@@ -48,6 +49,10 @@
   (defun aw--delete-other-windows ()
     (setq aw--windows-points (list (assoc (selected-window) aw--windows-points)))
     (delete-other-windows))
+
+  (defun aw--split-current-window-fair-switch-buffer ()
+    (aw-split-window-fair (selected-window))
+    (call-interactively #'switch-to-buffer))
 
   (defun aw--split-current-window-fair ()
     (aw-split-window-fair (selected-window)))
