@@ -22,7 +22,7 @@
    [remap find-grep-dired] #'consult-grep)
 
   (help-map
-   "a" #'consult-apropos                ; BUG: remapping above doesn't work
+   "a" #'consult-apropos                ;BUG: remapping above doesn't work
    "M" #'consult-man)
 
   :attach (meow)
@@ -48,7 +48,7 @@
     "G" #'consult-git-grep
     "L" #'consult-focus-lines)
 
-  ;; TODO: add open externally THIS file
+  ;;TODO: add open externally THIS file
   :attach (rps/editor/file)
   (general-def rps/file-map
     :prefix "f"

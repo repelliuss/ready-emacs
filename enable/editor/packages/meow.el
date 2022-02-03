@@ -54,12 +54,12 @@
    '("N" . meow-pop-search)
    '("e" . meow-block)
    '("E" . meow-to-block)
-   '("p" . meow-yank)
-   '("P" . meow-yank-pop)
+   '("y" . meow-clipboard-yank)
+   '("Y" . meow-yank-pop)
    '("M-g" . meow-goto-line)
    '("r" . meow-replace-save)
    '("R" . meow-swap-grab)
-   '("d" . meow-kill)
+   '("d" . meow-clipboard-kill)
    '("D" . meow-kill-whole-line)
    '("t" . meow-till)
    '("T" . meow-till-expand)
@@ -79,8 +79,8 @@
    '("M" . meow-mark-symbol)
    '("x" . meow-line)
    '("X" . meow-line-expand)
-   '("y" . meow-save)
-   '("Y" . meow-sync-grab)
+   '("p" . meow-clipboard-save)
+   '("P" . meow-sync-grab)
    '("s" . meow-pop-selection)
    '("S" . meow-pop-all-selection)
    '("%" . meow-query-replace-regexp)
@@ -99,7 +99,8 @@
    "." #'find-file
    "," #'switch-to-buffer)
   (meow-insert-state-keymap
-   "C-g" #'meow-insert-exit)
+   "C-g" #'meow-insert-exit
+   "<backspace>" #'backward-kill-word)
 
   :config
   ;; TODO: consider this later on
@@ -109,6 +110,12 @@
   (meow-setup)
   (meow-global-mode 1)
 
+  :extend (eshell)
+  (add-hook 'eshell-mode-hook #'meow-insert-mode)
+
+  :extend (corfu)
+  (add-hook 'completion-in-region-mode-hook #'meow-insert)
+  
   :extend (which-key)
   (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))
   (add-to-list 'which-key-replacement-alist '(("0" . "meow-digit-argument") . ("[0-9]")))
@@ -127,6 +134,10 @@
   (set-keymap-parent meow-leader-keymap
                      (make-composed-keymap (keymap-parent meow-leader-keymap)
                                            rps/file-map))
+  :extend (rps/editor/open)
+  (set-keymap-parent meow-leader-keymap
+                     (make-composed-keymap (keymap-parent meow-leader-keymap)
+                                           rps/open-map))
   :extend (rps/editor/buffer)
   (set-keymap-parent meow-leader-keymap
                      (make-composed-keymap (keymap-parent meow-leader-keymap)

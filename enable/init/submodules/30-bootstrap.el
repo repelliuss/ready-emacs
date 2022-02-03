@@ -1,5 +1,8 @@
 ;;; bootstrap.el -*- lexical-binding: t; -*-
 
+(with-eval-after-load 'package
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") 'append))
+
 ;;; straight - Package Manager
 
 (setq straight-use-package-by-default t
@@ -15,7 +18,6 @@
         (goto-char (point-max))
         (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
 
 ;;; use-package - Configurationieer
 

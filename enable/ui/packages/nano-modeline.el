@@ -2,6 +2,7 @@
 
 (use-package nano-modeline
   :init
+  (setq nano-modeline-position 'bottom)
   (nano-modeline-mode 1)
 
   (defcustom nano-modeline-position 'top

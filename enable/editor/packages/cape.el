@@ -9,9 +9,9 @@
   :after (corfu)
   :general
   (esc-map
-   "c" completion-map)
+   "c" completion-map
+   "C" #'completion-at-point)
   (completion-map
-   "M-p" #'completion-at-point
    "M-t" #'complete-tag
    "M-d" #'cape-dabbrev
    "M-f" #'cape-file
@@ -38,3 +38,4 @@
   ;;(add-to-list 'completion-at-point-functions #'cape-dict)
   ;;(add-to-list 'completion-at-point-functions #'cape-symbol)
   (add-to-list 'completion-at-point-functions #'cape-line))
+

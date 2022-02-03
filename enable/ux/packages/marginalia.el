@@ -6,7 +6,7 @@
   (marginalia-mode 1)
   :general
   (selectrum-minibuffer-map
-   "M-m" #'marginalia-cycle)
+    "M-m" #'marginalia-cycle)
   (vertico-map
    "M-m" #'marginalia-cycle))
 

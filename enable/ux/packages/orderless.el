@@ -7,7 +7,7 @@
 	completion-category-overrides '((file (styles basic-remote partial-completion)))
 	orderless-component-separator #'orderless-escapable-split-on-space
         orderless-matching-styles '(orderless-regexp
-                                    orderless-strict-initialism
+                                    orderless-initialism
                                     orderless-literal)
         orderless-style-dispatchers '(orderless-default-dispatcher))
 

@@ -3,11 +3,14 @@
 (use-package vertico
   :init
   (setq vertico-cycle t
-        vertico-scroll-margin 0)
+        vertico-scroll-margin 3)
 
-  (savehist-mode 1)
   (vertico-mode 1)
 
+  :extend (ace-window)
+  (general-def vertico-map
+    "M-w" #'ace-window)
+  
   :extend (meow)
   (general-def vertico-map
     "M-j" #'vertico-next
@@ -18,10 +21,10 @@
     "M-<" #'vertico-scroll-down
     "C->" #'vertico-last
     "C-<" #'vertico-first
-    "<backspace>" #'backward-kill-sexp
+    "<backspace>" #'backward-kill-word
     "M-<backspace>" #'meow-kill-whole-line
-    "M-w" #'vertico-clipboard-save
-    "M-y" #'meow-yank
+    "M-p" #'vertico-clipboard-save
+    "M-y" #'meow-clipboard-yank
     "M-Y" #'yank-pop
     "M-RET" #'vertico-exit-input)
 
@@ -36,12 +39,8 @@
   :after (vertico)
   :general
   (vertico-map
-   "C-q" #'vertico-quick-insert
-   "M-q" #'vertico-quick-exit)
-
-  :attach (meow)
-  (general-def vertico-map
-    "M-s" #'vertico-quick-jump))
+   "M-S" #'vertico-quick-jump
+   "M-s" #'vertico-quick-exit))
 
 (use-package vertico-repeat
   :straight (:host github :repo "minad/vertico"
@@ -58,7 +57,4 @@
   :init
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))
 
-;; TODO: move savehist-mode to a submodule, also from selectrum
-;; TODO: make :straight keyword no-op when backend is not straight
-;; TODO: consult enhancements
-;; TODO: check doom's switch buffer
+

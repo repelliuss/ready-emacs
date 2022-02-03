@@ -1,5 +1,6 @@
 ;;; scroll.el -*- lexical-binding: t; -*-
 
+;; TODO: experiment scroll conservatively
 (setq scroll-conservatively 101
       scroll-margin 3
       scroll-preserve-screen-position t

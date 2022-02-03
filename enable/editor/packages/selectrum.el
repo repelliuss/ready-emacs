@@ -2,7 +2,6 @@
 
 (use-package selectrum
   :init
-  (savehist-mode 1)
   (selectrum-mode 1)
 
   :config

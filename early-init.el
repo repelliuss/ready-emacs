@@ -15,6 +15,7 @@
                           consult
                           vertico
 			  corfu
+			  kind-icon
 			  cape
 			  wgrep))
 
@@ -22,12 +23,15 @@
 
                (lang . (org))
 
-               (ui . ())
+               (ui . (hl-todo
+		      diff-hl))
 
                (ux . (which-key
                       orderless
                       marginalia
-                      gcmh))))
+                      gcmh
+		      helpful
+		      pcmpl-args))))
 
 
 (enable-early

@@ -52,7 +52,9 @@
 
   (defun aw--split-current-window-fair-switch-buffer ()
     (aw-split-window-fair (selected-window))
-    (call-interactively #'switch-to-buffer))
+    (call-interactively (if (fboundp #'consult-buffer)
+			    #'consult-buffer
+			  #'switch-to-buffer)))
 
   (defun aw--split-current-window-fair ()
     (aw-split-window-fair (selected-window)))
