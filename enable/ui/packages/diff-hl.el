@@ -1,4 +1,4 @@
-;;; diff-hl.el -*- lexical-binding: t; -*-el
+;;; diff-hl.el -*- lexical-binding: t; -*-
 
 (use-package diff-hl
   :init
@@ -10,7 +10,7 @@
  
   :config
   (general-def prog-mode-map
-    :prefix "C-c d"
+    :prefix "C-/ / d"
     "RET" #'diff-hl-show-hunk
     "[" #'diff-hl-previous-hunk
     "]" #'diff-hl-next-hunk

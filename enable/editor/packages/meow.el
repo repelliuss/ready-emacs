@@ -9,7 +9,8 @@
    ;; SPC j/k will run the original command in MOTION state.
    '("j" . meow-motion-origin-command)
    '("k" . meow-motion-origin-command)
-   '("/" . meow-keypad-describe-key)
+   '("." . find-file)
+   '("," . switch-to-buffer)
    '("?" . meow-cheatsheet))
   (meow-normal-define-key
    '("0" . meow-expand-0)
@@ -70,7 +71,8 @@
    '("u" . meow-undo)
    '("U" . undo-redo)
    '("M-u" . meow-undo-in-selection)
-   '("v" . meow-visit)
+   '("v" . isearch-forward)
+   '("V" . meow-visit)
    '("q" . meow-start-kmacro-or-insert-counter)
    '("Q" . meow-end-or-call-kmacro)
    '("z" . meow-kmacro-matches)
@@ -79,10 +81,10 @@
    '("M" . meow-mark-symbol)
    '("x" . meow-line)
    '("X" . meow-line-expand)
-   '("p" . meow-clipboard-save)
-   '("P" . meow-sync-grab)
-   '("s" . meow-pop-selection)
-   '("S" . meow-pop-all-selection)
+   '("s" . meow-clipboard-save)
+   '("S" . meow-sync-grab)
+   '("p" . meow-pop-selection)
+   '("P" . meow-pop-all-selection)
    '("%" . meow-query-replace-regexp)
    '("M-%" . meow-query-replace)
    '("/" . repeat)
@@ -95,18 +97,19 @@
 (use-package meow
   :demand t
   :general
-  (meow-leader-keymap
-   "." #'find-file
-   "," #'switch-to-buffer)
   (meow-insert-state-keymap
    "C-g" #'meow-insert-exit
    "<backspace>" #'backward-kill-word)
 
   :config
-  ;; TODO: consider this later on
-  ;; (general-unbind meow-leader-keymap
-  ;;   "c" "g" "h" "x" "m")
+  (defvar rps/leader-map (make-sparse-keymap))
+  
+  (setq meow--kbd-undo "C-x u")
+  
+  (general-def "C-/" rps/leader-map)
 
+  (add-to-list 'meow-keymap-alist (cons 'leader rps/leader-map))
+  
   (meow-setup)
   (meow-global-mode 1)
 
@@ -122,29 +125,25 @@
   (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t))
 
   :extend (rps/editor/window)
-  (set-keymap-parent meow-leader-keymap
-                     (make-composed-keymap (keymap-parent meow-leader-keymap)
-                                           rps/window-map))
-  :extend (rps/editor/project)
-  (set-keymap-parent meow-leader-keymap
-                     (make-composed-keymap (keymap-parent meow-leader-keymap)
-                                           rps/project-map))
-  
-  :extend (rps/editor/file)
-  (set-keymap-parent meow-leader-keymap
-                     (make-composed-keymap (keymap-parent meow-leader-keymap)
-                                           rps/file-map))
-  :extend (rps/editor/open)
-  (set-keymap-parent meow-leader-keymap
-                     (make-composed-keymap (keymap-parent meow-leader-keymap)
-                                           rps/open-map))
-  :extend (rps/editor/buffer)
-  (set-keymap-parent meow-leader-keymap
-                     (make-composed-keymap (keymap-parent meow-leader-keymap)
-                                           rps/buffer-map))
-  :extend (rps/editor/search)
-  (set-keymap-parent meow-leader-keymap
-                     (make-composed-keymap (keymap-parent meow-leader-keymap)
-                                           rps/search-map)))
+
+  (general-def rps/leader-map
+    "" rps/window-map)
+  ;; :extend (rps/editor/file)
+  ;; (set-keymap-parent meow-leader-keymap
+  ;;                    (make-composed-keymap (keymap-parent meow-leader-keymap)
+  ;;                                          rps/file-map))
+  ;; :extend (rps/editor/open)
+  ;; (set-keymap-parent meow-leader-keymap
+  ;;                    (make-composed-keymap (keymap-parent meow-leader-keymap)
+  ;;                                          rps/open-map))
+  ;; :extend (rps/editor/buffer)
+  ;; (set-keymap-parent meow-leader-keymap
+  ;;                    (make-composed-keymap (keymap-parent meow-leader-keymap)
+  ;;                                          rps/buffer-map))
+  ;; :extend (rps/editor/search)
+  ;; (set-keymap-parent meow-leader-keymap
+  ;;                    (make-composed-keymap (keymap-parent meow-leader-keymap)
+  ;;                                          rps/search-map))
+  )
 
 ;; TODO: Set keypad window height here

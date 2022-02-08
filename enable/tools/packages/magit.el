@@ -2,5 +2,5 @@
 
 (use-package magit
   :attach (meow)
-  (general-def 'meow-leader-keymap
-    "G" #'magit-status))
+  (meow-leader-define-key
+   '("G" . magit-status)))

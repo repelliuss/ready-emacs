@@ -1,16 +1,24 @@
 ;;; file.el -*- lexical-binding: t; -*-
 
-(general-def
-  :keymaps (defvar rps/file-map (make-sparse-keymap))
-  :prefix "f"
-  "s" #'save-buffer
-  "d" #'delete-buffer-file
-  "r" #'recentf-open-files
-  "m" #'move-buffer-file
-  "c" #'copy-buffer-file
-  "F" #'sudo-find-file
-  "B" #'sudo-buffer-file
-  "S" #'sudo-save-file)
+(bind
+ ((setq rps/file-map (make-sparse-keymap))
+  (bind-prefix "x"
+    (bind-command "consult"
+      "s" #'save-buffer
+      "d" #'delete-buffer-file)
+    "r" #'recentf-open-files
+    "m" #'move-buffer-file
+    "c" #'copy-buffer-file
+    "F" #'sudo-find-file
+    "B" #'sudo-buffer-file
+    "S" #'sudo-save-file))
+ (rps/leader-map
+  (bind-prefix "z" "f" rps/file-map)))
+
+(bind (setq rps/file-map (make-sparse-keymap))
+      (bind-prefix "x"
+	"r" #'recentf-open-files)
+      "S" #'sudo-save-file)
 
 (setq delete-by-moving-to-trash t)
 

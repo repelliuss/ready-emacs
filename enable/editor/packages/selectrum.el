@@ -1,5 +1,7 @@
 ;;; selectrum.el -*- lexical-binding: t; -*-
 
+;; TODO: M-w should work as vertico
+
 (use-package selectrum
   :init
   (selectrum-mode 1)
@@ -28,7 +30,5 @@
     "M-Y" #'yank-pop
     "M-RET" #'selectrum-submit-exact-input)
 
-  (general-def meow-leader-keymap
-    "r" #'selectrum-repeat))
-
-;; TODO: M-w should work as vertico
+  (meow-ledaer-define-key
+   '("r" . selectrum-repeat)))

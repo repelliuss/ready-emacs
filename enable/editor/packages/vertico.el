@@ -50,9 +50,9 @@
   :general
   ("M-r" #'vertico-repeat)
 
-  :attach
-  (general-def meow-leader-keymap
-    "r" #'vertico-repeat)
+  :attach (meow)
+  (meow-leader-define-key
+   '("r". vertico-repeat))
 
   :init
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))

@@ -50,8 +50,7 @@
 
   ;;TODO: add open externally THIS file
   :attach (rps/editor/file)
-  (general-def rps/file-map
-    :prefix "f"
+  (bind rps/file-map
     "e" #'consult-file-externally)
 
   :init
