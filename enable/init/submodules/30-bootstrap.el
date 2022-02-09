@@ -46,6 +46,3 @@
   (defalias 'use-package-normalize/:extend #'use-package-normalize/:attach)
   (defalias 'use-package-handler/:extend #'use-package-handler/:attach))
 
-;;; general - Key binder
-
-(use-package general :demand t)

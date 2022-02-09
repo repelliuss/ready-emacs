@@ -28,6 +28,6 @@ See `consult-grep' for more details regarding the asynchronous search."
 (use-package consult
   :straight nil
   :after (rps/editor/search)
-  :general
-  (rps/search-map
-   "s f" #'consult-fd))
+  :init
+  (bind rps/search-map
+	"f" #'consult-fd))

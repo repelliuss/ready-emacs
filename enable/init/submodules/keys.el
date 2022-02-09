@@ -1,8 +1,7 @@
 ;;; keys.el -*- lexical-binding: t; -*-
 
-(defcustom leader-prefix "C-/"
-  "Leader prefix.")
-
-(defcustom local-leader-prefix "C-/ /"
-  "Local leader prefix.")
-
+(bind
+ ((current-global-map)
+  "C-/" (setq rps/leader-map (make-sparse-keymap)))
+ (rps/leader-map
+  "/" (setq rps/local-leader-map (make-sparse-keymap))))

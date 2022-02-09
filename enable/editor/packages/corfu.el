@@ -1,15 +1,6 @@
 ;;; corfu.el -*- lexical-binding: t; -*-
 
 (use-package corfu
-  :general
-  (corfu-map
-   "M-j" #'corfu-next
-   "M-k" #'corfu-previous
-   "C-<" #'corfu-first
-   "C->" #'corfu-last
-   "M-<" #'corfu-scroll-down
-   "M->" #'corfu-scroll-up)
-
   ;; Optional customizations
   :custom
   (corfu-cycle t)         ;; Enable cycling for `corfu-next/previous'
@@ -35,7 +26,16 @@
     (when (where-is-internal #'completion-at-point (list (current-local-map)))
       ;; (setq-local corfu-auto nil) Enable/disable auto completion
       (corfu-mode 1)))
-  (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer))
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
+  
+  :config
+  (bind corfu-map
+	"M-j" #'corfu-next
+	"M-k" #'corfu-previous
+	"C-<" #'corfu-first
+	"C->" #'corfu-last
+	"M-<" #'corfu-scroll-down
+	"M->" #'corfu-scroll-up))
 
 (use-package dabbrev
   ;; Swap M-/ and C-M-/

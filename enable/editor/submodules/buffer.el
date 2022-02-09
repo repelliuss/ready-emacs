@@ -1,8 +1,7 @@
 ;;; buffer.el -*- lexical-binding: t; -*-
 
-(general-def
-  :keymaps (defvar rps/buffer-map (make-sparse-keymap))
-  :prefix "b"
+(bind
+ ((setq rps/buffer-map (make-sparse-keymap))
   "k" #'kill-current-buffer
   "K" #'kill-all-buffers
   "]" #'next-buffer
@@ -14,6 +13,8 @@
   "S" #'save-all-possible-buffers
   "n" narrow-map
   "z" #'bury-buffer)
+ (rps/leader-map
+  "b" rps/buffer-map))
 
 (with-eval-after-load 'which-key
   (add-to-list 'which-key-replacement-alist '(("b$" . "prefix") . (nil . "buffer"))))
@@ -47,4 +48,3 @@ belong to the current project."
 			       (cl-incf saved-count))))
     (message "Saved %d buffers" saved-count)))
 
-(provide 'rps/editor/buffer)

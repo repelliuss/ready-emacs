@@ -1,13 +1,15 @@
 ;;; marginalia.el -*- lexical-binding: t; -*-
 
 (use-package marginalia
-  :after (:any selectrum vertico)
+  :attach (selectrum)
+  (bind selectrum-minibuffer-map
+	"M-m" #'marginalia-cycle)
+  
+  :attach (vertico)
+  (bind vertico-map
+	"M-m" #'marginalia-cycle)
+  
   :init
-  (marginalia-mode 1)
-  :general
-  (selectrum-minibuffer-map
-    "M-m" #'marginalia-cycle)
-  (vertico-map
-   "M-m" #'marginalia-cycle))
+  (marginalia-mode 1))
 
 ;; TODO: check doom's enhancements

@@ -9,10 +9,10 @@
 (setq read-extended-command-predicate
       #'command-completion-default-include-p)
 
-(general-def minibuffer-mode-map
-  "M-[" #'previous-history-element
-  "M-]" #'next-history-element
-  "M-{" #'previous-matching-history-element
-  "M-}" #'next-matching-history-element)
+(bind minibuffer-mode-map
+      "M-[" #'previous-history-element
+      "M-]" #'next-history-element
+      "M-{" #'previous-matching-history-element
+      "M-}" #'next-matching-history-element)
 
 (fset #'yes-or-no-p #'y-or-n-p)

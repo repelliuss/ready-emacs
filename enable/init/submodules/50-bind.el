@@ -1,23 +1,20 @@
 ;;; bind.el -*- lexical-binding: t; -*-
 
-(defun bind--done (map bindings)
+(defun bind--done (keymap bindings)
   (declare (indent 1))
-  (print bindings)
   (bind--normalize bindings)
   (while bindings
-      (let ((key (car bindings))
-	    (def (cadr bindings)))
-	(print (kbd key))
-	(print def)
-	(define-key map (kbd key) def))
-      (setq bindings (cddr bindings))))
+    (let ((key (car bindings))
+	  (def (cadr bindings)))
+      (define-key keymap (if (stringp key)
+			     (kbd key)
+			   key) def))
+    (setq bindings (cddr bindings))))
 
 (defun bind--many (&rest rest)
   (dolist (elt rest)
     (let ((second (cadr elt)))
-      (bind--done (car elt) (if (stringp second)
-				(cdr elt)
-			      second)))))
+      (bind--done (car elt) (cdr elt)))))
 
 (defmacro bind--listify (&rest rest)
   (let (unlisted)
@@ -30,32 +27,16 @@
        (setq ,arg (nconc (car ,arg) (cdr ,arg)))))
 
 (defmacro bind (&rest rest)
-    "Foo.
-REST can be in the following forms:
-
-MAP BINDINGS
-(MAP BINDINGS)...
-
-MAP:
-keymap
-
-BINDINGS:
-kbd-key-str function (ex: \"s\" #'save-buffer)
-
-MAP-AND-BINDINGS:
-list of (MAP BINDINGS)
-
-BINDINGS can be prefixed using (bind-prefix BINDINGS) function."
   (let ((second (cadr rest)))
-    (cond
-     ((stringp second) `(bind--done ,(car rest) (list ,@(cdr rest))))
-     ((fboundp (car second)) `(bind--done ,(car rest) ,second))
-     (t `(bind--listify ,@rest)))))
+    (if (or (stringp second)
+	    (vectorp second)
+	    (fboundp (car second)))
+	`(bind--done ,(car rest) (list ,@(cdr rest)))
+      `(bind--listify ,@rest))))
 
 (defun bind-prefix (prefix &rest bindings)
   (declare (indent 1))
   (bind--normalize bindings)
-  (print bindings)
   (let (new-bindings
 	(prefix (concat prefix " ")))
     (while bindings
@@ -68,9 +49,11 @@ BINDINGS can be prefixed using (bind-prefix BINDINGS) function."
 
 (defun bind-command (file &rest bindings)
   (declare (indent 1))
+  (bind--normalize bindings)
   (let ((it-bindings bindings))
     (while it-bindings
       (let ((def (cadr it-bindings)))
-	(autoload def file nil t))
+	(unless (fboundp def)
+	  (autoload def file nil t)))
       (setq it-bindings (cddr it-bindings))))
   bindings)

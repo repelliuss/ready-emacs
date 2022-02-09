@@ -96,17 +96,12 @@
 
 (use-package meow
   :demand t
-  :general
-  (meow-insert-state-keymap
-   "C-g" #'meow-insert-exit
-   "<backspace>" #'backward-kill-word)
-
   :config
-  (defvar rps/leader-map (make-sparse-keymap))
+  (bind meow-insert-state-keymap
+	"C-g" #'meow-insert-exit
+	"<backspace>" #'backward-kill-word)
   
   (setq meow--kbd-undo "C-x u")
-  
-  (general-def "C-/" rps/leader-map)
 
   (add-to-list 'meow-keymap-alist (cons 'leader rps/leader-map))
   
@@ -122,28 +117,6 @@
   :extend (which-key)
   (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))
   (add-to-list 'which-key-replacement-alist '(("0" . "meow-digit-argument") . ("[0-9]")))
-  (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t))
-
-  :extend (rps/editor/window)
-
-  (general-def rps/leader-map
-    "" rps/window-map)
-  ;; :extend (rps/editor/file)
-  ;; (set-keymap-parent meow-leader-keymap
-  ;;                    (make-composed-keymap (keymap-parent meow-leader-keymap)
-  ;;                                          rps/file-map))
-  ;; :extend (rps/editor/open)
-  ;; (set-keymap-parent meow-leader-keymap
-  ;;                    (make-composed-keymap (keymap-parent meow-leader-keymap)
-  ;;                                          rps/open-map))
-  ;; :extend (rps/editor/buffer)
-  ;; (set-keymap-parent meow-leader-keymap
-  ;;                    (make-composed-keymap (keymap-parent meow-leader-keymap)
-  ;;                                          rps/buffer-map))
-  ;; :extend (rps/editor/search)
-  ;; (set-keymap-parent meow-leader-keymap
-  ;;                    (make-composed-keymap (keymap-parent meow-leader-keymap)
-  ;;                                          rps/search-map))
-  )
+  (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t)))
 
 ;; TODO: Set keypad window height here

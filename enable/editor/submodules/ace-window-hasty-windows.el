@@ -4,9 +4,9 @@
   :commands (ace-window-hasty)
 
   :attach (meow)
-  (meow-leader-define-key
-   '("w" . ace-window-hasty)
-   '("W" . aw-flip-window))
+  (bind rps/leader-map
+	"w" #'ace-window-hasty
+	"W" #'aw-flip-window)
 
   :config
   (setq aw-minibuffer-flag t

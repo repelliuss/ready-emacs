@@ -19,7 +19,8 @@
 			  cape
 			  wgrep))
 
-               (tools . (magit))
+               (tools . (magit
+			 screenshot))
 
                (lang . (org))
 

@@ -1,52 +1,27 @@
 ;;; consult.el -*- lexical-binding: t; -*-
 
 (use-package consult
-  :general
-  ([remap switch-to-buffer] #'consult-buffer
-   [remap switch-to-buffer-other-window] #'consult-buffer-other-window
-   [remap switch-to-buffer-other-frame] #'consult-buffer-other-frame
-   [remap recentf-open-files] #'consult-recent-file
-   [remap bookmark-jump] #'consult-bookmark
-   [remap yank-pop] #'consult-yank-pop
-   [remap view-register] #'consult-register ; BUG: preview buffer wrongly placed at first time
-   [remap goto-line] #'consult-goto-line
-   [remap pop-global-mark] #'consult-global-mark
-   [remap multi-occur] #'consult-multi-occur
-   [remap imenu] #'consult-imenu
-   [remap locate] #'consult-locate
-   [remap load-theme] #'consult-theme
-   [remap apropos] #'consult-apropos
-   [remap man] #'consult-man
-   [remap keep-lines] #'consult-keep-lines
-   [remap find-name-dired] #'consult-find
-   [remap find-grep-dired] #'consult-grep)
-
-  (help-map
-   "a" #'consult-apropos                ;BUG: remapping above doesn't work
-   "M" #'consult-man)
-
   :attach (meow)
-  (general-def meow-normal-state-keymap
-    "M-z" #'consult-kmacro
-    "`" #'consult-register-load
-    "~" #'consult-register-store
-    "M-`" #'consult-register
-    "M-g" #'consult-goto-line
-    "M-m" #'consult-mark
-    "M-M" #'consult-global-mark
-    "M-o" #'consult-outline
-    "M-i" #'consult-imenu
-    "M-I" #'consult-imenu-multi
-    "!" #'consult-flymake
-    "M-!" #'consult-compile-error)
+  (bind meow-normal-state-keymap
+	"M-z" #'consult-kmacro
+	"`" #'consult-register-load
+	"~" #'consult-register-store
+	"M-`" #'consult-register
+	"M-g" #'consult-goto-line
+	"M-m" #'consult-mark
+	"M-M" #'consult-global-mark
+	"M-o" #'consult-outline
+	"M-i" #'consult-imenu
+	"M-I" #'consult-imenu-multi
+	"!" #'consult-flymake
+	"M-!" #'consult-compile-error)
 
   :attach (rps/editor/search)
-  (general-def rps/search-map
-    :prefix "s"
-    "s" #'consult-line
-    "S" #'consult-line-multi
-    "G" #'consult-git-grep
-    "L" #'consult-focus-lines)
+  (bind rps/search-map
+	"s" #'consult-line
+	"S" #'consult-line-multi
+	"G" #'consult-git-grep
+	"L" #'consult-focus-lines)
 
   ;;TODO: add open externally THIS file
   :attach (rps/editor/file)
@@ -54,6 +29,30 @@
     "e" #'consult-file-externally)
 
   :init
+  (bind
+   ((current-global-map)
+    [remap switch-to-buffer] #'consult-buffer
+    [remap switch-to-buffer-other-window] #'consult-buffer-other-window
+    [remap switch-to-buffer-other-frame] #'consult-buffer-other-frame
+    [remap recentf-open-files] #'consult-recent-file
+    [remap bookmark-jump] #'consult-bookmark
+    [remap yank-pop] #'consult-yank-pop
+    [remap view-register] #'consult-register ; BUG: preview buffer wrongly placed at first time
+    [remap goto-line] #'consult-goto-line
+    [remap pop-global-mark] #'consult-global-mark
+    [remap multi-occur] #'consult-multi-occur
+    [remap imenu] #'consult-imenu
+    [remap locate] #'consult-locate
+    [remap load-theme] #'consult-theme
+    [remap apropos] #'consult-apropos
+    [remap man] #'consult-man
+    [remap keep-lines] #'consult-keep-lines
+    [remap find-name-dired] #'consult-find
+    [remap find-grep-dired] #'consult-grep)
+   (help-map
+    "a" #'consult-apropos                ;BUG: remapping above doesn't work
+    "M" #'consult-man))
+  
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
 
   (setq register-preview-delay 0
@@ -142,7 +141,6 @@
 
 ;; TODO: integrate fd and rg
 ;; TODO: check fd in doom and also for consult
-;; TODO: general-def keymaps remove
 ;; TODO: make a search map like window
 ;; TODO: integrate org mode, Miscellaneous
 ;; TODO: add preview to meow-visit

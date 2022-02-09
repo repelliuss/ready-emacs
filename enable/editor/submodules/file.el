@@ -2,23 +2,16 @@
 
 (bind
  ((setq rps/file-map (make-sparse-keymap))
-  (bind-prefix "x"
-    (bind-command "consult"
-      "s" #'save-buffer
-      "d" #'delete-buffer-file)
-    "r" #'recentf-open-files
-    "m" #'move-buffer-file
-    "c" #'copy-buffer-file
-    "F" #'sudo-find-file
-    "B" #'sudo-buffer-file
-    "S" #'sudo-save-file))
+  "s" #'save-buffer
+  "d" #'delete-buffer-file
+  "r" #'recentf-open-files
+  "m" #'move-buffer-file
+  "c" #'copy-buffer-file
+  "F" #'sudo-find-file
+  "B" #'sudo-buffer-file
+  "S" #'sudo-save-file)
  (rps/leader-map
-  (bind-prefix "z" "f" rps/file-map)))
-
-(bind (setq rps/file-map (make-sparse-keymap))
-      (bind-prefix "x"
-	"r" #'recentf-open-files)
-      "S" #'sudo-save-file)
+  "f" rps/file-map))
 
 (setq delete-by-moving-to-trash t)
 

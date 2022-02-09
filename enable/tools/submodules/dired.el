@@ -7,6 +7,6 @@
   :config
   (add-hook 'dired-mode-hook #'dired-hide-details-mode)
   :extend (meow)
-  (general-def dired-mode-map
-    "J" #'dired-down-directory
-    "K" #'dired-find-file))
+  (bind dired-mode-map
+	"J" #'dired-down-directory
+	"K" #'dired-find-file))

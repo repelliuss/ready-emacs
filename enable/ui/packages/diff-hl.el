@@ -9,16 +9,17 @@
   (add-hook 'dired-mode-hook #'diff-hl-dired-mode-unless-remote)
  
   :config
-  (general-def prog-mode-map
-    :prefix "C-/ / d"
-    "RET" #'diff-hl-show-hunk
-    "[" #'diff-hl-previous-hunk
-    "]" #'diff-hl-next-hunk
-    "{" #'diff-hl-show-hunk-previous
-    "}" #'diff-hl-show-hunk-next
-    "r" #'diff-hl-revert-hunk
-    "g" #'diff-hl-diff-goto-hunk
-    "s" #'diff-hl-stage-current-hunk)
+  ;; TODO: bind to local leader
+  (bind prog-mode-map
+	(bind-prefix "d"
+	  "RET" #'diff-hl-show-hunk
+	  "[" #'diff-hl-previous-hunk
+	  "]" #'diff-hl-next-hunk
+	  "{" #'diff-hl-show-hunk-previous
+	  "}" #'diff-hl-show-hunk-next
+	  "r" #'diff-hl-revert-hunk
+	  "g" #'diff-hl-diff-goto-hunk
+	  "s" #'diff-hl-stage-current-hunk))
   
   :extend (meow)
   (add-hook 'diff-hl-inline-popup-transient-mode-hook
