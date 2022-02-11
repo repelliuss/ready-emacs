@@ -4,14 +4,25 @@
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
-   '("k" . meow-prev))
+   '("k" . meow-prev)
+   '("a" . avy-goto-char-bg-first))
   (meow-leader-define-key
    ;; SPC j/k will run the original command in MOTION state.
-   '("j" . meow-motion-origin-command)
-   '("k" . meow-motion-origin-command)
+   '("a" . "H-a")
+   '("j" . "H-j")
+   '("k" . "H-k")
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument)
    '("." . find-file)
-   '("," . switch-to-buffer)
-   '("?" . meow-cheatsheet))
+   '("," . switch-to-buffer))
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
@@ -28,7 +39,7 @@
    '("." . meow-bounds-of-thing)
    '("[" . meow-beginning-of-thing)
    '("]" . meow-end-of-thing)
-   '("a" . meow-insert)
+   '("I" . meow-insert)
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)
    '("c" . meow-change)
@@ -55,12 +66,12 @@
    '("N" . meow-pop-search)
    '("e" . meow-block)
    '("E" . meow-to-block)
-   '("y" . meow-clipboard-yank)
+   '("y" . meow-yank)
    '("Y" . meow-yank-pop)
    '("M-g" . meow-goto-line)
    '("r" . meow-replace-save)
    '("R" . meow-swap-grab)
-   '("d" . meow-clipboard-kill)
+   '("d" . meow-kill)
    '("D" . meow-kill-whole-line)
    '("t" . meow-till)
    '("T" . meow-till-expand)
@@ -81,7 +92,7 @@
    '("M" . meow-mark-symbol)
    '("x" . meow-line)
    '("X" . meow-line-expand)
-   '("s" . meow-clipboard-save)
+   '("s" . meow-save)
    '("S" . meow-sync-grab)
    '("p" . meow-pop-selection)
    '("P" . meow-pop-all-selection)
@@ -97,17 +108,23 @@
 (use-package meow
   :demand t
   :config
-  (bind meow-insert-state-keymap
-	"C-g" #'meow-insert-exit
-	"<backspace>" #'backward-kill-word)
+  (bind
+   (meow-insert-state-keymap
+    "C-j" #'meow-insert-exit
+    "SPC" #'self-insert-command)
+   (meow-motion-state-keymap
+    "C-j" #'meow-temp-normal)
+   (meow-normal-state-keymap
+    "SPC" rps/leader-map))
   
-  (setq meow--kbd-undo "C-x u")
+  (setq meow--kbd-undo "C-x u"		
+	meow-use-clipboard t)		
 
   (add-to-list 'meow-keymap-alist (cons 'leader rps/leader-map))
-  
+
   (meow-setup)
   (meow-global-mode 1)
-
+  
   :extend (eshell)
   (add-hook 'eshell-mode-hook #'meow-insert-mode)
 

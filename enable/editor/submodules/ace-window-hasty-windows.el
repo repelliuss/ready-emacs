@@ -1,12 +1,11 @@
 ;;; ace-window-hasty-windows.el -*- lexical-binding: t; -*-
 
 (use-package ace-window
-  :commands (ace-window-hasty)
-
   :attach (meow)
   (bind rps/leader-map
-	"w" #'ace-window-hasty
-	"W" #'aw-flip-window)
+	(bind-command "ace-window"
+	  "w" #'ace-window-hasty
+	  "W" #'aw-flip-window))
 
   :config
   (setq aw-minibuffer-flag t

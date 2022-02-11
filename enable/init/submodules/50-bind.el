@@ -53,7 +53,6 @@
   (let ((it-bindings bindings))
     (while it-bindings
       (let ((def (cadr it-bindings)))
-	(unless (fboundp def)
-	  (autoload def file nil t)))
+	(autoload def file nil t))
       (setq it-bindings (cddr it-bindings))))
   bindings)

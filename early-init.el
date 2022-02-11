@@ -5,7 +5,8 @@
       load-prefer-newer noninteractive)
 
 (setq enable-modules-dir (setq enable-dir (concat user-emacs-directory "enable/"))
-      enable-cache-dir (concat user-emacs-directory "cache/enable/"))
+      enable-cache-dir (concat user-emacs-directory "cache/enable/")
+      enable-loader #'enable-using-eval)
 
 (load (concat user-emacs-directory "enable") nil 'nomessage)
 
@@ -17,12 +18,19 @@
 			  corfu
 			  kind-icon
 			  cape
-			  wgrep))
-
+			  wgrep
+			  puni
+			  avy))
+	       
                (tools . (magit
-			 screenshot))
+			 flymake
+			 screenshot
+			 org
+			 org-super-agenda
+			 org-gamedb
+			 orgmdb))
 
-               (lang . (org))
+               (lang . ())
 
                (ui . (hl-todo
 		      diff-hl))
@@ -38,7 +46,7 @@
 (enable-early
  :init all
  :ui
- :sub (no-bar font frame)
+ :sub (font frame)
  :pkg (modus-themes nano-modeline))
 
 ;; TODO: meow SPC G

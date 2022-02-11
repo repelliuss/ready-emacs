@@ -67,7 +67,7 @@ targets."
                         fr)))))))
 
 (use-package embark-consult
-  :ensure t
+  :demand t
   :after (embark consult))
 
 ;; TODO: add embark-consult

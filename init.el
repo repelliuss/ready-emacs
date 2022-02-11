@@ -15,7 +15,7 @@
 
  :ui
  :pkg (defaults)
- :sub (all -no-bar -font -frame)
+ :sub (all -font -frame)
 
  :ux
  :pkg (defaults)

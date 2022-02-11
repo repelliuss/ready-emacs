@@ -3,11 +3,11 @@
 (use-package org
   :init
   (setq org-directory "~/workspace/org/"
-	org-misc-dir (concat org-directory "misc/"))
+	org-misc-dir (concat org-directory "misc/")
+	org-id-locations-file (concat org-misc-dir ".org-ids"))
+  
   :config
   (add-hook 'org-mode-hook #'org-indent-mode))
-
-(defvar org-remark-map (make-sparse-keymap))
 
 (use-package org-remark
   :attach (org)
@@ -19,7 +19,7 @@
   
   :config
   (bind
-   (org-remark-map
+   ((setq org-remark-map (make-sparse-keymap))
     "a" #'org-remark-mark
     "o" #'org-remark-open
     "[" #'org-remark-prev

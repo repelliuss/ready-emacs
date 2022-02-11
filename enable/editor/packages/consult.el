@@ -128,6 +128,11 @@
   :extend (meow)
   (advice-add #'consult-goto-line :after (lambda (&optional _arg) (meow-line 1)))
 
+  :extend (org)
+  (bind org-mode-map
+	(bind-prefix (keys-make-local-prefix)
+	  "." #'consult-org-heading))
+
   :extend (vertico)
   (setq completion-in-region-function
         (lambda (&rest args)

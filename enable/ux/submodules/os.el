@@ -11,6 +11,9 @@
   (unless windows-p
     (setq selection-coding-system 'utf-8))
 
+  (when linux-p
+    (setq x-gtk-use-system-tooltips nil))
+
   (when windows-p
     (when (null (getenv-internal "HOME"))
       (setenv "HOME" (getenv "USERPROFILE"))

@@ -1,7 +1,8 @@
 ;;; window.el -*- lexical-binding: t; -*-
 
-(setq window-divider-default-right-width 12)
-(setq window-divider-default-places 'right-only)
+(setq window-divider-default-right-width 12
+      window-divider-default-bottom-width 1)
+(setq window-divider-default-places t)
 
 (defun window-divider-blend-with-background (&rest _)
   (interactive)
@@ -9,8 +10,7 @@
     (dolist (face '(window-divider
 		    window-divider-last-pixel
 		    window-divider-first-pixel))
-      (set-face-foreground face bg)))
-  (message "called"))
+      (set-face-foreground face bg))))
 
 (advice-add #'enable-theme :after #'window-divider-blend-with-background)
 

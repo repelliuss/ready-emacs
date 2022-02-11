@@ -23,7 +23,7 @@
 	"C-<" #'vertico-first
 	"<backspace>" #'backward-kill-word
 	"M-<backspace>" #'meow-kill-whole-line
-	"M-p" #'vertico-clipboard-save
+	"M-s" #'vertico-clipboard-save
 	"M-y" #'meow-clipboard-yank
 	"M-Y" #'yank-pop
 	"M-RET" #'vertico-exit-input)
@@ -39,8 +39,8 @@
   :after (vertico)
   :init
   (bind vertico-map
-	"M-S" #'vertico-quick-jump
-	"M-s" #'vertico-quick-exit))
+	"M-A" #'vertico-quick-jump
+	"M-a" #'vertico-quick-exit))
 
 (use-package vertico-repeat
   :straight (:host github :repo "minad/vertico"

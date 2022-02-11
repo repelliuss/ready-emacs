@@ -38,8 +38,10 @@
 	"M->" #'corfu-scroll-up))
 
 (use-package dabbrev
+  :init
   ;; Swap M-/ and C-M-/
-  :bind (("M-/" . dabbrev-completion)
-         ("C-M-/" . dabbrev-expand)))
+  (bind (current-global-map)
+	"M-/" #'dabbrev-completion
+	"C-M-/" #'dabbrev-expand))
 
 
