@@ -2,6 +2,11 @@
 
 (use-package orgmdb
   :straight (:host github :repo "isamert/orgmdb.el")
+  :attach (org-capture)
+  (dolist (elt '(("l" "Log")
+		 ("lw" "Watch" (rps-org-capture-log #'rps-orgmdb-capture "watch.org" "Title: "))))
+    (add-to-list 'rps-org-capture-templates elt))
+  
   :init
   (autoload #'rps-orgmdb-capture "orgmdb")
   
@@ -21,9 +26,4 @@
         (goto-char (point-min))
         (org-cut-subtree)
         (kill-buffer))
-      (org-paste-subtree)))
-
-  :extend (org-capture)
-  (dolist (elt '(("l" "Log")
-		 ("lw" "Watch" (rps-org-capture-log #'rps-orgmdb-capture "watch.org" "Title: "))))
-    (add-to-list 'rps-org-capture-templates elt)))
+      (org-paste-subtree))))

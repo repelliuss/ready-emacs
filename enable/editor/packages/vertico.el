@@ -24,7 +24,7 @@
 	"<backspace>" #'backward-kill-word
 	"M-<backspace>" #'meow-kill-whole-line
 	"M-s" #'vertico-clipboard-save
-	"M-y" #'meow-clipboard-yank
+	"M-y" #'meow-yank
 	"M-Y" #'yank-pop
 	"M-RET" #'vertico-exit-input)
 

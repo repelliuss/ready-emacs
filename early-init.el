@@ -20,6 +20,8 @@
 			  cape
 			  wgrep
 			  puni
+			  yasnippet
+			  file-painter
 			  avy))
 	       
                (tools . (magit
@@ -27,6 +29,8 @@
 			 screenshot
 			 org
 			 org-super-agenda
+			 org-ql
+			 org-roam
 			 org-gamedb
 			 orgmdb))
 

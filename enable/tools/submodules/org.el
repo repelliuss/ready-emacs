@@ -2,17 +2,25 @@
 
 (use-package org
   :init
+  (defvar rps-org-gtd-dir (expand-file-name (concat org-directory "roam/gtd/")))
+  (defvar rps-org-gtd-log-dir (expand-file-name (concat org-directory "roam/log/")))
+
   (defvar rps-org-gtd-project-file "project.org")
   (defvar rps-org-gtd-stuff-file "stuff.org")
+
   (defvar rps-org-gtd-log-file "24h.org")
   (defvar rps-org-gtd-log-last-days 1)
   (defvar rps-org-gtd-log-states '("DONE"))
+
+  (defvar rps-org-gtd-projects-header "Projects")
 
   :config
   (bind org-mode-map
 	(bind-prefix (keys-make-local-prefix)
 	  "t" #'rps-org-gtd-todo
 	  "q" #'rps-consult-org-select-tags))
+
+  (setq org-ellipsis "…")
 
   (setq org-todo-keywords
         '((sequence "PROJECT(p)" "|" "DONE(d)")
@@ -40,71 +48,43 @@
 
   (setq org-extend-today-until 2)
 
-  (setq org-latex-packages-alist '(("" "minted")))
-
   (add-to-list 'org-global-properties '("Effort_ALL" . "0:05 0:10 0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 7:00 8:00"))
 
-  (add-hook 'org-after-refile-insert-hook #'org-update-parent-todo-statistics)
-
-  (defun rps--org-inactive-time-stamp-now ()
-    (concat "["
-            (format-time-string
-             (substring (cdr org-time-stamp-formats) 1 -1))
-            "]"))
-
-  (defun rps-org-move-heading-to-bottom-then-next ()
-    (interactive)
-    (when-let (((org-get-next-sibling))
-               ((org-get-last-sibling))
-               ((org-move-subtree-down))
-               (next-heading (org-get-last-sibling))
-               ((org-get-next-sibling)))
-      (while (org-get-next-sibling)
-        (org-get-last-sibling)
-        (org-move-subtree-down))
-      (goto-char next-heading))))
+  (add-hook 'org-after-refile-insert-hook #'org-update-parent-todo-statistics))
 
 (use-package org-capture
   :straight (:type built-in)
   :init
-  (bind rps/leader-map
+  (bind rps/note-map
 	(bind-command "org-capture"
-	  "x" #'rps-org-capture
-	  "X" #'rps-org-capture-visit))
+	  "c" #'rps-org-capture
+	  "g" #'rps-org-capture-visit))
 
-(defvar rps-org-capture-templates
+  (defvar rps-org-capture-templates
     '(("s" "stuff" (org-capture nil "s"))
       ("p" "project" (org-capture nil "p"))))
 
   (defvar rps-org-capture-goto-templates
-    '(("2" "Last 24h" (find-file (concat rps-org-gtd-directory "24h.org")))
-      ("d" "Daybook" (find-file (concat rps-org-gtd-directory "daybook.org")))
-      ("f" "Future" (find-file (concat rps-org-gtd-directory "future.org")))
-      ("p" "Project" (let ((project-name (projectile-project-name)))
-                       (find-file (concat rps-org-gtd-directory "project.org"))
+    '(("2" "Last 24h" (find-file (concat rps-org-gtd-dir "24h.org")))
+      ("d" "Daybook" (find-file (concat rps-org-gtd-dir "daybook.org")))
+      ("f" "Future" (find-file (concat rps-org-gtd-dir "future.org")))
+      ("p" "Project" (let ((project-name (rps-org-gtd-get-project-name)))
+                       (find-file (concat rps-org-gtd-dir "project.org"))
                        (when-let ((project-marker (org-find-exact-headline-in-buffer project-name)))
                          (goto-char project-marker)
                          (org-narrow-to-subtree))))
-      ("r" "Reminder" (find-file (concat rps-org-gtd-directory "reminder.org")))
-      ("s" "Stuff" (find-file (concat rps-org-gtd-directory "stuff.org")))
-      ("t" "Todo" (find-file (concat rps-org-gtd-directory "todo.org")))
+      ("r" "Reminder" (find-file (concat rps-org-gtd-dir "reminder.org")))
+      ("s" "Stuff" (find-file (concat rps-org-gtd-dir "stuff.org")))
+      ("t" "Todo" (find-file (concat rps-org-gtd-dir "todo.org")))
       ("l" "Logs")
-      ("lg" "Game" (find-file (concat rps-org-log-directory "game.org")))
-      ("lw" "Watch" (find-file (concat rps-org-log-directory "watch.org")))
-      ("lb" "Book" (find-file (concat rps-org-log-directory "book.org")))
-      ("lm" "Music" (find-file (concat rps-org-log-directory "music.org")))))
-
+      ("lg" "Game" (find-file (concat rps-org-gtd-log-dir "game.org")))
+      ("lw" "Watch" (find-file (concat rps-org-gtd-log-dir "watch.org")))
+      ("lb" "Book" (find-file (concat rps-org-gtd-log-dir "book.org")))
+      ("lm" "Music" (find-file (concat rps-org-gtd-log-dir "music.org")))))
 
   :config
-
-
-
-  (defvar rps-org-gtd-directory (concat org-directory "roam/gtd/"))
-  (defvar rps-org-log-directory (concat org-directory "roam/log/"))
-  (defvar rps-org-gtd-projects-header "Projects")
-
   (setq org-capture-templates `(("s" "stuff" entry
-                                 (file ,(concat rps-org-gtd-directory "stuff.org"))
+                                 (file ,(concat rps-org-gtd-dir "stuff.org"))
                                  "* STUFF %?")
                                 ("p" "project" entry
                                  #'rps--org-gtd-goto-project-or-new-in-stuff
@@ -114,7 +94,7 @@
     (interactive)
     (let* ((default-templates org-capture-templates)
            (org-capture-templates rps-org-capture-templates)
-           (template (org-capture-select-template))
+           (template (rps--org-capture-select-template))
            (org-capture-templates default-templates))
       (when (consp template)
         (eval (nth 2 template)))))
@@ -122,13 +102,13 @@
   (defun rps-org-capture-visit ()
     (interactive)
     (let* ((org-capture-templates rps-org-capture-goto-templates)
-           (template (org-capture-select-template)))
+           (template (rps--org-capture-select-template)))
       (when (consp template)
         (eval (nth 2 template)))))
 
   (defun rps-org-capture-log (func file prompt)
     (let ((entry (read-string prompt))
-          (path (concat rps-org-log-directory file)))
+          (path (concat rps-org-gtd-log-dir file)))
       (with-current-buffer (find-file-noselect path)
         (goto-char (point-min))
         (funcall func entry)
@@ -137,12 +117,22 @@
         (save-buffer))))
 
   (defun rps-org-gtd-get-project-name ()
-    (when (projectile-project-p)
-      (projectile-project-name)))
+    (when-let* ((project (project-current))
+		(dir (project-root project)))
+      (if (string-match "/\\([^/]+\\)/\\'" dir)
+	  (match-string 1 dir)
+	dir))
+    "")
+
+  (defun rps--org-capture-select-template ()
+    (org-mks org-capture-templates
+	     "Capture:"
+	     ""
+	     '(("q" "quit"))))
 
   (defun rps--org-gtd-complete-project ()
     (let* ((org-refile-targets
-            (list (cons (concat rps-org-gtd-directory rps-org-gtd-project-file) (cons :level 1))))
+            (list (cons (concat rps-org-gtd-dir rps-org-gtd-project-file) (cons :level 1))))
            (org-refile-use-outline-path nil)
            (refile-targets (org-refile-get-targets))
            (completion-ignore-case t)
@@ -158,7 +148,7 @@
   (defun rps--org-gtd-goto-project-or-new-in-stuff (&rest _)
     (let ((project-name (rps--org-gtd-complete-project)))
       (set-buffer (find-file-noselect
-                   (concat rps-org-gtd-directory rps-org-gtd-stuff-file)))
+                   (concat rps-org-gtd-dir rps-org-gtd-stuff-file)))
       (if-let ((project-marker (org-find-exact-headline-in-buffer project-name)))
           (goto-char project-marker)
         (goto-char (org-find-exact-headline-in-buffer rps-org-gtd-projects-header))
@@ -175,10 +165,12 @@
   (defun rps-org-gtd-todo (&optional arg)
     (interactive "P")
     (org-todo arg)
-    (when (string-prefix-p rps-org-gtd-directory default-directory)
-      (rps-org-gtd-process)
-      (when org-capture-mode
-        (org-capture-kill))))
+    (if (string-prefix-p rps-org-gtd-log-dir default-directory)
+	(progn (rps--org-gtd-copy-to-log 'log-entry) (save-buffer))
+      (when (string-prefix-p rps-org-gtd-dir default-directory)
+	(rps-org-gtd-process)
+	(when org-capture-mode
+          (org-capture-kill)))))
 
   (defun rps-org-gtd-process ()
     (interactive)
@@ -209,13 +201,25 @@
                     "REMINDER"
                     "FUTURE"))
            (org-refile nil nil (let ((file (concat (downcase state) ".org")))
-                                 (list file (concat rps-org-gtd-directory file)
+                                 (list file (concat rps-org-gtd-dir file)
                                        nil nil))))
           (_ (apply #'org-refile args)))
       (rps--org-gtd-refile-to-known-project)))
 
+  (defun rps-org-move-heading-to-bottom-then-next ()
+    (interactive)
+    (when-let (((org-get-next-sibling))
+               ((org-get-last-sibling))
+               ((org-move-subtree-down))
+               (next-heading (org-get-last-sibling))
+               ((org-get-next-sibling)))
+      (while (org-get-next-sibling)
+	(org-get-last-sibling)
+	(org-move-subtree-down))
+      (goto-char next-heading)))
+
   (defun rps--org-gtd-make-project-rfloc (project-name)
-    (let ((refile-file (concat rps-org-gtd-directory rps-org-gtd-project-file))
+    (let ((refile-file (concat rps-org-gtd-dir rps-org-gtd-project-file))
           refile-pos)
       (with-current-buffer (find-file-noselect refile-file)
         (setq refile-pos (org-find-exact-headline-in-buffer project-name))
@@ -249,7 +253,7 @@
 
   (defun rps--org-gtd-kill-overdue-logs ()
     (interactive)
-    (with-current-buffer (find-file-noselect (concat rps-org-gtd-directory
+    (with-current-buffer (find-file-noselect (concat rps-org-gtd-dir
                                                      rps-org-gtd-log-file))
       (goto-char (point-min))
       (let ((continue t)
@@ -265,66 +269,40 @@
             (org-cut-subtree))))
       (save-buffer)))
 
-  (defun rps--org-gtd-copy-to-log ()
-    (when (member (org-get-todo-state) rps-org-gtd-log-states)
+  (defun rps--org-gtd-copy-to-log (&optional log-entry-p)
+    (when (or log-entry-p
+	      (member (org-get-todo-state) rps-org-gtd-log-states))
       (org-entry-put nil "COMPLETE" (rps--org-inactive-time-stamp-now))
       (rps--org-gtd-kill-overdue-logs)
       (let ((org-refile-keep t))
         (org-refile nil nil (list rps-org-gtd-log-file
-                                  (concat rps-org-gtd-directory rps-org-gtd-log-file)
-                                  nil nil))))))
+                                  (concat rps-org-gtd-dir rps-org-gtd-log-file)
+                                  nil nil)))))
+
+  (defun rps--org-inactive-time-stamp-now ()
+    (concat "["
+            (format-time-string
+             (substring (cdr org-time-stamp-formats) 1 -1))
+            "]")))
 
 (use-package org-archive
   :straight (:type built-in)
   :config
-  (delq! 'time org-archive-save-context-info))
+  (setq org-archive-save-context-info
+	(delq 'time org-archive-save-context-info)))
 
 (use-package org-clock
   :straight (:type built-in)
   :config
   (setq org-clock-idle-time 10))
 
-
-(use-package org-roam
-  :init
-  (setq org-roam-directory (concat org-directory "roam/"))
-  (setq org-roam-dailies-directory "journal/")
-
-  :config
-  (setq org-roam-file-exclude-regexp rps-org-gtd-log-file
-        org-roam-capture-templates `(("n" "note" plain ,(concat "* %?\n"
-                                                                ":PROPERTIES:\n"
-                                                                ":CREATE: %U\n"
-                                                                ":END:")
-                                      :if-new (file+head "note/${slug}.org"
-                                                         ,(concat "#+title: ${title}\n"
-                                                                  "#+category: note\n"
-                                                                  "#+date: %<%FT%T%z>"))
-                                      :unnarrowed t
-                                      :empty-lines 1)))
-
-  :extend (org-capture)
-  (appendq! rps-org-capture-templates '(("n" "note" (org-roam-capture nil "n"))
-                                        ("j" "Journal")
-                                        ("jd" "Date" (org-roam-dailies-capture-date))
-                                        ("jt" "Today" (org-roam-dailies-capture-today))
-                                        ("jy" "Yesterday" (org-roam-dailies-capture-yesterday 1))
-                                        ("jm" "Tomorrow" (org-roam-dailies-capture-tomorrow 1))))
-
-  (appendq! rps-org-capture-goto-templates '(("n" "Note" (org-roam-capture '(4) "n"))
-                                             ("j" "Journal")
-                                             ("jd" "Date" (org-roam-dailies-goto-date))
-                                             ("jt" "Today" (org-roam-dailies-goto-today))
-                                             ("jy" "Yesterday" (org-roam-dailies-goto-yesterday 1))
-                                             ("jm" "Tomorrow" (org-roam-dailies-goto-tomorrow 1)))))
-
 (use-package org-agenda
   :straight (:type built-in)
   :init
-  (bind rps/leader-map
-	(bind-command "org-agenda"
-	  "v" #'rps-org-gtd-views)
-        "oA" #'org-agenda-list)
+  (bind
+   (rps/note-map
+    (bind-command "org-agenda"
+      "v" #'rps-org-gtd-views)))
 
   (defvar rps-view-cases
     '(("Agenda" (org-agenda nil "a"))
@@ -353,7 +331,7 @@
           (tags . " %i %t %-12:c")
           (search . " %i %t %-12:c")))
 
-  (setq org-agenda-files (mapcar (lambda (file) (concat rps-org-gtd-directory file))
+  (setq org-agenda-files (mapcar (lambda (file) (concat rps-org-gtd-dir file))
                                  (list rps-org-gtd-project-file
                                        rps-org-gtd-log-file
                                        "todo.org"
@@ -426,7 +404,7 @@
     (not (string-match " [^ ][0-9]?[0-9]:[0-9][0-9]" item)))
 
   (defun rps--org-gtd-log-has-item-p ()
-    (with-current-buffer (find-file-noselect (concat rps-org-gtd-directory
+    (with-current-buffer (find-file-noselect (concat rps-org-gtd-dir
                                                      rps-org-gtd-log-file))
       (goto-char (point-min))
       (org-forward-heading-same-level 1))))

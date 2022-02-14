@@ -6,7 +6,7 @@
 	"<tab>" #'+org-super-agenda-header-dwim)
 
   (setq org-super-agenda-unmatched-name "General"
-        org-super-agenda-groups `((:name "Anniversaries" :file-path ,(concat rps-org-gtd-directory
+        org-super-agenda-groups `((:name "Anniversaries" :file-path ,(concat rps-org-gtd-dir
                                                                              "daybook.org"))
                                   (:name "Completed" :todo "DONE")
                                   (:name "Reminders" :todo "REMINDER")

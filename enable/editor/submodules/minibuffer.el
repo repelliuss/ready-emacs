@@ -10,6 +10,8 @@
       #'command-completion-default-include-p)
 
 (bind minibuffer-mode-map
+      "M-y" #'yank
+      "M-Y" #'yank-pop
       "M-[" #'previous-history-element
       "M-]" #'next-history-element
       "M-{" #'previous-matching-history-element

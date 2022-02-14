@@ -25,6 +25,7 @@
   "Where cache files are stored."
   :type 'file)
 
+;; TODO: use more local
 (defcustom local-dir (concat user-emacs-directory "local/")
   "Where user files stored."
   :type 'file)

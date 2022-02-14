@@ -6,7 +6,7 @@
   "K" #'kill-all-buffers
   "]" #'next-buffer
   "[" #'previous-buffer
-  "r" #'revert-buffer
+  "r" #'revert-buffer-quick
   "i" #'ibuffer
   "c" #'clone-indirect-buffer-other-window
   "C" #'clone-indirect-buffer

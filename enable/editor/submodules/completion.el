@@ -5,5 +5,13 @@
       completion-ignore-case t
       completion-cycle-threshold 3)
 
+
 (setq tab-always-indent 'complete
       c-tab-always-indent 'complete)
+
+(bind (current-global-map)
+      "M-/" #'hippie-expand)
+
+
+
+

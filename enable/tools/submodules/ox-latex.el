@@ -3,6 +3,7 @@
 (use-package ox-latex
   :straight (:type built-in)
   :config
+  (setq org-latex-packages-alist '(("" "minted")))
   (setq org-latex-toc-command "\\newpage \\tableofcontents"
         org-latex-listings 'minted
         org-latex-pdf-process
