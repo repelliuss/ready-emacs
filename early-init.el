@@ -4,7 +4,7 @@
       package-enable-at-startup nil
       load-prefer-newer noninteractive)
 
-(setq enable-modules-dir (setq enable-dir (concat user-emacs-directory "enable/"))
+(setq enable-modules-dir (setq enable-dir (concat user-emacs-directory "local/enable/"))
       enable-cache-dir (concat user-emacs-directory "cache/enable/")
       enable-loader #'enable-using-eval)
 
@@ -20,7 +20,7 @@
 			  cape
 			  wgrep
 			  puni
-			  yasnippet
+			  tempel
 			  file-painter
 			  avy))
 	       
@@ -51,6 +51,6 @@
  :init all
  :ui
  :sub (font frame)
- :pkg (modus-themes nano-modeline))
+ :pkg (modus-themes mood-line))
 
 ;; TODO: meow SPC G
