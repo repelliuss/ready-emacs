@@ -1,5 +1,8 @@
 ;;; config.el -*- lexical-binding: t; -*-
 
+;; FIXME: defaults indents one space in call to enable
+;; TODO: add support to group by directories
+
 (defgroup enable nil
   "A configuration manager."
   :group 'convenience
@@ -70,8 +73,9 @@
            ((char-equal ?- (elt (symbol-name subarg) 0))
             (setq var (delq (intern (substring (symbol-name subarg) 1))
                             var)))
-           ((char-equal ?+ (elt (symbol-name subarg) 0))
-            (push (make-symbol (substring (symbol-name subarg) 1))
+           (t ; (char-equal ?+ (elt (symbol-name subarg) 0))
+            (push (make-symbol (symbol-name subarg) ;; (substring (symbol-name subarg) 1)
+                   )
                   var))))
         modifications)
   var)
@@ -191,7 +195,7 @@
     `(enable--with-eval ,args ,enable--early-cache-state-file)))
 
 ;;;###autoload
-(defun enable-init (pkg-defaults)
+(defun enable-init (&optional pkg-defaults)
   (enable--make-pkg-defaults pkg-defaults)
   (dolist (module enable--modules)
     (let ((submodules))

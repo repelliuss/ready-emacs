@@ -26,7 +26,11 @@
   ;;TODO: add open externally THIS file
   :attach (rps/editor/file)
   (bind rps/file-map
-    "e" #'consult-file-externally)
+	"e" #'consult-file-externally)
+
+  :attach (rps/editor/toggle)
+  (bind rps/toggle-map
+	"t" #'consult-theme)
 
   :init
   (bind
@@ -61,6 +65,8 @@
 
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
+
+  (autoload #'consult--read "consult")
 
   :config
   (setq consult-project-root-function (lambda ()

@@ -3,8 +3,8 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/workspace/org/roam/gtd/stuff.org")
- (front-context-string . "* STUFF orion in")
- (rear-context-string . "nik kombi yakma\n")
- (position . 489))
+ (filename . "~/workspace/org/roam/note/playstation1emu.org")
+ (front-context-string . "* Criterias for ")
+ (rear-context-string . "T15:12:00+0300\n\n")
+ (position . 144))
 )

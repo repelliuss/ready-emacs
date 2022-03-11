@@ -8,3 +8,8 @@
 ;; Don't stretch the cursor to fit wide characters, it is disorienting,
 ;; especially for tabs.
 (setq x-stretch-cursor nil)
+
+(defun cursor-hide ()
+  (interactive)
+  (run-at-time 1 nil (lambda () (setq-local cursor-type nil))))
+

@@ -1,6 +1,9 @@
 ;;; org-super-agenda.el -*- lexical-binding: t; -*-
 
 (use-package org-super-agenda
+  :init
+  (add-hook 'org-agenda-mode-hook #'org-super-agenda-mode)
+  
   :config
   (bind org-super-agenda-header-map
 	"<tab>" #'+org-super-agenda-header-dwim)

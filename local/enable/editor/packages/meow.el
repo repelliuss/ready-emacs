@@ -21,6 +21,7 @@
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
+   '("u" . universal-argument)
    '("." . find-file)
    '("," . switch-to-buffer))
   (meow-normal-define-key

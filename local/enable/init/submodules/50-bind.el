@@ -1,5 +1,8 @@
 ;;; bind.el -*- lexical-binding: t; -*-
 
+;; TODO: add support for unbind
+;; TODO: add support for repeat
+
 (defun bind--done (keymap bindings)
   (declare (indent 1))
   (bind--normalize bindings)

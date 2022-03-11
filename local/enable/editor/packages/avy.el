@@ -4,7 +4,7 @@
   :attach (meow)
   (bind meow-normal-state-keymap
 	(bind-command "avy"
-	  "a" #'avy-goto-char-bg-first))
+	  "a" #'avy-goto-char))
   
   :attach (isearch)
   (bind isearch-mode-map

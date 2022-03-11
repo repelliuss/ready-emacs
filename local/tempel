@@ -10,6 +10,7 @@ prog-mode
 (todo (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " TODO: ")
 (bug (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " BUG: ")
 (hack (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " HACK: ")
+(rev (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " REVIEW: ")
 
 latex-mode
 
@@ -24,6 +25,7 @@ lisp-mode emacs-lisp-mode ;; Specify multiple modes
 
 emacs-lisp-mode
 
+(file ";;; " (buffer-name) " -*- lexical-binding: t; -*-" n n)
 (var "(defvar " p "\n  \"" p "\")")
 (const "(defconst " p "\n  \"" p "\")")
 (custom "(defcustom " p "\n  \"" p "\"" n> ":type '" p ")")

@@ -10,45 +10,11 @@
 
 (load (concat user-emacs-directory "enable") nil 'nomessage)
 
-(enable-init '((editor . (meow
-                          ace-window
-                          embark
-                          consult
-                          vertico
-			  corfu
-			  kind-icon
-			  cape
-			  wgrep
-			  puni
-			  tempel
-			  file-painter
-			  avy))
-	       
-               (tools . (magit
-			 flymake
-			 screenshot
-			 org
-			 org-super-agenda
-			 org-ql
-			 org-roam
-			 org-gamedb
-			 orgmdb))
-
-               (lang . ())
-
-               (ui . (hl-todo
-		      diff-hl))
-
-               (ux . (which-key
-                      orderless
-                      marginalia
-                      gcmh
-		      helpful
-		      pcmpl-args))))
-
+(enable-init)
 
 (enable-early
  :init all
+ 
  :ui
  :sub (font frame)
  :pkg (modus-themes mood-line))

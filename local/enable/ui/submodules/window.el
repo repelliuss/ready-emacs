@@ -12,6 +12,11 @@
 		    window-divider-first-pixel))
       (set-face-foreground face bg))))
 
+(setq display-buffer-base-action '((display-buffer-reuse-window
+				    display-buffer-reuse-mode-window
+				    display-buffer-pop-up-window
+				    display-buffer-same-window) . nil))
+
 (advice-add #'enable-theme :after #'window-divider-blend-with-background)
 
 (window-divider-blend-with-background)

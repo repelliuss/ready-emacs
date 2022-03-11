@@ -2,23 +2,60 @@
 
 (enable
  :editor
- :pkg (defaults)
+ :pkg (meow
+       ace-window
+       embark
+       consult
+       vertico
+       corfu
+       kind-icon
+       cape
+       wgrep
+       puni
+       tempel
+       file-painter
+       avy
+       presentation
+       topspace
+       olivetti)
  :sub (all)
  
  :lang
- :pkg (defaults)
+ :pkg (web-mode)
  :sub (all)
 
  :tools
- :pkg (defaults)
+ :pkg (magit
+       flymake
+       screenshot
+       disk-usage
+       pdf-tools
+       csv-mode
+       chess
+       pass
+       org
+       org-remark
+       org-super-agenda
+       org-ql
+       org-roam
+       org-gamedb
+       orgmdb
+       org-tree-slide)
  :sub (all)
 
  :ui
- :pkg (defaults)
+ :pkg (hl-todo
+       diff-hl
+       hide-mode-line)
  :sub (all -font -frame)
 
  :ux
- :pkg (defaults)
+ :pkg (which-key
+       orderless
+       marginalia
+       gcmh
+       helpful
+       pcmpl-args)
  :sub (all)
 
  :secret all)
