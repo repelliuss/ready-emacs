@@ -3,16 +3,17 @@
 ;; TODO: add support for unbind
 ;; TODO: add support for repeat
 ;; TODO: support multiple-maps through map argument being list
-(defun bind--done (keymap bindings)
+(defun bind--done (keymaps bindings)
   (declare (indent 1))
   (bind--normalize bindings)
-  (while bindings
-    (let ((key (car bindings))
-	  (def (cadr bindings)))
-      (define-key keymap (if (stringp key)
-			     (kbd key)
-			   key) def))
-    (setq bindings (cddr bindings))))
+  (dolist (keymap keymaps)
+    (while bindings
+      (let ((key (car bindings))
+	    (def (cadr bindings)))
+	(define-key keymap (if (stringp key)
+			       (kbd key)
+			     key) def))
+      (setq bindings (cddr bindings)))))
 
 (defun bind--many (&rest rest)
   (dolist (elt rest)
@@ -22,7 +23,8 @@
 (defmacro bind--listify (&rest rest)
   (let (unlisted)
     (dolist (elt rest)
-      (setq unlisted (nconc unlisted `((list ,@elt)))))
+      (setq unlisted (nconc unlisted `((list (list ,(car elt))
+					     ,@(cdr elt))))))
     `(bind--many ,@unlisted)))
 
 (defmacro bind--normalize (arg)
@@ -34,7 +36,7 @@
     (if (or (stringp second)
 	    (vectorp second)
 	    (fboundp (car second)))
-	`(bind--done ,(car rest) (list ,@(cdr rest)))
+	`(bind--done (list ,(car rest)) (list ,@(cdr rest)))
       `(bind--listify ,@rest))))
 
 (defun bind-prefix (prefix &rest bindings)
