@@ -3,7 +3,6 @@
 (use-package embark
   :attach (which-key)
   (setq which-key-use-C-h-commands nil)
-  
   :init
   (bind
    ((current-global-map)

@@ -19,6 +19,11 @@
 (with-eval-after-load 'which-key
   (add-to-list 'which-key-replacement-alist '(("b$" . "prefix") . (nil . "buffer"))))
 
+(setq display-buffer-base-action '((display-buffer-reuse-window
+				    display-buffer-reuse-mode-window
+				    display-buffer-pop-up-window
+				    display-buffer-same-window) . nil))
+
 (defun kill-all-buffers (&optional buffer-list interactive)
   "Kill all buffers and closes their windows.
 
@@ -47,4 +52,3 @@ belong to the current project."
 				    (buffer-file-name))
 			       (cl-incf saved-count))))
     (message "Saved %d buffers" saved-count)))
-

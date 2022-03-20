@@ -1,20 +1,19 @@
 ;;; org.el -*- lexical-binding: t; -*-
 
+(defvar rps-org-gtd-dir (expand-file-name (concat org-directory "roam/gtd/")))
+(defvar rps-org-gtd-log-dir (expand-file-name (concat org-directory "roam/log/")))
+
+(defvar rps-org-gtd-project-file "project.org")
+(defvar rps-org-gtd-stuff-file "stuff.org")
+
+(defvar rps-org-gtd-log-file "24h.org")
+(defvar rps-org-gtd-log-last-days 1)
+(defvar rps-org-gtd-log-states '("DONE"))
+
+(defvar rps-org-gtd-projects-header "Projects")
+
 (use-package org
   :after org
-  :init
-  (defvar rps-org-gtd-dir (expand-file-name (concat org-directory "roam/gtd/")))
-  (defvar rps-org-gtd-log-dir (expand-file-name (concat org-directory "roam/log/")))
-
-  (defvar rps-org-gtd-project-file "project.org")
-  (defvar rps-org-gtd-stuff-file "stuff.org")
-
-  (defvar rps-org-gtd-log-file "24h.org")
-  (defvar rps-org-gtd-log-last-days 1)
-  (defvar rps-org-gtd-log-states '("DONE"))
-
-  (defvar rps-org-gtd-projects-header "Projects")
-
   :config
   (bind org-mode-map
 	(bind-prefix (keys-make-local-prefix)

@@ -72,9 +72,8 @@
   (setq consult-project-root-function (lambda ()
                                         (when-let (project (project-current))
                                           (car (project-roots project))))
-        consult-narrow-key "<"
-        consult-widen-key ">"
         consult-line-numbers-widen t
+	consult-narrow-key "<"
         consult-async-min-input 2
         consult-async-refresh-delay 0.15
         consult-async-input-throttle 0.2
@@ -90,13 +89,21 @@
    :preview-key (list :debounce 0.5 'any))
 
   :extend (orderless)
-  (defun consult--orderless-regexp-compiler (input type)
+  (defun consult--orderless-regexp-compiler (input type &rest _config)
     (setq input (orderless-pattern-compiler input))
     (cons
      (mapcar (lambda (r) (consult--convert-regexp r type)) input)
      (lambda (str) (orderless--highlight input str))))
 
   (setq consult--regexp-compiler #'consult--orderless-regexp-compiler)
+
+  (defun consult--without-orderless (&rest args)
+    (minibuffer-with-setup-hook
+	(lambda ()
+          (setq-local consult--regexp-compiler #'consult--default-regexp-compiler))
+      (apply args)))
+  
+  (advice-add #'consult-locate :around #'consult--without-orderless)
 
   :extend (which-key)
   (defun immediate-which-key-for-narrow (fun &rest args)
@@ -121,6 +128,10 @@
   (add-hook 'eshell-mode-hook (lambda () (setq outline-regexp eshell-prompt-regexp)))
 
   :extend (org)
+  (bind org-mode-map
+	(bind-prefix (keys-make-local-prefix)
+	  "." #'consult-org-heading))
+  
   (defvar consult--org-source
     `(:name "Org"
       :narrow ?o
@@ -133,21 +144,23 @@
   :extend (meow)
   (advice-add #'consult-goto-line :after (lambda (&optional _arg) (meow-line 1)))
 
-  :extend (org)
-  (bind org-mode-map
-	(bind-prefix (keys-make-local-prefix)
-	  "." #'consult-org-heading))
-
   :extend (vertico)
   (setq completion-in-region-function
         (lambda (&rest args)
           (apply (if vertico-mode
                      #'consult-completion-in-region
                    #'completion--in-region)
-                 args))))
+                 args)))
+  )
 
 (use-package embark-consult
   :after (embark consult))
+
+(use-package consult-project-extra
+  :after (consult)
+  :init
+  (bind rps/leader-map
+	"p" #'consult-project-extra-find))
 
 ;; TODO: integrate fd and rg
 ;; TODO: check fd in doom and also for consult

@@ -21,6 +21,7 @@
 (defun act-buffer-file (buffer new-path act)
   (if-let ((path (buffer-file-name (current-buffer))))
       (progn
+	(make-directory (file-name-directory new-path) 'with-parents)
 	(funcall act path new-path)
 	(find-file new-path))
     (error "Buffer doesn't visit a file")))

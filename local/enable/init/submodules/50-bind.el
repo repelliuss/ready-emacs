@@ -2,7 +2,7 @@
 
 ;; TODO: add support for unbind
 ;; TODO: add support for repeat
-
+;; TODO: support multiple-maps through map argument being list
 (defun bind--done (keymap bindings)
   (declare (indent 1))
   (bind--normalize bindings)

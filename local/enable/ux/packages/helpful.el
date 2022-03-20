@@ -8,5 +8,10 @@
     [remap describe-key] #'helpful-key
     [remap describe-variable] #'helpful-variable)
    (help-map
-    "." #'helpful-at-point)))
+    "." #'helpful-at-point)
+   (helpful-mode-map
+    "j" #'next-line
+    "k" #'previous-line
+    "<" #'scroll-down-command
+    ">" #'scroll-up-command)))
 

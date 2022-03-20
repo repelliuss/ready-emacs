@@ -2,15 +2,7 @@
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-  (meow-motion-overwrite-define-key
-   '("j" . meow-next)
-   '("k" . meow-prev)
-   '("a" . avy-goto-char-bg-first))
   (meow-leader-define-key
-   ;; SPC j/k will run the original command in MOTION state.
-   '("a" . "H-a")
-   '("j" . "H-j")
-   '("k" . "H-k")
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
    '("3" . meow-digit-argument)
@@ -105,33 +97,51 @@
    '("\\" . quoted-insert)
    '("$" . shell-command)
    '("&" . async-shell-command)))
-
+ 
 (use-package meow
   :demand t
   :config
   (bind
+   (meow-motion-state-keymap
+    "C-j" #'meow-temp-normal)
    (meow-insert-state-keymap
     "C-j" #'meow-insert-exit
     "SPC" #'self-insert-command)
-   (meow-motion-state-keymap
-    "C-j" #'meow-temp-normal)
    (meow-normal-state-keymap
-    "SPC" rps/leader-map))
-  
-  (setq meow--kbd-undo "C-x u"		
-	meow-use-clipboard t)		
+    "C-j" #'meow-insert
+    "SPC" rps/leader-map)
+   (rps/leader-map
+    "c" (lambda ()
+	  (interactive)
+	  (meow-keypad-start-with "C-c"))
+    "SPC" (lambda ()
+	    (interactive)
+	    (let ((overriden (key-binding (kbd "C-c SPC"))))
+	      (if (fboundp overriden)
+		  (funcall overriden))))))
 
+  (setq meow--kbd-undo "C-x u"		
+	meow-use-clipboard t)
+
+  (setq meow-keypad-meta-prefix nil
+	meow-keypad-ctrl-meta-prefix nil)
+  
   (add-to-list 'meow-keymap-alist (cons 'leader rps/leader-map))
 
   (meow-setup)
-  (meow-global-mode 1)
+  (funcall-consider-daemon #'meow-global-mode)
 
+  :extend (embark)
+  (defun meow-cancel-noerr (&rest _)
+    (ignore-errors (meow-cancel)))
+  
+  (dolist (fn '(embark-act
+		embark-dwim))
+    (advice-add fn :before #'meow-cancel-noerr))
+  
   :extend (org-capture)
   (add-hook 'org-capture-mode-hook #'meow-insert)
   
-  :extend (eshell)
-  (add-hook 'eshell-mode-hook #'meow-insert-mode)
-
   :extend (corfu)
   (add-hook 'completion-in-region-mode-hook #'meow-insert)
   

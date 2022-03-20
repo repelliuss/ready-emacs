@@ -9,7 +9,8 @@
 	org-ellipsis "…"
 	org-archive-location (concat org-misc-dir "archive/%s_archive::")
 	org-extend-today-until 2)
-  
+
   :config
-  (add-hook 'org-mode-hook #'org-indent-mode))
+  (add-hook 'org-mode-hook #'org-indent-mode)
+  (add-hook 'org-mode-hook #'visual-line-mode))
 

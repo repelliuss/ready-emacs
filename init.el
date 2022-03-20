@@ -33,6 +33,8 @@
        csv-mode
        chess
        pass
+       lsp-mode
+       dap-mode
        org
        org-remark
        org-super-agenda
@@ -45,6 +47,7 @@
 
  :ui
  :pkg (hl-todo
+       tab-bar-echo-area
        diff-hl
        hide-mode-line)
  :sub (all -font -frame)

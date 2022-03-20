@@ -2,6 +2,8 @@
 
 ;; FIXME: defaults indents one space in call to enable
 ;; TODO: add support to group by directories
+;; TODO: make it quiet
+;; TODO: switch to enable-using-eval after first call to cache, be careful about two seperate calls
 
 (defgroup enable nil
   "A configuration manager."

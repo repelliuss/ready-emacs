@@ -3,11 +3,11 @@
 (defcustom leader-prefix "SPC "
   "Leader prefix.")
 
-(defcustom local-leader-prefix "SPC SPC "
+(defcustom local-leader-prefix "C-c "
   "Local leader prefix.")
 
 (bind (current-global-map)
-      "C-/" (setq rps/leader-map (make-sparse-keymap)))
+      "S-SPC" (setq rps/leader-map (make-sparse-keymap)))
 
 (defun keys-make-local-prefix (&optional key)
   (concat local-leader-prefix key))

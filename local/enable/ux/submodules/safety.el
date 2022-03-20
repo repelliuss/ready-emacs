@@ -9,6 +9,7 @@
                   (concat cache-dir "autosave/tramp/\\2") t)
             (list ".*" auto-save-list-file-prefix t)))
 
-(setq auth-sources '("~/.authinfo.gpg" "~/.netrc.gpg"))
+(setq auth-sources '("~/.authinfo.gpg" "~/.netrc.gpg")
+      auth-source-cache-expiry (* 60 60 8))
 
 (setq epa-pinentry-mode 'loopback)

@@ -8,3 +8,5 @@
 
 (with-eval-after-load 'which-key
   (add-to-list 'which-key-replacement-alist '(("o$" . "prefix") . (nil . "open"))))
+
+(provide 'rps/editor/open)

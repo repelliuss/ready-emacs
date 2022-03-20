@@ -18,4 +18,5 @@
 (setq savehist-file (concat cache-dir "savehist"))
 
 (setq eshell-aliases-file (concat local-dir "eshell/alias")
-      eshell-history-file-name (concat cache-dir "eshell/history"))
+      eshell-history-file-name (concat cache-dir "eshell/history")
+      eshell-last-dir-ring-file-name (concat cache-dir "eshell/lastdir"))

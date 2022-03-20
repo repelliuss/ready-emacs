@@ -30,6 +30,7 @@
   
   :config
   (bind corfu-map
+	"SPC" #'corfu-insert-separator
 	"M-j" #'corfu-next
 	"M-k" #'corfu-previous
 	"C-<" #'corfu-first

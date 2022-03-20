@@ -6,4 +6,7 @@
   :straight (:host github :repo "trevorpogue/topspace"
 		   :files ("*.el"))
   :attach (dired)
-  (add-hook 'dired-mode-hook #'topspace-mode))
+  (add-hook 'dired-mode-hook #'topspace-mode)
+
+  :init
+  (setq-default topspace-active nil))
