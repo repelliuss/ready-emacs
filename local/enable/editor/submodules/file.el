@@ -19,11 +19,12 @@
   (add-to-list 'which-key-replacement-alist '(("f$" . "prefix") . (nil . "file"))))
 
 (defun act-buffer-file (buffer new-path act)
-  (if-let ((path (buffer-file-name (current-buffer))))
+  (if-let ((path (buffer-file-name buffer)))
       (progn
 	(make-directory (file-name-directory new-path) 'with-parents)
 	(funcall act path new-path)
-	(find-file new-path))
+	(find-file new-path)
+	(kill-buffer buffer))
     (error "Buffer doesn't visit a file")))
 
 (defun move-buffer-file (buffer new-path)

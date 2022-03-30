@@ -6,18 +6,18 @@ fundamental-mode ;; Available everywhere
 
 prog-mode
 
-(fixme (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " FIXME: ")
-(todo (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " TODO: ")
-(bug (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " BUG: ")
-(hack (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " HACK: ")
-(rev (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) " REVIEW: ")
+(fixme (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "FIXME: ")
+(todo (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "TODO: ")
+(bug (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "BUG: ")
+(hack (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "HACK: ")
+(rev (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "REVIEW: ")
 
 latex-mode
 
-(begin "\\begin{" (s env) "}" > n> r> n "\\end{" (s env) "}")
+(begin "\\begin{" (s env) "}" > n> r> n> "\\end{" (s env) "}")
 (frac "\\frac{" p "}{" p "}")
 (enumerate "\\begin{enumerate}\n\\item " r> n> "\\end{enumerate}")
-(itemize "\\begin{itemize}\n\\item " r> n> "\\end{itemize}")
+(itemize "\\begin{itemize}" n> "\\item " r> n> "\\end{itemize}")
 
 lisp-mode emacs-lisp-mode ;; Specify multiple modes
 
@@ -70,6 +70,23 @@ c-mode :condition (re-search-backward "^\\w*$" (line-beginning-position) 'noerro
 
 (inc "#include <" (p (concat (file-name-base (or (buffer-file-name) (buffer-name))) ".h")) ">")
 (incc "#include \"" (p (concat (file-name-base (or (buffer-file-name) (buffer-name))) ".h")) "\"")
+
+c++-mode :condition (re-search-backward "^\\w*$" (line-beginning-position) 'noerror)
+
+(inc "#include <" p ">")
+(incc "#'include \"" p "\"")
+
+(inch "#include \"" (p (concat (file-name-base (or (buffer-file-name) (buffer-name))) ".hpp")) "\"")
+
+c-mode c++-mode
+
+(main "int main (" (p "int argc, char *argv[]") ") {" n n> p n "}")
+(ponce "#pragma once" n n)
+(struct "struct " (p (file-name-base (or (buffer-file-name) (buffer-name)))) " {" n> r> n "};")
+
+c++-mode
+
+(class "class " (p (file-name-base (or (buffer-file-name) (buffer-name)))) " {" n> r> n "};")
 
 org-mode
 

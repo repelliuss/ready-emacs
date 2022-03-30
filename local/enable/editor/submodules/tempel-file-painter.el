@@ -1,5 +1,6 @@
 ;;; tempel-file-painter.el -*- lexical-binding: t; -*-
 
+;; TODO: needs something like p but finishes after
 (use-package tempel
   :after file-painter
   :init
@@ -9,7 +10,7 @@
 					     (intern name))
 					 (tempel--templates))))
 	file-painter-expander #'tempel-insert
-	file-painter-rules '((c-mode . (("source-file" . ".*\\.c.*")
-					("header-file")))))
+	file-painter-rules '(((c-mode c++-mode) . (("inch" . ".*\\.c.*")
+						   ("ponce")))))
 
   (file-painter-global-mode 1))

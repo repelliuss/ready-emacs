@@ -9,12 +9,19 @@
 
 (use-package cc-mode
   :config
+  (bind (c-mode-map c++-mode-map)
+	(bind-prefix (keys-make-local-prefix)
+	  "C-o" #'ff-find-other-file
+	  "o" #'c-set-offset)
+	"<tab>" #'c-indent-then-complete)
+
   (when (eq tab-always-indent 'complete)
     (defun c-indent-then-complete ()
       (interactive)
       (if (= 0 (c-indent-line-or-region))
-	  (completion-at-point)))
-
-    (bind c-mode-map
-	  "<tab>" #'c-indent-then-complete)))
+	  (completion-at-point))))
+  
+  :extend (find-file)
+  (add-to-list 'cc-search-directories "../include")
+  (add-to-list 'cc-search-directories "../src"))
 

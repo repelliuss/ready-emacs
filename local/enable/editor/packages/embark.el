@@ -3,16 +3,18 @@
 (use-package embark
   :attach (which-key)
   (setq which-key-use-C-h-commands nil)
+  
   :init
   (bind
    ((current-global-map)
-    "M-." #'embark-act
-    "C-." #'embark-dwim)
+    "C-." #'embark-act)
+   (esc-map
+    "." #'embark-dwim)
    (minibuffer-local-map
     "M-b" #'embark-become
     "M-c" #'embark-collect-snapshot
     "M-e" #'embark-export))
-  
+
   (setq prefix-help-command #'embark-prefix-help-command)
 
   :extend (which-key)

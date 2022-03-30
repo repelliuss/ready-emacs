@@ -5,3 +5,5 @@
 
 (with-eval-after-load 'which-key
   (add-to-list 'which-key-replacement-alist '(("p$" . "prefix") . (nil . "project"))))
+
+(provide 'rps/editor/project)

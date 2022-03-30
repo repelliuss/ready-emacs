@@ -150,17 +150,29 @@
           (apply (if vertico-mode
                      #'consult-completion-in-region
                    #'completion--in-region)
-                 args)))
-  )
+                 args))))
 
 (use-package embark-consult
   :after (embark consult))
 
-(use-package consult-project-extra
-  :after (consult)
-  :init
-  (bind rps/leader-map
-	"p" #'consult-project-extra-find))
+;; BUG: pulls in project and project pulls in xref and I think it is a bug to autoload define-key bindings because if this is loaded after user configurations, they may override the user bindings. which did mine for embark, so I load consult before embark
+;; (use-package consult-project-extra
+;;   :attach (rps/editor/workspace)
+;;   (advice-add #'consult-project-extra--file
+;; 	      :before
+;; 	      #'tab-new-to)
+  
+;;   :attach (rps/editor/project)
+;;   (bind rps/leader-map
+;; 	"p" #'consult-project-extra-find
+;; 	"P" #'project-dispatch)
+  
+;;   :init
+;;   (defun project-dispatch ()
+;;     (interactive)
+;;     (if-let ((project (project-current)))
+;; 	(project-switch-project (project-root project))
+;;       (message "Not in a project."))))
 
 ;; TODO: integrate fd and rg
 ;; TODO: check fd in doom and also for consult

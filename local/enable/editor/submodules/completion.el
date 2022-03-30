@@ -9,7 +9,7 @@
 (setq read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
       completion-ignore-case t
-      completion-cycle-threshold 3)
+      completion-cycle-threshold 2)
 
 (setq tab-always-indent 'complete
       c-tab-always-indent 'complete)

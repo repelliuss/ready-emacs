@@ -4,7 +4,7 @@
   "User customizations."
   :group 'emacs)
 
-(defcustom theme-preferred-background 'dark
+(defcustom theme-preferred-background 'light
   "Preferred background lightning for theme packages."
   :type '(choice (const 'light) (const 'dark))
   :set (lambda (sym val)

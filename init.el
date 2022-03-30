@@ -4,8 +4,8 @@
  :editor
  :pkg (meow
        ace-window
-       embark
        consult
+       embark
        vertico
        corfu
        kind-icon
@@ -33,6 +33,7 @@
        csv-mode
        chess
        pass
+       cmake
        lsp-mode
        dap-mode
        org

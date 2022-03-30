@@ -8,11 +8,13 @@
 
   (add-hook 'prog-mode-hook 'tempel-setup-capf)
   (add-hook 'text-mode-hook 'tempel-setup-capf)
+  (add-hook 'lsp-completion-mode-hook 'tempel-setup-capf 100)
 
   (setq tempel-file (concat local-dir "tempel"))
 
   :config
   (bind tempel-map
+	"M-q" #'tempel-abort
 	"M-j" #'tempel-next
 	"M-k" #'tempel-previous
 	"M-d" #'tempel-kill

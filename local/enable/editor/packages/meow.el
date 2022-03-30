@@ -2,7 +2,12 @@
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow-motion-overwrite-define-key
+   '("j" . meow-next)
+   '("k" . meow-prev))
   (meow-leader-define-key
+   '("j" . "H-j")
+   '("k" . "H-k")
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
    '("3" . meow-digit-argument)
@@ -131,6 +136,8 @@
   (meow-setup)
   (funcall-consider-daemon #'meow-global-mode)
 
+  (define-key meow-keymap [remap describe-key] nil)
+
   :extend (embark)
   (defun meow-cancel-noerr (&rest _)
     (ignore-errors (meow-cancel)))
@@ -149,3 +156,23 @@
   (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))
   (add-to-list 'which-key-replacement-alist '(("0" . "meow-digit-argument") . ("[0-9]")))
   (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t)))
+
+
+(defun press-thing-at-point ()
+  (interactive)
+  (let* ((field  (get-char-property (point) 'field))
+         (button (get-char-property (point) 'button))
+         (doc    (get-char-property (point) 'widget-doc))
+         (widget (or field button doc)))
+    (cond
+     ((and widget
+           (or (and (symbolp widget)
+                    (get widget 'widget-type))
+               (and (consp widget)
+                    (get (widget-type widget) 'widget-type))))
+      (widget-button-press (point)))
+     ((and (button-at (point)))
+      (push-button)))))
+
+(bind meow-normal-state-keymap
+      "RET" #'press-thing-at-point)
