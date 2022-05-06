@@ -156,23 +156,27 @@
   :after (embark consult))
 
 ;; BUG: pulls in project and project pulls in xref and I think it is a bug to autoload define-key bindings because if this is loaded after user configurations, they may override the user bindings. which did mine for embark, so I load consult before embark
-;; (use-package consult-project-extra
-;;   :attach (rps/editor/workspace)
-;;   (advice-add #'consult-project-extra--file
-;; 	      :before
-;; 	      #'tab-new-to)
+(use-package consult-project-extra
+  :attach (rps/editor/workspace)
+  (advice-add #'consult-project-extra--file
+	      :before
+	      (defun tab-set-name-for-project (project-root)
+		(tab-new-to)
+		(tab-rename
+		 (file-name-nondirectory
+		  (string-trim-right project-root "/")))))
   
-;;   :attach (rps/editor/project)
-;;   (bind rps/leader-map
-;; 	"p" #'consult-project-extra-find
-;; 	"P" #'project-dispatch)
+  :attach (rps/editor/project)
+  (bind rps/leader-map
+	"p" #'consult-project-extra-find
+	"P" project-prefix-map)
   
-;;   :init
-;;   (defun project-dispatch ()
-;;     (interactive)
-;;     (if-let ((project (project-current)))
-;; 	(project-switch-project (project-root project))
-;;       (message "Not in a project."))))
+  :init
+  (defun project-dispatch ()
+    (interactive)
+    (if-let ((project (project-current)))
+	(project-switch-project (project-root project))
+      (message "Not in a project."))))
 
 ;; TODO: integrate fd and rg
 ;; TODO: check fd in doom and also for consult

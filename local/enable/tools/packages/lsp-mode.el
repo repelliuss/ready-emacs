@@ -1,17 +1,27 @@
 ;;; lsp-mode.el -*- lexical-binding: t; -*-
 
+(add-to-list 'exec-path (expand-file-name "~/.local/bin"))
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :attach (verilog-mode)
+  (add-hook 'verilog-mode-hook #'lsp-deferred)
+
+  :attach (cc-mode)
+  (add-hook 'c-mode-hook #'lsp-deferred)
+  (add-hook 'c++-mode-hook #'lsp-deferred)
+  
+  :attach (rust-mode)
+  (add-hook 'rust-mode-hook #'lsp-deferred)
+  
   :init
   (setq lsp-session-file (concat cache-dir "lsp-mode/session")
-        lsp-server-install-dir (concat local-dir "lsp-mode/servers"))
+        lsp-server-install-dir (concat cache-dir "lsp-mode/servers"))
 
   (setq lsp-keymap-prefix "M-l")
 
   (setq lsp-lens-enable nil
         lsp-headerline-breadcrumb-enable nil)
-
-  (add-hook 'c-mode-common-hook #'lsp-deferred)
 
   (add-hook 'lsp-mode-hook (lambda ()
 			     (setq-local read-process-output-max (* 1024 1024))))

@@ -1,8 +1,8 @@
 ;;; cache.el -*- lexical-binding: t; -*-
 
-(setq transient-history-file (concat local-dir "transient/history.el")
-      transient-levels-file (concat local-dir "transient/levels.el")
-      transient-values-file (concat local-dir "transient/values.el"))
+(setq transient-history-file (concat cache-dir "transient/history.el")
+      transient-levels-file (concat cache-dir "transient/levels.el")
+      transient-values-file (concat cache-dir "transient/values.el"))
 
 (setq project-list-file (concat cache-dir "project"))
 
@@ -13,7 +13,7 @@
 
 (setq save-place-file (concat cache-dir "save-place"))
 
-(setq bookmark-default-file (concat local-dir "bookmarks"))
+(setq bookmark-default-file (concat cache-dir "bookmarks"))
 
 (setq savehist-file (concat cache-dir "savehist"))
 

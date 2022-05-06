@@ -1,5 +1,17 @@
 ;;; meow.el -*- lexical-binding: t; -*-
 
+(defun project-aware-shell-command ()
+  (interactive)
+  (if-let ((project (project-current)))
+      (call-interactively #'project-shell-command)
+    (call-interactively #'shell-command)))
+
+(defun project-aware-async-shell-command ()
+  (interactive)
+  (if-let ((project (project-current)))
+      (call-interactively #'project-async-shell-command)
+    (call-interactively #'async-shell-command)))
+
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
@@ -100,8 +112,8 @@
    '("'" . negative-argument)
    '("=" . meow-indent)
    '("\\" . quoted-insert)
-   '("$" . shell-command)
-   '("&" . async-shell-command)))
+   '("$" . project-aware-shell-command)
+   '("&" . project-aware-async-shell-command)))
  
 (use-package meow
   :demand t
@@ -116,7 +128,7 @@
     "C-j" #'meow-insert
     "SPC" rps/leader-map)
    (rps/leader-map
-    "c" (lambda ()
+    "/" (lambda ()
 	  (interactive)
 	  (meow-keypad-start-with "C-c"))
     "SPC" (lambda ()

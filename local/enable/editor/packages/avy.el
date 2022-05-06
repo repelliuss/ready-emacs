@@ -11,7 +11,8 @@
 	"M-a" #'avy-isearch)
 
   :init
-  (setq avy-style 'de-bruijn)
+  (setq avy-style 'de-bruijn
+	avy-all-windows nil)
 
   :config
   (defun avy-goto-char-bg-first ()

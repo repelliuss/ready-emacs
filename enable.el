@@ -38,8 +38,8 @@
                    nil directory-files-no-dot-files-regexp))
 
 (defvar enable--modules (mapcar (lambda (module-name)
-                                 (intern (concat ":" (file-name-sans-extension module-name))))
-                               (enable--get-files)))
+                                  (intern (concat ":" (file-name-sans-extension module-name))))
+				(enable--get-files)))
 
 (defun enable--build (module files &optional packages-p)
   (let* ((module-path (concat enable-modules-dir (substring (symbol-name module) 1) "/"))
@@ -57,12 +57,12 @@
                                       "-pkg-defaults"))))
     (when (boundp pkg-defaults)
       (enable--build module
-                           (eval pkg-defaults)
-                           'packages)))
+                     (eval pkg-defaults)
+                     'packages)))
   (enable--build module
-                       (eval (intern (concat "enable--"
-                                             (substring (symbol-name module) 1)
-                                             "-sub-all")))))
+                 (eval (intern (concat "enable--"
+                                       (substring (symbol-name module) 1)
+                                       "-sub-all")))))
 
 (defun enable--build-all ()
   (dolist (module enable--modules)
@@ -77,7 +77,7 @@
                             var)))
            (t ; (char-equal ?+ (elt (symbol-name subarg) 0))
             (push (make-symbol (symbol-name subarg) ;; (substring (symbol-name subarg) 1)
-                   )
+			       )
                   var))))
         modifications)
   var)

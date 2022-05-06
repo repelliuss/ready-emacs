@@ -21,7 +21,9 @@
  :sub (all)
  
  :lang
- :pkg (web-mode)
+ :pkg (web-mode
+       glsl
+       rust)
  :sub (all)
 
  :tools

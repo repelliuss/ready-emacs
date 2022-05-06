@@ -11,6 +11,7 @@ prog-mode
 (bug (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "BUG: ")
 (hack (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "HACK: ")
 (rev (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "REVIEW: ")
+(note (if (derived-mode-p 'emacs-lisp-mode) ";;" comment-start) "NOTE: ")
 
 latex-mode
 
@@ -66,15 +67,10 @@ java-mode
 
 (class "public class " (p (file-name-base (or (buffer-file-name) (buffer-name)))) " {" n> r> n "}")
 
-c-mode :condition (re-search-backward "^\\w*$" (line-beginning-position) 'noerror)
+c-mode c++-mode :condition (re-search-backward "^\\w*$" (line-beginning-position) 'noerror)
 
-(inc "#include <" (p (concat (file-name-base (or (buffer-file-name) (buffer-name))) ".h")) ">")
-(incc "#include \"" (p (concat (file-name-base (or (buffer-file-name) (buffer-name))) ".h")) "\"")
-
-c++-mode :condition (re-search-backward "^\\w*$" (line-beginning-position) 'noerror)
-
-(inc "#include <" p ">")
-(incc "#'include \"" p "\"")
+(inc "#include <" p ">" p)
+(incc "#include \"" p "\"" p)
 
 (inch "#include \"" (p (concat (file-name-base (or (buffer-file-name) (buffer-name))) ".hpp")) "\"")
 
@@ -83,6 +79,8 @@ c-mode c++-mode
 (main "int main (" (p "int argc, char *argv[]") ") {" n n> p n "}")
 (ponce "#pragma once" n n)
 (struct "struct " (p (file-name-base (or (buffer-file-name) (buffer-name)))) " {" n> r> n "};")
+(void "void " p "(" p ")" "{" n> p n "}")
+(int "int " p "(" p ")" "{" n> p n "}")
 
 c++-mode
 
