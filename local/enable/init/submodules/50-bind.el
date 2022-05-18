@@ -51,16 +51,16 @@
       map-s-or-fn
     `(list ,@map-s-or-fn)))
 
-(defmacro bind--main-map (bind-first)
+(defmacro bind--main-keymap (bind-first)
   `(cond
     ((symbolp ,bind-first) ,bind-first)
-    ((fboundp (car ,bind-first)) (cadr ,bind-first))
-    (t (caar ,bind-first))))
+    ((fboundp (car ,bind-first)) ,bind-first)
+    (t (car ,bind-first))))		; list of maps
 
 (defmacro bind--with-metadata (rest)
-  (let ((normalized-first (bind--normalize-first (car rest))))
-    `(let ((bind--metadata '(:main-map ,(bind--main-map normalized-first))))
-       (bind--done ,normalized-first
+  (let ((first (car rest)))
+    `(let ((bind--metadata (list :main-keymap (bind--main-keymap ',first))))
+       (bind--done (bind--normalize-first ,first)
 		   (list ,@(cdr rest))))))
 
 (defmacro bind (&rest rest)
@@ -99,13 +99,17 @@
   bindings)
 
 (defun bind-repeat (&rest bindings)
-  (declare (indent 1))
+  (declare (indent 0))
   (bind--normalize-bindings bindings)
-  (let ((main-map (plist-get bind--metadata :main-map))
+  (let ((main-keymap (plist-get bind--metadata :main-keymap))
 	(it-bindings bindings))
-    (while it-bindings
-      (let ((def (cadr it-bindings)))
-	(put def 'repeat-map main-map))
-      (setq it-bindings (cddr it-bindings))))
+    (if (keymapp (symbol-value main-keymap))
+	(while it-bindings
+	  (let ((def (cadr it-bindings)))
+	    (put def 'repeat-map main-keymap))
+	  (setq it-bindings (cddr it-bindings)))
+      (display-warning 'bind-repeat
+		       (format "Couldn't repeat bindings: %s. No main keymap given." bindings))))
   bindings)
+
 
