@@ -4,7 +4,7 @@
   :straight (:type built-in)
   :init
   (bind rps/note-map
-	(bind-command "org-capture"
+	(bind-autoload "org-capture"
 	  "c" #'rps-org-capture
 	  "g" #'rps-org-capture-visit))
 

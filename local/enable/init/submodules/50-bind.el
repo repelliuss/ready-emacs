@@ -44,14 +44,12 @@
       (bind--bind keymap bindings))))
 
 (defmacro bind--many (&rest rest)
-  (let (unlisted)
+  (let (bindings)
     (dolist (elt rest)
-      (setq unlisted
-	    (nconc unlisted
-		   `((cons (bind--normalize-first ,(car elt))
-			   (list ,@(cdr elt)))))))
-    `(dolist (elt (list ,@unlisted))
-       (bind--done (car elt) (cdr elt)))))
+      (setq bindings
+	    (nconc bindings
+		   `((bind--with-metadata ,elt)))))
+    (macroexp-progn bindings)))
 
 (defmacro bind--normalize-first (map-s-or-fn)
   (if (or (fboundp (car-safe map-s-or-fn))
@@ -65,20 +63,18 @@
     ((fboundp (car ,bind-first)) (cadr ,bind-first))
     (t (caar ,bind-first))))
 
-(defmacro bind--with-metadata (bind-first &rest rest)
-  `(let ((bind--metadata '(:main-map ,(bind--main-map bind-first))))
-     ,@rest))
+(defmacro bind--with-metadata (rest)
+  (let ((normalized-first (bind--normalize-first (car rest))))
+    `(let ((bind--metadata '(:main-map ,(bind--main-map normalized-first))))
+       (bind--done ,normalized-first
+		   (list ,@(cdr rest))))))
 
 (defmacro bind (&rest rest)
-  (let ((first (car rest))
-	(second (cadr rest)))
+  (let ((second (cadr rest)))
     (if (or (stringp second)
 	    (vectorp second)
 	    (fboundp (car second)))
-	`(bind--with-metadata
-	  (bind--normalize-first ,first)
-	  (bind--done (bind--normalize-first ,first)
-		      (list ,@(cdr rest))))
+	`(bind--with-metadata ,rest)
       `(bind--many ,@rest))))
 
 (defmacro unbind (&rest rest)
@@ -124,3 +120,4 @@
 	  (put def 'repeat-map repeat-map))
 	(setq it-bindings (cddr it-bindings)))))
   bindings)
+

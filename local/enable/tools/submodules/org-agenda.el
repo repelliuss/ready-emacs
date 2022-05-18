@@ -5,7 +5,7 @@
   :init
   (bind
    (rps/note-map
-    (bind-command "org-agenda"
+    (bind-autoload "org-agenda"
       "v" #'rps-org-gtd-views)))
 
   (defvar rps-view-cases

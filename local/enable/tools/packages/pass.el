@@ -3,7 +3,7 @@
 (use-package pass
   :init
   (bind rps/open-map
-	(bind-command "pass"
+	(bind-autoload "pass"
 	  "p" #'consult-pass)
 	"P" #'pass)
   

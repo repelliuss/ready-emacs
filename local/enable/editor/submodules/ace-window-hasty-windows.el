@@ -3,7 +3,7 @@
 (use-package ace-window
   :attach (meow)
   (bind rps/leader-map
-	(bind-command "ace-window"
+	(bind-autoload "ace-window"
 	  "w" #'ace-window-hasty
 	  "W" #'aw-flip-window))
 

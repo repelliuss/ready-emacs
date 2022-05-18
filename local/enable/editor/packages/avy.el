@@ -3,7 +3,7 @@
 (use-package avy
   :attach (meow)
   (bind meow-normal-state-keymap
-	(bind-command "avy"
+	(bind-autoload "avy"
 	  "a" #'avy-goto-char))
   
   :attach (isearch)

@@ -1,4 +1,4 @@
-;;; config.el -*- lexical-binding: t; -*-
+;;; enable.el -*- lexical-binding: t; -*-
 
 ;; FIXME: defaults indents one space in call to enable
 ;; TODO: add support to group by directories
