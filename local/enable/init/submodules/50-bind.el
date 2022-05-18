@@ -66,7 +66,7 @@
     (t (caar ,bind-first))))
 
 (defmacro bind--with-metadata (bind-first &rest rest)
-  `(let ((bind--metadata '(:main-map ,(bind--main-map first))))
+  `(let ((bind--metadata '(:main-map ,(bind--main-map bind-first))))
      ,@rest))
 
 (defmacro bind (&rest rest)
@@ -76,10 +76,10 @@
 	    (vectorp second)
 	    (fboundp (car second)))
 	`(bind--with-metadata
+	  (bind--normalize-first ,first)
 	  (bind--done (bind--normalize-first ,first)
 		      (list ,@(cdr rest))))
-      `(bind--with-metadata
-	(bind--many ,@rest)))))
+      `(bind--many ,@rest))))
 
 (defmacro unbind (&rest rest)
   `(let ((bind--definer #'bind--undefine-key))
