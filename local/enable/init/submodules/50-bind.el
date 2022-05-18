@@ -5,9 +5,6 @@
 ;; TODO: add docstrings
 ;; TODO: add examples
 
-(defcustom bind-repeat-generate-name #'bind--repeat-prepend-repeat
-  "Default.")
-
 (defvar bind--definer #'define-key)
 
 (defvar bind--metadata nil)
@@ -17,9 +14,6 @@
   (if (or (stringp def)
 	  (vectorp def))
       (define-key keymap def nil)))
-
-(defun bind--repeat-prepend-repeat (main-map-name)
-  (concat "repeat-" main-map-name))
 
 (defmacro bind--normalize-bindings (arg)
   `(if (consp (car ,arg))
@@ -107,17 +101,11 @@
 (defun bind-repeat (&rest bindings)
   (declare (indent 1))
   (bind--normalize-bindings bindings)
-  (let* ((main-map (plist-get bind--metadata :main-map))
-	 (repeat-map
-	  (intern (funcall bind-repeat-generate-name
-			   (symbol-name main-map)))))
-    (if (not (boundp repeat-map))
-	(set repeat-map (make-sparse-keymap)))
-    (set-keymap-parent (symbol-value repeat-map) (symbol-value main-map))
-    (let ((it-bindings bindings))
-      (while it-bindings
-	(let ((def (cadr it-bindings)))
-	  (put def 'repeat-map repeat-map))
-	(setq it-bindings (cddr it-bindings)))))
+  (let ((main-map (plist-get bind--metadata :main-map))
+	(it-bindings bindings))
+    (while it-bindings
+      (let ((def (cadr it-bindings)))
+	(put def 'repeat-map main-map))
+      (setq it-bindings (cddr it-bindings))))
   bindings)
 
