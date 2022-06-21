@@ -11,7 +11,9 @@
   (setq-default pdf-view-display-size 'fit-page)
   (setq pdf-view-use-scaling t
         pdf-view-use-imagemagick nil)
-  (add-hook 'pdf-view-mode-hook #'pdf-links-minor-mode))
+  (dolist (fn '(pdf-links-minor-mode
+		pdf-isearch-minor-mode))
+      (add-hook 'pdf-view-mode-hook fn)))
 
 (use-package org-pdftools
   :after pdf-tools

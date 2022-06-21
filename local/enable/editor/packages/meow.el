@@ -2,12 +2,14 @@
 
 (defun project-aware-shell-command ()
   (interactive)
+  (run-at-time nil nil #'previous-history-element 1)
   (if-let ((project (project-current)))
       (call-interactively #'project-shell-command)
     (call-interactively #'shell-command)))
 
 (defun project-aware-async-shell-command ()
   (interactive)
+  (run-at-time nil nil #'previous-history-element 1)
   (if-let ((project (project-current)))
       (call-interactively #'project-async-shell-command)
     (call-interactively #'async-shell-command)))

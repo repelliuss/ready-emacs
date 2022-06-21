@@ -24,6 +24,11 @@
 				    display-buffer-pop-up-window
 				    display-buffer-same-window) . nil))
 
+(add-to-list 'display-buffer-alist '("*compilation*" .
+				     ((display-buffer-in-side-window) .
+				      ((side . bottom)
+				       (dedicated . t)))))
+
 (defun kill-all-buffers (&optional buffer-list interactive)
   "Kill all buffers and closes their windows.
 

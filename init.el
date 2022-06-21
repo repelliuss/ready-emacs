@@ -23,6 +23,7 @@
  :lang
  :pkg (web-mode
        glsl
+       php
        rust)
  :sub (all)
 
@@ -34,6 +35,7 @@
        pdf-tools
        csv-mode
        chess
+       pkg-ssh-deploy
        pass
        cmake
        lsp-mode
@@ -51,7 +53,7 @@
  :ui
  :pkg (hl-todo
        tab-bar-echo-area
-       diff-hl
+       ;; diff-hl
        hide-mode-line)
  :sub (all -font -frame)
 

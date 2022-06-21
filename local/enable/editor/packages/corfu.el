@@ -19,7 +19,7 @@
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
   
   :init
-  (corfu-global-mode 1)
+  (global-corfu-mode 1)
 
   (defun corfu-enable-in-minibuffer ()
     "Enable Corfu in the minibuffer if `completion-at-point' is bound."

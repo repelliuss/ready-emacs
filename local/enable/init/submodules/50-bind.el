@@ -30,7 +30,6 @@
     (setq bindings (cddr bindings))))
 
 (defun bind--done (keymap-s bindings)
-  (declare (indent 0))
   (bind--normalize-bindings bindings)
   (if (keymapp keymap-s)
       (bind--bind keymap-s bindings)
@@ -111,5 +110,3 @@
       (display-warning 'bind-repeat
 		       (format "Couldn't repeat bindings: %s. No main keymap given." bindings))))
   bindings)
-
-
