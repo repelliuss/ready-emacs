@@ -80,6 +80,70 @@ function."
   (advice-add #'php-extras-load-eldoc :override #'php-extras-eldoc-no-warn)
   (php-extras-generate-eldoc-async))
 
+(defvar phpunit-invoked-compilation nil)
+(defvar phpunit-hide-compilation-buffer-is-reset t)
+
+;; NOTE: we need this fix because 'compilation-finish-functions doesn't
+;; work with a buffer local value assigned. So we clear ourselves afterwards 
+(defun phpunit--hide-compilation-buffer-if-all-tests-pass-fix (buffer status)
+  (if (and phpunit-invoked-compilation
+	   phpunit-hide-compilation-buffer-if-all-tests-pass)
+      (phpunit--hide-compilation-buffer-if-all-tests-pass buffer status)
+    (remove-hook 'compilation-finish-functions
+		 #'phpunit--hide-compilation-buffer-if-all-tests-pass-fix)
+    (setq phpunit-hide-compilation-buffer-is-reset t))
+  (setq phpunit-invoked-compilation nil))
+
+(defun phpunit-set-invoked-compilation (cmd &rest args)
+  (setq phpunit-invoked-compilation t)
+  ;; NOTE: this is required here because we may be removed in another buffer
+  (if phpunit-hide-compilation-buffer-is-reset
+      (phpunit-setup-hide-compilation-buffer-if-all-tests-pass))
+  (apply cmd args))
+
+(dolist (cmd '(phpunit-current-test
+	       phpunit-current-class
+	       phpunit-current-project))
+  (advice-add cmd :around #'phpunit-set-invoked-compilation))
+
+(defun phpunit-setup-hide-compilation-buffer-if-all-tests-pass ()
+  (when phpunit-hide-compilation-buffer-if-all-tests-pass
+    (add-hook 'compilation-finish-functions
+	      #'phpunit--hide-compilation-buffer-if-all-tests-pass-fix)
+    (setq phpunit-hide-compilation-buffer-is-reset nil)))
+
+(bind (setq phpunit-mode-map (make-sparse-keymap))
+      "t" #'phpunit-current-test
+      "c" #'phpunit-current-class
+      "p" #'phpunit-current-project
+      "g" #'phpunit-group)
+
+(define-minor-mode phpunit-mode
+  "PHPUnit minor mode"
+  :lighter " phpunit")
+
+;; TODO: this function and below hook can be deleted when this mode moved
+;; to its own file
+(defun phpunit-mode-require-phpunit ()
+  (require 'phpunit)
+  (remove-hook 'phpunit-mode-hook #'phpunit-mode-require-phpunit))
+
+(add-hook 'phpunit-mode-hook #'phpunit-mode-require-phpunit -1)
+
+(use-package phpunit
+  :attach (php-mode)
+  (add-hook 'php-mode-hook #'phpunit-mode)
+  
+  :config
+  (setq phpunit-colorize 'auto
+	phpunit-hide-compilation-buffer-if-all-tests-pass t)
+
+  :extend (php-mode)
+  (bind php-mode-map
+	(bind-prefix (keys-make-local-prefix)
+	  "t" phpunit-mode-map)))
+
+;; NOTE: php-mode warns about function already compiled, can be ignored
 (use-package php-mode
   :init
   ;; not autoloaded in php-mode
