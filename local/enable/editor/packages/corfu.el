@@ -38,6 +38,24 @@
 	"M-<" #'corfu-scroll-down
 	"M->" #'corfu-scroll-up))
 
+;; NOTE: doesn't work with lsp-mode
+(use-package corfu-history
+  :straight (:local-repo "corfu/extensions")
+  :attach (savehist)
+  (add-to-list 'savehist-additional-variables 'corfu-history)
+  :attach (corfu)
+  (corfu-history-mode 1))
+
+(use-package corfu-quick
+  :straight (:local-repo "corfu/extensions")
+  :attach (corfu)
+  (bind corfu-map
+	"M-a" #'corfu-quick-insert
+	"M-A" #'corfu-quick-complete))
+
+(use-package corfu-info
+  :straight (:local-repo "corfu/extensions"))
+
 (use-package dabbrev
   :init
   ;; Swap M-/ and C-M-/

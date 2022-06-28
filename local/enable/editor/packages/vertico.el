@@ -28,9 +28,7 @@
 	"M-RET" #'vertico-exit-input))
 
 (use-package vertico-quick
-  :straight (:host github :repo "minad/vertico"
-             :files ("extensions/vertico-quick.el")
-             :local-repo "vertico-quick")
+  :straight (:local-repo "vertico/extensions")
   :after (vertico)
   :init
   (bind vertico-map
@@ -38,9 +36,7 @@
 	"M-a" #'vertico-quick-exit))
 
 (use-package vertico-repeat
-  :straight (:host github :repo "minad/vertico"
-             :files ("extensions/vertico-repeat.el")
-             :local-repo "vertico-repeat")
+  :straight (:local-repo "vertico/extensions")
   :after (vertico)
   :attach (meow)
   (bind rps/leader-map

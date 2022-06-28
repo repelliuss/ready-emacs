@@ -10,3 +10,5 @@
   (if (daemonp)
       `(add-hook-transient 'server-after-make-frame-hook ,fn)
     `(funcall ,fn)))
+
+

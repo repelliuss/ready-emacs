@@ -4,11 +4,11 @@
   :init
   (defun tempel-setup-capf ()
     (interactive)
-    (add-hook 'completion-at-point-functions #'tempel-expand -1 'local))
+    (add-hook 'completion-at-point-functions #'tempel-expand -90 'local))
 
   (add-hook 'prog-mode-hook 'tempel-setup-capf)
   (add-hook 'text-mode-hook 'tempel-setup-capf)
-  (add-hook 'lsp-completion-mode-hook 'tempel-setup-capf 100)
+  (add-hook 'lsp-completion-mode-hook 'tempel-setup-capf)
 
   (setq tempel-file (concat local-dir "tempel"))
 
@@ -24,6 +24,3 @@
   (dolist (entry '(tempel-expand tempel-insert))
     (advice-add entry :after (lambda (&rest _)
 			       (meow-insert)))))
-
-
-
