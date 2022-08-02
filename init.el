@@ -29,6 +29,8 @@
 
  :tools
  :pkg (magit
+       forge
+       git
        flymake
        screenshot
        disk-usage

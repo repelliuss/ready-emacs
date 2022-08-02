@@ -4,6 +4,9 @@
 ;; TODO: add support to group by directories
 ;; TODO: make it quiet
 ;; TODO: switch to enable-using-eval after first call to cache, be careful about two seperate calls
+;; TODO: only get .el files when fetching directory for submodules
+;; TODO: add submodules to load-path so one can use require
+;; TODO: rename :sub to :ext
 
 (defgroup enable nil
   "A configuration manager."

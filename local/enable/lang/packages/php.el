@@ -113,10 +113,11 @@ function."
     (setq phpunit-hide-compilation-buffer-is-reset nil)))
 
 (bind (setq phpunit-mode-map (make-sparse-keymap))
-      "t" #'phpunit-current-test
-      "c" #'phpunit-current-class
-      "p" #'phpunit-current-project
-      "g" #'phpunit-group)
+      (bind-prefix (keys-make-local-prefix "t")
+	"t" #'phpunit-current-test
+	"c" #'phpunit-current-class
+	"p" #'phpunit-current-project
+	"g" #'phpunit-group))
 
 (define-minor-mode phpunit-mode
   "PHPUnit minor mode"
@@ -136,12 +137,7 @@ function."
   
   :config
   (setq phpunit-colorize 'auto
-	phpunit-hide-compilation-buffer-if-all-tests-pass t)
-
-  :extend (php-mode)
-  (bind php-mode-map
-	(bind-prefix (keys-make-local-prefix)
-	  "t" phpunit-mode-map)))
+	phpunit-hide-compilation-buffer-if-all-tests-pass t))
 
 ;; NOTE: php-mode warns about function already compiled, can be ignored
 (use-package php-mode

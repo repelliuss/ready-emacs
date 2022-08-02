@@ -1,5 +1,17 @@
 ;;; org.el -*- lexical-binding: t; -*-
 
+(with-eval-after-load '@web
+  (defun @org-insert-link-html (url)
+    (interactive (list (read-string "URL: ")))
+    (@web-download-async url
+			 (lambda (file-path title)
+			   (org-insert-link
+			    nil
+			    (concat "html:" file-path)
+			    title)))))
+
+;;; GTD WORKFLOW STARTS HERE
+
 (defvar rps-org-gtd-dir (expand-file-name (concat org-directory "roam/gtd/")))
 (defvar rps-org-gtd-log-dir (expand-file-name (concat org-directory "roam/log/")))
 

@@ -57,8 +57,6 @@
     "a" #'consult-apropos                ;BUG: remapping above doesn't work
     "M" #'consult-man))
   
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-
   (setq register-preview-delay 0
         register-preview-function #'consult-register-format)
   (advice-add #'register-preview :override #'consult-register-window)
