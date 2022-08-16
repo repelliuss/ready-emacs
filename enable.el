@@ -7,6 +7,8 @@
 ;; TODO: only get .el files when fetching directory for submodules
 ;; TODO: add submodules to load-path so one can use require
 ;; TODO: rename :sub to :ext
+;; TODO: show not enabled packages and extensions
+;; TODO: maybe add support for not loading duplicates?
 
 (defgroup enable nil
   "A configuration manager."
@@ -72,6 +74,7 @@
     (enable--build-module module)))
 
 ;; TODO: add support for package-name* -suffix +suffix feat
+;; TODO: shouldn't modify global variable copy it
 (defun enable--modify-list (var modifications)
   (mapc (lambda (subarg)
           (cond

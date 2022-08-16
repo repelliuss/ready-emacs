@@ -14,9 +14,12 @@
 
 (enable-early
  :init all
+
+ :theme
+ :pkg (modus-themes)
  
  :ui
  :sub (font frame)
- :pkg (modus-themes mood-line))
+ :pkg (mood-line))
 
 ;; TODO: meow SPC G
