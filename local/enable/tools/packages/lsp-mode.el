@@ -4,6 +4,9 @@
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :attach (typescript-mode)
+  (add-hook 'typescript-mode-hook #'lsp-deferred)
+  
   :attach (php-mode)
   (add-hook 'php-mode-hook #'lsp-deferred)
 

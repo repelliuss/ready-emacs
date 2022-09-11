@@ -3,7 +3,8 @@
 (use-package magit
   :attach (rps/editor/open)
   (bind rps/open-map
-	"g" #'magit-dispatch)
+	"g" #'magit-status
+	"G" #'magit-dispatch)
   
   :init
   (bind prog-mode-map
