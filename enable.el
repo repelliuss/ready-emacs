@@ -15,7 +15,6 @@
   :group 'convenience
   :prefix "enable-")
 
-;; TODO: handle nil
 (defcustom enable-dir (concat user-emacs-directory "enable/")
   "Storage."
   :type 'file)
@@ -24,7 +23,6 @@
   "Where modules should be looked for."
   :type 'file)
 
-;; FIXME: doesn't create dir
 (defcustom enable-cache-dir (concat enable-dir "cache/")
   "Where cache files are stored."
   :type 'file)
@@ -32,6 +30,16 @@
 (defcustom enable-loader #'enable-using-eval
   "Load style of enable."
   :type #'function)
+
+;; TODO: docstring and type
+(defcustom enable-category-primary '("packages" . "pkg")
+  "Name and tag for primary configuration directory."
+  :type 'list)
+
+;; TODO: docstring and type
+(defcustom enable-category-secondary '("submodules" . "sub")
+  "Name and tag for secondary configuration directory."
+  :type 'list)
 
 (defvar enable--cache-file (concat enable-cache-dir "enable-cache.el"))
 (defvar enable--cache-state-file (concat enable-cache-dir "enable-cache-state.el"))
@@ -41,6 +49,10 @@
 (defun enable--get-files (&optional path)
   (directory-files (concat enable-modules-dir path)
                    nil directory-files-no-dot-files-regexp))
+
+(defun enable--ensure-module-categories (module-name)
+  (dolist (category (list enable-category-primary enable-category-secondary))
+    (make-directory (concat enable-modules-dir module-name "/" (car category)) 'with-parents)))
 
 (defvar enable--modules (mapcar (lambda (module-name)
                                   (intern (concat ":" (file-name-sans-extension module-name))))
@@ -204,13 +216,14 @@
 
 ;;;###autoload
 (defun enable-init (&optional pkg-defaults)
+  (dolist (dir (list enable-dir enable-modules-dir enable-cache-dir))
+    (make-directory dir 'with-parents))
   (enable--make-pkg-defaults pkg-defaults)
   (dolist (module enable--modules)
-    (let ((submodules))
-      (eval `(defvar ,(intern (concat "enable--"
-                                      (substring (symbol-name module) 1)
-                                      "-sub-all"))
+    (let ((submodules)
+	  (module-name (substring (symbol-name module) 1)))
+      (enable--ensure-module-categories module-name)
+      (eval `(defvar ,(intern (concat "enable--" module-name "-sub-all"))
                ',(mapcar (lambda (submodule)
                            (intern (file-name-sans-extension submodule)))
-                         (enable--get-files (concat (substring (symbol-name module) 1)
-                                                    "/submodules/"))))))))
+                         (enable--get-files (concat module-name "/submodules/"))))))))
