@@ -8,8 +8,8 @@
     (re-search-forward "<title[^>]*>\\([^<]*\\)</title>" nil t 1)
     (substring-no-properties (match-string 1))))
 
+;; TODO: documents should be a variable
 (setq @html-dir (expand-file-name "~/documents/html/"))
-(make-directory @html-dir 'with-parents)
 
 (defun @web--download-url-callback (status url dir)
   (unless (plist-get status :error)
@@ -39,6 +39,7 @@
 
 (defun @web-download-async (url &rest callbacks)
   (interactive (list (read-string "URL: ")))
+  (make-directory @html-dir 'with-parents)
   (url-retrieve url #'@web--download-callback
 		(list url @html-dir (current-buffer) callbacks)))
 
