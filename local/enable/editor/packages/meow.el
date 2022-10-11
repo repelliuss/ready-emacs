@@ -31,25 +31,23 @@
   (if-let ((project (project-current)))
       (call-interactively #'project-async-shell-command)
     (call-interactively #'async-shell-command)))
-
+	
 (use-package meow
   :demand t
   :config
   (bind
+   (meow-keymap
+    [remap describe-key] nil)		; fixes describe-key in insert-mode
    (meow-motion-state-keymap
-    "C-j" #'meow-temp-normal)
+    "I" #'meow-temp-normal)
    (meow-insert-state-keymap
-    "C-j" #'meow-insert-exit
-    "SPC" #'self-insert-command)
+    "M-i" #'meow-insert-exit
+    "SPC" #'self-insert-command
+    "C-SPC" rps/leader-map)
    (rps/leader-map
-    "/" (lambda ()
-	  (interactive)
-	  (meow-keypad-start-with "C-c"))
-    "SPC" (lambda ()
+    "SPC" (defun local ()
 	    (interactive)
-	    (let ((overriden (key-binding (kbd "C-c SPC"))))
-	      (if (fboundp overriden)
-		  (funcall overriden))))
+	    (meow-keypad-start-with local-leader-prefix))
     "1" #'meow-digit-argument
     "2" #'meow-digit-argument
     "3" #'meow-digit-argument
@@ -93,6 +91,7 @@
     "h" #'meow-left
     "H" #'meow-left-expand
     "i" #'meow-insert-at-point
+    "I" #'meow-insert-at-point
     "o" #'meow-open-below
     "O" #'meow-open-above
     "j" #'meow-next
@@ -154,15 +153,6 @@
   ;; We modified meow-normal-state-keymap
   (set-keymap-parent meow-beacon-state-keymap rps/normal-map)
 
-  ;; Meow specific keybindings
-  (meow-motion-overwrite-define-key
-   '("j" . meow-next)
-   '("k" . meow-prev))
-  
-  (meow-leader-define-key
-   '("j" . "H-j")
-   '("k" . "H-k"))
-  
   (setq meow--kbd-undo "C-x u"		; REVIEW: do I really change the binding?
 	meow-use-clipboard t
 	meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
