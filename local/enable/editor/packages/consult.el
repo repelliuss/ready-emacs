@@ -127,8 +127,8 @@
 
   :extend (org)
   (bind org-mode-map
-	(bind-prefix (keys-make-local-prefix)
-	  "." #'consult-org-heading))
+	(bind-local
+	    "." #'consult-org-heading))
   
   (defvar consult--org-source
     `(:name "Org"
