@@ -64,7 +64,6 @@
     "." #'find-file
     "," #'switch-to-buffer)
    ((setq meow-normal-state-keymap rps/normal-map)
-    "C-j" #'meow-insert
     "SPC" rps/leader-map
     "0" #'meow-expand-0
     "9" #'meow-expand-9
@@ -81,20 +80,19 @@
     "." #'meow-bounds-of-thing
     "[" #'meow-beginning-of-thing
     "]" #'meow-end-of-thing
-    "I" #'meow-insert
-    "b" #'meow-back-word
-    "B" #'meow-back-symbol
+    "b" #'meow-back-symbol
+    "B" #'meow-back-word
     "c" #'meow-change
     "C" #'meow-comment
-    "w" #'meow-next-word
-    "W" #'meow-next-symbol
+    "w" #'meow-next-symbol
+    "W" #'meow-next-word
     "f" #'meow-find
     "F" #'meow-find-expand
     "g" #'meow-cancel
     "G" #'meow-grab
     "h" #'meow-left
     "H" #'meow-left-expand
-    "i" #'meow-append
+    "i" #'meow-insert-at-point
     "o" #'meow-open-below
     "O" #'meow-open-above
     "j" #'meow-next
@@ -130,8 +128,8 @@
     "Q" #'meow-end-or-call-kmacro
     "z" #'meow-kmacro-matches
     "Z" #'meow-kmacro-lines
-    "m" #'meow-mark-word
-    "M" #'meow-mark-symbol
+    "m" #'meow-mark-symbol
+    "M" #'meow-mark-word
     "x" #'meow-line
     "X" #'meow-line-expand
     "s" #'meow-save
@@ -173,6 +171,16 @@
 
   (funcall-consider-daemon #'meow-global-mode)
 
+  (defun meow-insert-at-point ()
+    "Switch to INSERT state."
+    (interactive)
+    (if meow--temp-normal
+	(progn
+          (message "Quit temporary normal mode")
+          (meow--switch-state 'motion))
+      (meow--cancel-selection)
+      (meow--switch-state 'insert)))
+
   :extend (embark)
   (defun meow-cancel-noerr (&rest _)
     (ignore-errors (meow-cancel)))
@@ -182,10 +190,10 @@
     (advice-add fn :before #'meow-cancel-noerr))
   
   :extend (org-capture)
-  (add-hook 'org-capture-mode-hook #'meow-insert)
+  (add-hook 'org-capture-mode-hook #'meow-insert-at-point)
   
   :extend (corfu)
-  (add-hook 'completion-in-region-mode-hook #'meow-insert)
+  (add-hook 'completion-in-region-mode-hook #'meow-insert-at-point)
   
   :extend (which-key)
   (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))
