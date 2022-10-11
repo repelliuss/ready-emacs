@@ -9,6 +9,7 @@
 ;; TODO: rename :sub to :ext
 ;; TODO: show not enabled packages and extensions
 ;; TODO: maybe add support for not loading duplicates?
+;; TODO: ordered files should rip their order
 
 (defgroup enable nil
   "A configuration manager."
