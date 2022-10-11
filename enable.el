@@ -1,7 +1,7 @@
 ;;; enable.el -*- lexical-binding: t; -*-
 
 ;; FIXME: defaults indents one space in call to enable
-;; TODO: add support to group by directories
+;; TODO: add support to group by nested directories in packages and submodules
 ;; TODO: make it quiet
 ;; TODO: switch to enable-using-eval after first call to cache, be careful about two seperate calls
 ;; TODO: only get .el files when fetching directory for submodules
@@ -10,6 +10,7 @@
 ;; TODO: show not enabled packages and extensions
 ;; TODO: maybe add support for not loading duplicates?
 ;; TODO: ordered files should rip their order
+;; TODO: add support for bisect
 
 (defgroup enable nil
   "A configuration manager."
