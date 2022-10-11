@@ -6,7 +6,9 @@
 (defcustom local-leader-prefix "C-c"
   "Local leader prefix.")
 
-(bind (current-global-map)
+(setq rps/normal-map (make-sparse-keymap))
+
+(bind rps/normal-map
       "C-SPC" (setq rps/leader-map (make-sparse-keymap)))
 
 (defun keys-make-local-prefix (&optional key)
