@@ -21,6 +21,10 @@
   "Default light theme."
   :type 'symbol)
 
+(defcustom theme-preferred 'modus-themes
+  "Theme to be loaded with #'maybe-load-theme."
+  :type 'symbol)
+
 (defcustom cache-dir (expand-file-name (concat user-emacs-directory "cache/"))
   "Where cache files are stored."
   :type 'file)
@@ -28,4 +32,8 @@
 ;; TODO: use more local
 (defcustom local-dir (expand-file-name (concat user-emacs-directory "local/"))
   "Where user files stored."
+  :type 'file)
+
+(defcustom home-dir (expand-file-name "~/")
+  "Where home directory is."
   :type 'file)

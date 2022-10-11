@@ -2,10 +2,6 @@
 
 (use-package modus-themes
   :demand t
-  :attach (rps/ui/theme)
-  (setq theme-default-light 'modus-operandi
-        theme-default-dark 'modus-vivendi)
-  
   :init
   (setq modus-themes-inhibit-reload t
         modus-themes-success-deuteranopia t
@@ -26,6 +22,4 @@
   (modus-themes-load-themes)
   
   :config
-  (if (eq theme-preferred-background 'light)
-      (modus-themes-load-operandi)
-    (modus-themes-load-vivendi)))
+  (theme-load-if-preferred 'modus-themes 'modus-operandi 'modus-vivendi))

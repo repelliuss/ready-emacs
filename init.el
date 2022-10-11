@@ -59,6 +59,10 @@
        hide-mode-line)
  :sub (all -font -frame)
 
+ :theme
+ :pkg (nano-theme
+       tao-theme)
+
  :ux
  :pkg (which-key
        orderless
