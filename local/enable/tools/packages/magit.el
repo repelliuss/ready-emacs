@@ -8,7 +8,7 @@
   
   :init
   (bind prog-mode-map
-	(bind-prefix (keys-make-local-prefix)
+	(bind-local
 	  "g" #'magit-file-dispatch))
   
   (setq magit-define-global-key-bindings nil

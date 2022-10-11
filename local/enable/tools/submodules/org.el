@@ -28,7 +28,7 @@
   :after org
   :config
   (bind org-mode-map
-	(bind-prefix (keys-make-local-prefix)
+	(bind-local
 	  "t" #'rps-org-gtd-todo
 	  "q" #'rps-consult-org-select-tags))
 

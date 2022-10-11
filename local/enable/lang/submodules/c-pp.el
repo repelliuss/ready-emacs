@@ -10,7 +10,7 @@
 (use-package cc-mode
   :config
   (bind (c-mode-map c++-mode-map)
-	(bind-prefix (keys-make-local-prefix)
+	(bind-local
 	  "C-S-o" #'ff-find-other-file
 	  "C-o" #'ff-find-other-file-other-window
 	  "o" #'c-set-offset)

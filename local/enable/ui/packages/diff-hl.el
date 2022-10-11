@@ -10,7 +10,7 @@
    
   :config
   (bind prog-mode-map
-	(bind-prefix (keys-make-local-prefix "d")
+	(bind-local "d"
     	  "RET" #'diff-hl-show-hunk
 	  "[" #'diff-hl-previous-hunk
 	  "]" #'diff-hl-next-hunk

@@ -113,7 +113,7 @@ function."
     (setq phpunit-hide-compilation-buffer-is-reset nil)))
 
 (bind (setq phpunit-mode-map (make-sparse-keymap))
-      (bind-prefix (keys-make-local-prefix "t")
+      (bind-local "t"
 	"t" #'phpunit-current-test
 	"c" #'phpunit-current-class
 	"p" #'phpunit-current-project

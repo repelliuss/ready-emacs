@@ -4,12 +4,12 @@
   :after org
   :init
   (bind org-mode-map
-	(bind-prefix (keys-make-local-prefix)
+	(bind-local
 	  "p" #'org-tree-slide-mode))
 
   :config
   (bind org-tree-slide-mode-map
-	(bind-prefix (keys-make-local-prefix)
+	(bind-local
 	  "n" #'org-tree-slide-move-next-tree
 	  "p" #'org-tree-slide-move-previous-tree
 	  "q" #'org-tree-slide-mode
