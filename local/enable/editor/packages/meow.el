@@ -153,6 +153,9 @@
   ;; https://github.com/meow-edit/meow/discussions/190#discussioncomment-2095009
   (add-to-list 'meow-keymap-alist (cons 'leader rps/leader-map))
 
+  ;; We modified meow-normal-state-keymap
+  (set-keymap-parent meow-beacon-state-keymap rps/normal-map)
+
   ;; Meow specific keybindings
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
