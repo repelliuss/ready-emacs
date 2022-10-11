@@ -8,7 +8,7 @@
   ;; REVIEW: is org-remark still noisy at upstream
 
   :init
-  (setq org-remark-notes-file-path (concat org-misc-dir "org-remark.org"))
+  (setq org-remark-notes-file-path (concat org-directory "org-remark.org"))
 
   :config
   (bind

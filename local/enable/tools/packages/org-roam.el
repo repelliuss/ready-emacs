@@ -24,12 +24,10 @@
 						 ("jm" "Tomorrow" (org-roam-dailies-goto-tomorrow 1)))))
   
   :init
-  (setq org-roam-directory (concat org-directory "roam/"))
-  (setq org-roam-dailies-directory "journal/")
-
-  (setq org-roam-node-display-template
-      (concat "${title:*} "
-              (propertize "${tags:10}" 'face 'org-tag)))
+  (setq org-roam-directory (concat org-directory "roam/")
+	org-roam-dailies-directory "journal/"
+	org-roam-node-display-template (concat "${title:*} "
+					       (propertize "${tags:10}" 'face 'org-tag)))
 
   :config
   (org-roam-db-autosync-mode 1)
@@ -56,10 +54,7 @@
 	      #'prepare-capture)
 
   (defun remove-capture (&rest _)
-    (remove-hook 'org-capture-after-finalize-hook
-		 #'remove-capture)
-    (remove-hook 'org-capture-mode-hook
-		 #'delete-other-windows)
-    (remove-hook 'org-capture-after-finalize-hook
-		 #'delete-frame)))
+    (remove-hook 'org-capture-after-finalize-hook #'remove-capture)
+    (remove-hook 'org-capture-mode-hook #'delete-other-windows)
+    (remove-hook 'org-capture-after-finalize-hook #'delete-frame)))
 
