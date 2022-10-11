@@ -10,8 +10,6 @@
 
 (load (concat user-emacs-directory "enable") nil 'nomessage)
 
-(enable-init)
-
 (enable-early
  :init all
 

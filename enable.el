@@ -172,15 +172,6 @@
     (kill-buffer))
   (macroexp-progn (macroexpand `(enable--process ,args))))
 
-(defun enable--make-pkg-defaults (pkg-defaults)
-  (dolist (pkg-assoc pkg-defaults)
-    (let ((module (car pkg-assoc))
-          (defaults (cdr pkg-assoc)))
-      (eval `(defvar ,(intern (concat "enable--"
-                                      (symbol-name module)
-                                      "-pkg-defaults"))
-               ',defaults)))))
-
 ;;; (current-buffer) visits cache-file
 (defun enable-using-cache (file-path)
   (let* ((file-buffer (find-file-noselect file-path nil 'literal)))
@@ -214,16 +205,26 @@
       `(enable--with-cache ,enable--early-cache-file ,enable--early-cache-state-file ,args)
     `(enable--with-eval ,args ,enable--early-cache-state-file)))
 
+;;; Below code will only create necessary directories and variables!
+
 ;;;###autoload
-(defun enable-init (&optional pkg-defaults)
-  (dolist (dir (list enable-dir enable-modules-dir enable-cache-dir))
-    (make-directory dir 'with-parents))
-  (enable--make-pkg-defaults pkg-defaults)
-  (dolist (module enable--modules)
+(defun enable-init-pkg-defaults (pkg-defaults)
+  (dolist (pkg-assoc pkg-defaults)
+    (let ((module (car pkg-assoc))
+          (defaults (cdr pkg-assoc)))
+      (eval `(defvar ,(intern (concat "enable--"
+                                      (symbol-name module)
+                                      "-pkg-defaults"))
+               ',defaults)))))
+
+(dolist (dir (list enable-dir enable-modules-dir enable-cache-dir))
+  (make-directory dir 'with-parents))
+
+(dolist (module enable--modules)
     (let ((submodules)
 	  (module-name (substring (symbol-name module) 1)))
       (enable--ensure-module-categories module-name)
       (eval `(defvar ,(intern (concat "enable--" module-name "-sub-all"))
                ',(mapcar (lambda (submodule)
                            (intern (file-name-sans-extension submodule)))
-                         (enable--get-files (concat module-name "/submodules/"))))))))
+                         (enable--get-files (concat module-name "/submodules/")))))))
