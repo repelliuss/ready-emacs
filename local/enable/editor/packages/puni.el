@@ -11,7 +11,8 @@
 	"r" #'puni-raise
 	"c" #'puni-convolute
 	"t" #'puni-transpose
-	"u" #'puni-splice)
+	"u" #'puni-splice
+	"z" #'puni-squeeze)
   
   :extend (meow)
   (add-to-list 'meow-selection-command-fallback '(meow-kill . puni-kill-line))
@@ -44,5 +45,8 @@ Continue? "))
 
   (bind rps/normal-map
 	"d" #'meow-puni-kill-whole-line
-	"D" #'meow-puni-kill))
+	"D" #'meow-puni-kill)
+
+  :extend (which-key)
+  (add-to-list 'which-key-replacement-alist '((nil . "^puni-") . (nil . ""))))
 
