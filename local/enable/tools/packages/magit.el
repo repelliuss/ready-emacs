@@ -11,7 +11,7 @@
 	(bind-prefix (keys-make-local-prefix)
 	  "g" #'magit-file-dispatch))
   
-  (unbind-key "C-c M-g")		; magit file dispatch key
+  (setq magit-define-global-key-bindings nil)
   
   :config
   (add-hook 'git-commit-mode-hook (defun meow-insert-at-eol ()
