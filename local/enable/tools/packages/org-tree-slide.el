@@ -20,7 +20,7 @@
 
   (advice-add #'org-tree-slide-mode
 	      :after
-	      (defun @org-tree-slide-prepare (mode-arg)
+	      (defun /org-tree-slide-prepare (mode-arg)
 		(if (fboundp #'cursor-hide) (cursor-hide))
 		(setq text-scale-mode-amount 3)
 		(text-scale-mode mode-arg))))

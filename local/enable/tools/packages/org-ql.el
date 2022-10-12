@@ -2,17 +2,14 @@
 
 (use-package org-ql
   :attach (org-agenda)
-  (setq rps-view-cases
-	(append rps-view-cases
+  (setq /org-gtd-views
+	(append /org-gtd-views
 		'(("Tasks" (org-ql-view "Tasks"))
 		  ("Stuck Projects" (org-ql-view "Stuck Projects"))
 		  ("Overview Daily" (org-ql-view "Overview Daily"))
 		  ("Overview Weekly" (org-ql-view "Overview Weekly"))
 		  ("Logs" (org-ql-view "Logs"))
 		  ("Education" (org-ql-view "Education")))))
-  
-  :config
-  (add-to-list 'display-buffer-alist `("^\\*Org QL View:" display-buffer-same-window))
 
   (setq org-ql-views `(("Tasks"
                         :buffers-files org-agenda-files
@@ -46,4 +43,7 @@
                         :buffers-files org-agenda-files
                         :query (and (todo) (tags "edu"))
                         :sort (date)
-                        :super-groups ((:auto-planning))))))
+                        :super-groups ((:auto-planning)))))
+  
+  :config
+  (add-to-list 'display-buffer-alist `("^\\*Org QL View:" display-buffer-same-window)))

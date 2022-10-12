@@ -8,11 +8,11 @@
 	  "c" #'rps-org-capture
 	  "g" #'rps-org-capture-visit))
 
-  (defvar rps-org-capture-templates
+  (defvar /org-gtd-capture-templates
     '(("s" "stuff" (org-capture nil "s"))
       ("p" "project" (org-capture nil "p"))))
 
-  (defvar rps-org-capture-goto-templates
+  (defvar /org-gtd-capture-goto-templates
     '(("2" "Last 24h" (find-file (concat rps-org-gtd-dir "24h.org")))
       ("d" "Daybook" (find-file (concat rps-org-gtd-dir "daybook.org")))
       ("f" "Future" (find-file (concat rps-org-gtd-dir "future.org")))
@@ -41,7 +41,7 @@
   (defun rps-org-capture ()
     (interactive)
     (let* ((default-templates org-capture-templates)
-           (org-capture-templates rps-org-capture-templates)
+           (org-capture-templates /org-gtd-capture-templates)
            (template (rps--org-capture-select-template))
            (org-capture-templates default-templates))
       (when (consp template)
@@ -49,7 +49,7 @@
 
   (defun rps-org-capture-visit ()
     (interactive)
-    (let* ((org-capture-templates rps-org-capture-goto-templates)
+    (let* ((org-capture-templates /org-gtd-capture-goto-templates)
            (template (rps--org-capture-select-template)))
       (when (consp template)
         (eval (nth 2 template)))))

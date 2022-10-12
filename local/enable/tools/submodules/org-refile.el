@@ -98,7 +98,7 @@
   (defun rps--org-gtd-kill-overdue-logs ()
     (interactive)
     (with-current-buffer (find-file-noselect (concat rps-org-gtd-dir
-                                                     rps-org-gtd-log-file))
+                                                     /org-gtd-log-file))
       (goto-char (point-min))
       (let ((continue t)
             (now (current-time)))
@@ -119,8 +119,8 @@
       (org-entry-put nil "COMPLETE" (rps--org-inactive-time-stamp-now))
       (rps--org-gtd-kill-overdue-logs)
       (let ((org-refile-keep t))
-        (org-refile nil nil (list rps-org-gtd-log-file
-                                  (concat rps-org-gtd-dir rps-org-gtd-log-file)
+        (org-refile nil nil (list /org-gtd-log-file
+                                  (concat rps-org-gtd-dir /org-gtd-log-file)
                                   nil nil)))))
 
   (defun rps--org-inactive-time-stamp-now ()

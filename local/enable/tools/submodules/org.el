@@ -18,7 +18,7 @@
 (defvar rps-org-gtd-project-file "project.org")
 (defvar rps-org-gtd-stuff-file "stuff.org")
 
-(defvar rps-org-gtd-log-file "24h.org")
+(defvar /org-gtd-log-file "24h.org")
 (defvar rps-org-gtd-log-last-days 1)
 (defvar rps-org-gtd-log-states '("DONE"))
 

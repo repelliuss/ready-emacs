@@ -8,7 +8,7 @@
     (bind-autoload "org-agenda"
       "v" #'rps-org-gtd-views)))
 
-  (defvar rps-view-cases
+  (defvar /org-gtd-views
     '(("Agenda" (org-agenda nil "a"))
       ("Daily" (org-agenda nil "d"))))
 
@@ -37,7 +37,7 @@
 
   (setq org-agenda-files (mapcar (lambda (file) (concat rps-org-gtd-dir file))
                                  (list rps-org-gtd-project-file
-                                       rps-org-gtd-log-file
+                                       /org-gtd-log-file
                                        "todo.org"
                                        "daybook.org"
                                        "reminder.org"
@@ -80,10 +80,10 @@
   (defun rps-org-gtd-views (view)
     (interactive
      (list
-      (completing-read "View: " (mapcar #'car rps-view-cases)
+      (completing-read "View: " (mapcar #'car /org-gtd-views)
                        nil t nil nil "Daily")))
     (eval `(pcase ,view
-             ,@rps-view-cases)))
+             ,@/org-gtd-views)))
 
   (defun rps-org-export-agenda ()
     (interactive)
@@ -109,6 +109,6 @@
 
   (defun rps--org-gtd-log-has-item-p ()
     (with-current-buffer (find-file-noselect (concat rps-org-gtd-dir
-                                                     rps-org-gtd-log-file))
+                                                     /org-gtd-log-file))
       (goto-char (point-min))
       (org-forward-heading-same-level 1))))

@@ -2,15 +2,15 @@
 
 (use-package org-gamedb
   :init
-  (autoload #'rps-org-gamedb-game-capture "org-gamedb")
+  (autoload #'/org-gamedb-capture-game "org-gamedb")
   
   :config
-  (defun rps-org-gamedb-game-capture (entry)
+  (defun /org-gamedb-capture-game (entry)
     (org-insert-heading)
     (insert (concat " " entry))
     (call-interactively #'org-gamedb-games-query))
 
   :attach (org-capture)
   (dolist (elt '(("l" "Log")
-		 ("lg" "Game" (rps-org-capture-log #'rps-org-gamedb-game-capture "game.org" "Game: "))))
-    (add-to-list 'rps-org-capture-templates elt)))
+		 ("lg" "Game" (rps-org-capture-log #'/org-gamedb-capture-game "game.org" "Game: "))))
+    (add-to-list '/org-gtd-capture-templates elt)))

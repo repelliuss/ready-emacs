@@ -5,7 +5,7 @@
   :attach (org-capture)
   (dolist (elt '(("l" "Log")
 		 ("lw" "Watch" (rps-org-capture-log #'rps-orgmdb-capture "watch.org" "Title: "))))
-    (add-to-list 'rps-org-capture-templates elt))
+    (add-to-list '/org-gtd-capture-templates elt))
   
   :init
   (autoload #'rps-orgmdb-capture "orgmdb")
