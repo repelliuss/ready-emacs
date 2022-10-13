@@ -13,19 +13,40 @@
 
 (defvar /org-gtd-dir (expand-file-name (concat org-directory "gtd/")))
 
-(defvar /org-gtd-project-file "project.org")
+(defvar /org-gtd-project-file '("project.org"
+				"#+startup: showall hideblocks
+#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r) | DONE(d) CANCELED(c)
 
-(defvar /org-gtd-stuff-file "stuff.org")
+#+begin: columnview :id global :indent t :skip-empty-rows t
+#+end:
 
-(defvar /org-gtd-log-file "24h.org")
+#+begin: clocktable :scope file-with-archives :tstart \"<-1m>\"
+#+end:"))
 
-(defvar /org-gtd-daybook-file "daybook.org")
+(defvar /org-gtd-stuff-file '("stuff.org"
+			      "#+startup: content
+#+todo: STUFF(_) | CANCELED(c)
+#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r)"))
 
-(defvar /org-gtd-todo-file "todo.org")
+(defvar /org-gtd-log-file '("24h.org"))
 
-(defvar /org-gtd-future-file "future.org")
+(defvar /org-gtd-daybook-file '("daybook.org"
+				"#+startup: showall"))
 
-(defvar /org-gtd-reminder-file "reminder.org")
+(defvar /org-gtd-todo-file '("todo.org"
+			     "#+startup: showall hideblocks
+#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r) | DONE(d) CANCELED(c)
+
+#+begin: clocktable :scope file-with-archives :tstart \"<-1m>\"
+#+end:"))
+
+(defvar /org-gtd-future-file '("future.org"
+			       "#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r) | DONE(d) CANCELED(c)"))
+
+(defvar /org-gtd-reminder-file '("reminder.org"
+				 "#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r) | DONE(d) CANCELED(c)"))
+
+(defvar /org-gtd-other-files nil)
 
 (defvar /org-gtd-log-last-days 1)
 
@@ -44,6 +65,13 @@
 	/org-gtd-future-file
 	/org-gtd-reminder-file))
 
+(defun /org-gtd--special-files-name ()
+  (mapcar #'car (/org-gtd--special-files)))
+
+(defun /org-gtd--special-files-path ()
+  (mapcar (lambda (file) (concat /org-gtd-dir (car file)))
+	  (/org-gtd--special-files)))
+
 ;;;
 ;;; Capture
 ;;;
@@ -59,23 +87,23 @@
     ("jm" "Tomorrow" (org-roam-dailies-capture-tomorrow 1))
     ("l" "Log")
     ("lg" "Game" (/org-gtd-capture-log #'/org-gtd--capture-game "game.org" "Game: "))
-    ("lw" "Watch" (/org-gtd-capture-log #'/org-gtd--capture-watch "watch.org" "Title: "))))
+    ("lv" "Video" (/org-gtd-capture-log #'/org-gtd--capture-watch "video.org" "Title: "))))
 
 (defvar /org-gtd-capture-goto-templates
-  '(("2" "Last 24h" (find-file (concat /org-gtd-dir /org-gtd-log-file)))
-    ("d" "Daybook" (find-file (concat /org-gtd-dir /org-gtd-daybook-file)))
-    ("f" "Future" (find-file (concat /org-gtd-dir /org-gtd-future-file)))
+  '(("2" "Last 24h" (find-file (concat /org-gtd-dir (car /org-gtd-log-file))))
+    ("d" "Daybook" (find-file (concat /org-gtd-dir (car /org-gtd-daybook-file))))
+    ("f" "Future" (find-file (concat /org-gtd-dir (car /org-gtd-future-file))))
     ("p" "Project" (let ((project-name (/org-gtd-get-project-name)))
-                     (find-file (concat /org-gtd-dir /org-gtd-project-file))
+                     (find-file (concat /org-gtd-dir (car /org-gtd-project-file)))
                      (when-let ((project-marker (org-find-exact-headline-in-buffer project-name)))
                        (goto-char project-marker)
                        (org-narrow-to-subtree))))
-    ("r" "Reminder" (find-file (concat /org-gtd-dir /org-gtd-reminder-file)))
-    ("s" "Stuff" (find-file (concat /org-gtd-dir /org-gtd-stuff-file)))
-    ("t" "Todo" (find-file (concat /org-gtd-dir /org-gtd-todo-file)))
+    ("r" "Reminder" (find-file (concat /org-gtd-dir (car /org-gtd-reminder-file))))
+    ("s" "Stuff" (find-file (concat /org-gtd-dir (car /org-gtd-stuff-file))))
+    ("t" "Todo" (find-file (concat /org-gtd-dir (car /org-gtd-todo-file))))
     ("l" "Logs")
     ("lg" "Game" (find-file (concat /org-gtd-dir "game.org")))
-    ("lw" "Watch" (find-file (concat /org-gtd-dir "watch.org")))
+    ("lv" "Video" (find-file (concat /org-gtd-dir "video.org")))
     ("lb" "Book" (find-file (concat /org-gtd-dir "book.org")))
     ("lm" "Music" (find-file (concat /org-gtd-dir "music.org")))
     ("n" "Note" (org-roam-capture '(4) "n"))
@@ -86,7 +114,7 @@
     ("jm" "Tomorrow" (org-roam-dailies-goto-tomorrow 1))))
 
 (setq org-capture-templates `(("s" "stuff" entry
-                               (file ,(concat /org-gtd-dir /org-gtd-stuff-file))
+                               (file ,(concat /org-gtd-dir (car /org-gtd-stuff-file)))
                                "* STUFF %?")
                               ("p" "project" entry
                                #'/org-gtd--goto-project-or-new-in-stuff
@@ -132,7 +160,7 @@
                 ((org-agenda-overriding-header "")
                  (org-agenda-prefix-format '((todo . " %-9i ✅")))
                  (org-super-agenda-groups (if (/org-gtd--log-has-item-p)
-                                              '((:discard (:file-path /org-gtd-project-file))
+                                              '((:discard (:file-path (car /org-gtd-project-file)))
                                                 (:name "Last 24h" :todo "TODO"))
                                             '((:discard (:anything))))))))
          ((org-agenda-block-separator nil)))))
@@ -143,7 +171,7 @@
                       :sort (date)
                       :super-groups ((:auto-parent t)))
                      ("Stuck Projects"
-                      :buffers-files (lambda () (concat /org-gtd-dir /org-gtd-project-file))
+                      :buffers-files (lambda () (list (concat /org-gtd-dir (car /org-gtd-project-file))))
                       :query (and (todo "PROJECT") (not (children (todo))))
                       :sort (date)
                       :super-groups ((:auto-tags t)))
@@ -159,8 +187,7 @@
                       :super-groups ((:auto-parent t) (:auto-todo t)))
                      ("Logs"
 		      :buffers-files (lambda ()
-				       (let ((special-files (mapcar (lambda (file) (concat /org-gtd-dir file))
-								    (/org-gtd--special-files))))
+				       (let ((special-files (/org-gtd--special-files-path)))
 					 (seq-remove (lambda (file) (member file special-files))
 						     (directory-files /org-gtd-dir
 								      'absolute
@@ -191,8 +218,7 @@
 
 (setq org-clock-idle-time 10)
 
-(setq org-agenda-files (mapcar (lambda (file) (concat /org-gtd-dir file))
-			       (/org-gtd--special-files)))
+(setq org-agenda-files (/org-gtd--special-files-path))
 
 (setq org-refile-targets '((org-agenda-files :level . 0))
       org-refile-use-outline-path 'file)
@@ -209,10 +235,10 @@
       org-agenda-clockreport-parameter-plist (plist-put org-agenda-clockreport-parameter-plist :emphasize t))
 
 (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag))
-      org-roam-file-exclude-regexp /org-gtd-log-file)
+      org-roam-file-exclude-regexp (car /org-gtd-log-file))
 
 (setq org-super-agenda-unmatched-name "General"
-      org-super-agenda-groups `((:name "Anniversaries" :file-path ,(concat /org-gtd-dir /org-gtd-daybook-file))
+      org-super-agenda-groups `((:name "Anniversaries" :file-path ,(concat /org-gtd-dir (car /org-gtd-daybook-file)))
                                 (:name "Completed" :todo "DONE")
                                 (:name "Reminders" :todo "REMINDER")
                                 (:auto-parent t)))
@@ -237,7 +263,7 @@
 
 (defun /org-gtd--complete-project ()
   (let* ((org-refile-use-outline-path nil)
-	 (org-refile-targets (list (cons (concat /org-gtd-dir /org-gtd-project-file) (cons :level 1))))
+	 (org-refile-targets (list (cons (concat /org-gtd-dir (car /org-gtd-project-file)) (cons :level 1))))
          (existing-projects (mapcar (lambda (target)
 				      (replace-regexp-in-string "[[:space:]]*\\[.*\\]$" "" (car target)))
                                     (org-refile-get-targets)))
@@ -253,7 +279,7 @@
 (defun /org-gtd--goto-project-or-new-in-stuff (&rest _)
   (let ((project-name (/org-gtd--complete-project)))
     (set-buffer (find-file-noselect
-                 (concat /org-gtd-dir /org-gtd-stuff-file)))
+                 (concat /org-gtd-dir (car /org-gtd-stuff-file))))
     (if-let ((project-marker (org-find-exact-headline-in-buffer project-name)))
         (goto-char project-marker)
       (if-let ((project-marker (org-find-exact-headline-in-buffer /org-gtd-projects-header)))
@@ -269,12 +295,12 @@
 
 (defun /org-gtd--log-has-item-p ()
   (with-current-buffer (find-file-noselect (concat /org-gtd-dir
-                                                   /org-gtd-log-file))
+                                                   (car /org-gtd-log-file)))
     (goto-char (point-min))
     (org-forward-heading-same-level 1)))
 
 (defun /org-gtd--make-project-rfloc (project-name)
-  (let ((refile-file (concat /org-gtd-dir /org-gtd-project-file))
+  (let ((refile-file (concat /org-gtd-dir (car /org-gtd-project-file)))
         refile-pos)
     (with-current-buffer (find-file-noselect refile-file)
       (setq refile-pos (org-find-exact-headline-in-buffer project-name))
@@ -314,8 +340,8 @@
       (org-entry-put nil "CLOSED" (/org-gtd--inactive-time-stamp-now)))
     (/org-gtd-kill-overdue-logs)
     (let ((org-refile-keep t))
-      (org-refile nil nil (list /org-gtd-log-file
-                                (concat /org-gtd-dir /org-gtd-log-file)
+      (org-refile nil nil (list (car /org-gtd-log-file)
+                                (concat /org-gtd-dir (car /org-gtd-log-file))
                                 nil nil)))))
 
 (defun /org-gtd--inactive-time-stamp-now ()
@@ -353,10 +379,10 @@
   (let ((entry (read-string prompt))
         (path (concat /org-gtd-dir file)))
     (with-current-buffer (find-file-noselect path)
-      (goto-char (point-min))
+      (goto-char (point-max))
       (funcall func entry)
-      (call-interactively #'/org-gtd-todo)
       (org-id-get-create)
+      (call-interactively #'/org-gtd-todo)
       (save-buffer))))
 
 (defun /org-gtd-get-project-name ()
@@ -389,7 +415,7 @@
 
 (defun /org-gtd-process-heading ()
   (let ((done-p (org-entry-is-done-p))
-        (in-project-p (string= /org-gtd-project-file (buffer-name)))
+        (in-project-p (string= (car /org-gtd-project-file) (buffer-name)))
         (top-level-p (= 1 (org-current-level))))
     (if (and (not top-level-p) done-p in-project-p)
         (/org-gtd-bury-heading)
@@ -445,8 +471,9 @@
   (interactive "P")
   (org-todo arg)
   (when (string-prefix-p /org-gtd-dir default-directory)
-    (if (and (buffer-file-name) (not (member (file-name-nondirectory (buffer-file-name)) (/org-gtd--special-files))))
-	(when (org-entry-is-done-p)
+    (if (and (buffer-file-name) (not (member (file-name-nondirectory (buffer-file-name)) (/org-gtd--special-files-name))))
+	(if (not (org-entry-is-done-p))
+	    (org-entry-put nil "OPEN" (/org-gtd--inactive-time-stamp-now))
 	  (/org-gtd-bury-heading)
 	  (/org-gtd--copy-to-log 'log-entry))
       (if org-capture-mode (widen))
@@ -528,7 +555,7 @@
 ;;;###autoload
 (defun /org-gtd-kill-overdue-logs ()
   (interactive)
-  (with-current-buffer (find-file-noselect (concat /org-gtd-dir /org-gtd-log-file))
+  (with-current-buffer (find-file-noselect (concat /org-gtd-dir (car /org-gtd-log-file)))
     (goto-char (point-min))
     (let ((continue t)
           (now (current-time)))
@@ -542,5 +569,36 @@
             (setq continue nil)
           (org-cut-subtree))))
     (save-buffer)))
+
+(defun /org-gtd-init ()
+  (make-directory /org-gtd-dir 'with-parents)
+  (dolist (special-file (append (/org-gtd--special-files) /org-gtd-other-files))
+    (let* ((file-name (car special-file))
+	   (file-path (concat /org-gtd-dir file-name)))
+      (when (not (file-exists-p file-path))
+	(with-temp-buffer
+	  (insert (concat "#+title: " file-name "\n#+category: gtd\n"))
+	  (if-let ((props (cadr special-file)))
+	      (insert props))
+	  (write-file file-path))))))
+
+;; TODO: Remove from here
+(add-to-list '/org-gtd-other-files '("game.org"
+				     "#+filetags: game
+#+todo: PLAY(t) PLAYING(i) | LIKED(d) DISLIKED(b) STOPPED(c)"))
+
+(add-to-list '/org-gtd-other-files '("video.org"
+				     "#+filetags: video
+#+todo: WATCH(t) WATCHING(i) | LIKED(d) DISLIKED(b) STOPPED(c)"))
+
+(add-to-list '/org-gtd-other-files '("music.org"
+				     "#+filetags: music
+#+todo: LISTEN(t) | LIKED(d) DISLIKED(c) STOPPED(c)"))
+
+(add-to-list '/org-gtd-other-files '("book.org"
+				     "#+filetags: book
+#+todo: READ(t) READING(i) | LIKED(d) DISLIKED(c) STOPPED(c)"))
+
+(/org-gtd-init)
 
 (provide 'org-gtd)

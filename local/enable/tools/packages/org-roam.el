@@ -14,7 +14,7 @@
   
   (advice-add #'org-roam-protocol-open-ref :before #'/org-roam-protocol-capture-prepare)
 
-  (make-directory org-roam-directory 'with-parents)
+  (make-directory (concat org-roam-directory org-roam-dailies-directory) 'with-parents)
 
   (org-roam-db-autosync-mode 1)
 

@@ -143,7 +143,7 @@
     "\\" #'quoted-insert
     "$" #'project-aware-shell-command
     "&" #'project-aware-async-shell-command
-    "RET" #'presss-thing-at-point))
+    "RET" #'press-thing-at-point))
 
   ;; Make Meow use our leader keymap
   ;; Only leader map is capable of being changed this way(?)
