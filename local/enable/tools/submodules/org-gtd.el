@@ -15,7 +15,9 @@
 
 (defvar /org-gtd-project-file '("project.org"
 				"#+startup: showall hideblocks
-#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r) | DONE(d) CANCELED(c)
+#+todo: TODO(t) PENDING(p) | DONE(d) DELEGATED(D) CANCELED(c)
+#+todo: PROJECT(P) | DONE(d) CANCELED(c)
+#+todo: TODO(t) PROJECT(P) FUTURE(f) REMINDER(r)
 
 #+begin: columnview :id global :indent t :skip-empty-rows t
 #+end:
@@ -26,7 +28,7 @@
 (defvar /org-gtd-stuff-file '("stuff.org"
 			      "#+startup: content
 #+todo: STUFF(_) | CANCELED(c)
-#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r)"))
+#+todo: TODO(t) PROJECT(P) FUTURE(f) REMINDER(r)"))
 
 (defvar /org-gtd-log-file '("24h.org"))
 
@@ -35,16 +37,19 @@
 
 (defvar /org-gtd-todo-file '("todo.org"
 			     "#+startup: showall hideblocks
-#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r) | DONE(d) CANCELED(c)
+#+todo: TODO(t) PENDING(p) | DONE(d) DELEGATED(D) CANCELED(c)
+#+todo: TODO(t) PROJECT(P) FUTURE(f) REMINDER(r)
 
 #+begin: clocktable :scope file-with-archives :tstart \"<-1m>\"
 #+end:"))
 
 (defvar /org-gtd-future-file '("future.org"
-			       "#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r) | DONE(d) CANCELED(c)"))
+			       "#+todo: FUTURE(f) | CANCELED(c)
+#+todo: TODO(t) PROJECT(P) FUTURE(f) REMINDER(r)"))
 
 (defvar /org-gtd-reminder-file '("reminder.org"
-				 "#+todo: TODO(t) PROJECT(p) FUTURE(f) REMINDER(r) | DONE(d) CANCELED(c)"))
+				 "#+todo: REMINDER(r) | CANCELED(c)
+#+todo: TODO(t) PROJECT(P) FUTURE(f) REMINDER(r)"))
 
 (defvar /org-gtd-other-files nil)
 
@@ -201,13 +206,6 @@
                       :query (and (todo) (tags "edu"))
                       :sort (date)
                       :super-groups ((:auto-planning)))))
-
-(setq org-todo-keywords '((sequence "STUFF" "|" "DONE(d)")
-			  (sequence "PROJECT(p)" "|" "DONE(d)")
-			  (sequence "TODO(t)" "PENDING(p)" "|" "DONE(d)" "DELEGATED(D)" "CANCELED(c)")
-			  (sequence "REMINDER(r)" "|" "CANCELED(c)")
-			  (sequence "FUTURE(s)" "|" "CANCELED(c)")
-			  (sequence "TODO(t)" "|" "DONE(d)" "CANCELED(c)")))
 
 (setq org-tag-alist '((:startgroup) ("@computer" . ?c) ("@home" . ?h) ("@phone" . ?p) ("@errand" . ?e) (:endgroup)))
 
