@@ -12,5 +12,7 @@
   #+end_src
 
 - Font in ~font.el~ (currently Iosevka Term SS04) should be already installed.
+- (optional) Install Symbola font on Windows for missing icons.
 - (optional) ~fd~ (file finder) and ~rg~ (ripgrep: text finder) executable should be accessible through ~PATH~ environment variable. =Chocolatey= on Windows is good to get software.
 - (optional) On =Windows=, set =HOME= variable to your liking.
+  

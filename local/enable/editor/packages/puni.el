@@ -44,8 +44,8 @@ Continue? "))
           (kill-whole-line)))))
 
   (bind rps/normal-map
-	"d" #'meow-puni-kill-whole-line
-	"D" #'meow-puni-kill)
+	"d" #'meow-puni-kill
+	"D" #'meow-puni-kill-whole-line)
 
   :extend (which-key)
   (add-to-list 'which-key-replacement-alist '((nil . "^puni-") . (nil . ""))))
