@@ -1,5 +1,8 @@
 ;;; pass.el -*- lexical-binding: t; -*-
 
+;;; Needs "PASSWORD_STORE_DIR" env variable to be set. See pass-fix-env submodule.
+;;; Depends on progams gpg and pass most of the time.
+
 (use-package pass
   :init
   (bind rps/open-map

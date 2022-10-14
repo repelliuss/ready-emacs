@@ -15,6 +15,7 @@
   (setq org-directory (concat home-dir "org/")
 	org-id-locations-file (concat org-directory ".org-id-locations")
 	org-archive-location (concat org-directory "archive/archive_%s::datetree/")
+	org-persist-directory (concat cache-dir "org-persist/")
 	org-id-link-to-org-use-id t
 	org-ellipsis "…"
 	org-extend-today-until 2)

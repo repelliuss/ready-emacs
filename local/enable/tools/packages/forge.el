@@ -1,4 +1,6 @@
 ;;; forge.el -*- lexical-binding: t; -*-
 
 (use-package forge
-  :after magit)
+  :after magit
+  :init
+  (setq forge-database-file (concat cache-dir "forge-database.sqlite")))

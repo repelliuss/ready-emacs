@@ -7,10 +7,11 @@
   :attach (org)
   (bind org-mode-map
 	(bind-local
-	    "T" #'/org-gtd-select-multiple-tags
+	    "g a" #'/org-gtd-roam-attach-file
 	    "g e" #'/org-gtd-export-agenda
 	    "g k" #'/org-gtd-kill-overdue-logs
 	    "g z" #'/org-gtd-bury-heading)
+	[remap org-set-tags-command] #'/org-gtd-select-multiple-tags
 	[remap org-todo] #'/org-gtd-todo) ; bound to "t"
 
   :init

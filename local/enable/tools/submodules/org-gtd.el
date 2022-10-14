@@ -126,10 +126,10 @@
                                "* STUFF %?")))
 
 (setq org-roam-capture-templates `(("n" "note" plain "%?"
-                                    :if-new (file+head "note/${slug}.org"
+                                    :if-new (file+head "${slug}.org"
                                                        ,(concat "#+title: ${title}\n"
                                                                 "#+category: note\n"
-                                                                "#+date: %<%FT%T%z>"))
+                                                                "#+date: %<%FT%T%z>\n"))
                                     :unnarrowed t
                                     :empty-lines 1)))
 
@@ -193,7 +193,8 @@
                      ("Logs"
 		      :buffers-files (lambda ()
 				       (let ((special-files (/org-gtd--special-files-path)))
-					 (seq-remove (lambda (file) (member file special-files))
+					 (seq-remove (lambda (file) (or (member file special-files)
+									 (string-match-p "conflict" file)))
 						     (directory-files /org-gtd-dir
 								      'absolute
 								      directory-files-no-dot-files-regexp
@@ -240,6 +241,13 @@
                                 (:name "Completed" :todo "DONE")
                                 (:name "Reminders" :todo "REMINDER")
                                 (:auto-parent t)))
+
+(add-to-list 'display-buffer-alist
+             '("\\*org-roam\\*"
+               (display-buffer-in-direction)
+               (direction . right)
+               (window-width . 0.33)
+               (window-height . fit-window-to-buffer)))
 
 (add-to-list 'org-global-properties '("Effort_ALL" . "0:05 0:10 0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 7:00 8:00"))
 (add-to-list 'display-buffer-alist `("^\\*Org QL View:" display-buffer-same-window))
@@ -377,7 +385,9 @@
   (let ((entry (read-string prompt))
         (path (concat /org-gtd-dir file)))
     (with-current-buffer (find-file-noselect path)
-      (goto-char (point-max))
+      (goto-char (point-min))
+      (if (not (org-goto-first-child))
+	  (goto-char (point-max)))
       (funcall func entry)
       (org-id-get-create)
       (call-interactively #'/org-gtd-todo)
@@ -495,6 +505,13 @@
 ;;;
 ;;;
 
+(defun /org-gtd-roam-attach-file ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (org-roam-tag-add '("ATTACH"))
+    (ignore-errors (call-interactively #'org-attach))))
+
 ;;;
 ;;; Review
 ;;;
@@ -504,8 +521,10 @@
     (interactive)
     (let ((cur-tags (org-get-tags nil 'local))
           (new-tags (completing-read-multiple "Tags: "
-					      (mapcar #'car
-						      (org-global-tags-completion-table org-agenda-files))
+					      (append (mapcar #'car
+							      (org-global-tags-completion-table org-agenda-files))
+						      (seq-difference (mapcar #'car (org-roam-db-query [:select :distinct [tag] :from tags]))
+								      '("ATTACH")))
 					      nil nil nil 'org-tags-history)))
       (mapc (lambda (elt)
               (setq cur-tags
@@ -567,6 +586,12 @@
             (setq continue nil)
           (org-cut-subtree))))
     (save-buffer)))
+
+;;;###autoload
+(defun /org-gtd-find-attachment-node ()
+  (interactive)
+  (let ((dirs (reverse (split-string default-directory "/" 'omit-nulls))))
+    (org-id-goto (concat (cadr dirs) (car dirs)))))
 
 (defun /org-gtd-init ()
   (make-directory /org-gtd-dir 'with-parents)
