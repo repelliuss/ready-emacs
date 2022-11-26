@@ -37,3 +37,9 @@
 (defcustom home-dir (expand-file-name "~/")
   "Where home directory is."
   :type 'file)
+
+;; TODO: os vars
+(setq mac-p     (eq system-type 'darwin)
+      linux-p   (eq system-type 'gnu/linux)
+      windows-p (memq system-type '(cygwin windows-nt ms-dos))
+      bsd-p     (or mac-p (eq system-type 'berkeley-unix)))

@@ -42,6 +42,7 @@
        cmake
        lsp-mode
        dap-mode
+       elfeed
        org
        org-gtd
        org-remark

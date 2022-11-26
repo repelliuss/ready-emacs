@@ -554,9 +554,9 @@
 ;;;###autoload
 (defun /org-gtd-export-agenda ()
   (interactive)
-  (let ((theme doom-theme)
-        (file-path (concat org-directory "agenda.html"))
-        (agenda-buffer (get-buffer "agenda.html")))
+  (let ((file-path (concat org-directory "agenda.html"))
+        (agenda-buffer (get-buffer "agenda.html"))
+	(server-raise-frame nil))
     (/org-gtd-kill-overdue-logs)
     (org-agenda nil "d")
     (org-agenda-write file-path)

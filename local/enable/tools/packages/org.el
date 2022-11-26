@@ -10,6 +10,8 @@
 			    (concat "html:" file-path)
 			    title)))))
 
+(use-package htmlize)
+
 (use-package org
   :init
   (setq org-directory (concat home-dir "org/")
