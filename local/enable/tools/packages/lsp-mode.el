@@ -4,8 +4,15 @@
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+
+  :attach (typescript-tsx-mode)
+  (add-hook 'typescript-tsx-mode-hook #'lsp-deferred)
+
+  :attach (web-tsx-mode)
+  (add-hook 'web-tsx-mode-hook #'lsp-deferred)
+  
   :attach (typescript-mode)
-  (add-hook 'typescript-mode-hook #'lsp-deferred)
+  (add-hook 'web-tsx-mode-hook #'lsp-deferred)
   
   :attach (php-mode)
   (add-hook 'php-mode-hook #'lsp-deferred)
@@ -26,8 +33,13 @@
 
   (setq lsp-keymap-prefix "M-l")
 
-  (setq lsp-lens-enable nil
-        lsp-headerline-breadcrumb-enable nil)
+  (setq-default lsp-lens-enable nil
+		lsp-headerline-breadcrumb-enable nil
+		lsp-enable-on-type-formatting nil
+		lsp-enable-indentation nil
+		lsp-javascript-format-enable nil
+		lsp-typescript-format-enable nil
+		lsp-treemacs-error-list-severity 4)
 
   (add-hook 'lsp-mode-hook (lambda ()
 			     (setq-local read-process-output-max (* 1024 1024))))

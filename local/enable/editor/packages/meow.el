@@ -90,8 +90,8 @@
     "G" #'meow-grab
     "h" #'meow-left
     "H" #'meow-left-expand
-    "i" #'meow-insert-at-point
-    "I" #'meow-insert-at-point
+    "i" #'meow-insert
+    "I" #'meow-insert
     "o" #'meow-open-below
     "O" #'meow-open-above
     "j" #'meow-next
@@ -171,6 +171,8 @@
       (meow--cancel-selection)
       (meow--switch-state 'insert)))
 
+  (advice-add #'meow-insert :override #'meow-insert-at-point)
+
   :extend (embark)
   (defun meow-cancel-noerr (&rest _)
     (ignore-errors (meow-cancel)))
@@ -180,10 +182,10 @@
     (advice-add fn :before #'meow-cancel-noerr))
   
   :extend (org-capture)
-  (add-hook 'org-capture-mode-hook #'meow-insert-at-point)
+  (add-hook 'org-capture-mode-hook #'meow-insert)
   
   :extend (corfu)
-  (add-hook 'completion-in-region-mode-hook #'meow-insert-at-point)
+  (add-hook 'completion-in-region-mode-hook #'meow-insert)
   
   :extend (which-key)
   (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))

@@ -11,6 +11,7 @@
 ;; TODO: maybe add support for not loading duplicates?
 ;; TODO: ordered files should rip their order
 ;; TODO: add support for bisect
+;; TODO: add support for out of source enable folders
 
 (defgroup enable nil
   "A configuration manager."
@@ -219,14 +220,17 @@
                                       "-pkg-defaults"))
                ',defaults)))))
 
-(dolist (dir (list enable-dir enable-modules-dir enable-cache-dir))
-  (make-directory dir 'with-parents))
+(defun enable-setup ()
+  (dolist (dir (list enable-dir enable-modules-dir enable-cache-dir))
+    (make-directory dir 'with-parents))
 
-(dolist (module enable--modules)
+  (dolist (module enable--modules)
     (let ((submodules)
 	  (module-name (substring (symbol-name module) 1)))
       (enable--ensure-module-categories module-name)
       (eval `(defvar ,(intern (concat "enable--" module-name "-sub-all"))
                ',(mapcar (lambda (submodule)
                            (intern (file-name-sans-extension submodule)))
-                         (enable--get-files (concat module-name "/submodules/")))))))
+                         (enable--get-files (concat module-name "/submodules/"))))))))
+
+

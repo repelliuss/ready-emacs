@@ -17,11 +17,12 @@
        avy
        presentation
        topspace
+       tree-sitter
        olivetti)
  :sub (all)
  
  :lang
- :pkg (web-mode
+ :pkg (typescript
        glsl
        php
        rust)
@@ -57,6 +58,7 @@
  :ui
  :pkg (hl-todo
        tab-bar-echo-area
+       rainbow-mode
        ;; diff-hl
        hide-mode-line)
  :sub (all -font -frame)
