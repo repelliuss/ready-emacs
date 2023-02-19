@@ -12,9 +12,9 @@
     `(funcall ,fn)))
 
 (defun theme-load-if-preferred (theme light dark)
-  (when (or (not theme-preferred) (eq theme-preferred theme))
-    (setq theme-default-light light
-	  theme-default-dark dark)
-    (if (eq theme-preferred-background 'light)
+  (when (or (not @theme-preferred) (eq @theme-preferred theme))
+    (setq @theme-default-light light
+	  @theme-default-dark dark)
+    (if (eq @theme-preferred-bg 'light)
 	(load-theme light 'no-confirm)
       (load-theme dark 'no-confirm))))

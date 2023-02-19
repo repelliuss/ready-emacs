@@ -5,7 +5,7 @@
 (use-package org-roam
   :init
   (setq org-roam-directory (concat org-directory "note/")
-	org-roam-db-location (concat cache-dir "org-roam.db")
+	org-roam-db-location (concat @dir-cache "org-roam.db")
 	org-roam-dailies-directory "journal/")
 
   (require 'org-roam-protocol)

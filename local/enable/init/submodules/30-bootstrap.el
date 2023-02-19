@@ -1,12 +1,13 @@
 ;;; bootstrap.el -*- lexical-binding: t; -*-
 
-(setq package-user-dir (concat local-dir "elpa"))
+(setq package-enable-at-startup nil)
+(setq package-user-dir (concat @dir-local "elpa"))
 (with-eval-after-load 'package
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") 'append))
 
 ;;; straight - Package Manager
 
-;; TODO: move straight to local-dir
+;; TODO: move straight to @dir-local
 (setq straight-use-package-by-default t
       straight-check-for-modifications '(check-on-save find-when-checking))
 (let ((bootstrap-file

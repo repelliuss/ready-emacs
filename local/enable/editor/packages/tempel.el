@@ -10,7 +10,7 @@
   (add-hook 'text-mode-hook 'tempel-setup-capf)
   (add-hook 'lsp-completion-mode-hook 'tempel-setup-capf)
 
-  (setq tempel-file (concat local-dir "tempel"))
+  (setq tempel-file (concat @dir-local "tempel"))
 
   :config
   (bind tempel-map

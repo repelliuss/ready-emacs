@@ -76,7 +76,7 @@ function."
   :straight (:host github :repo "arnested/php-extras")
   :config
   (setq php-extras-eldoc-functions-file
-	(concat cache-dir "php-extras-eldoc-functions"))
+	(concat @dir-cache "php-extras-eldoc-functions"))
   (advice-add #'php-extras-load-eldoc :override #'php-extras-eldoc-no-warn)
   (php-extras-generate-eldoc-async))
 

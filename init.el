@@ -86,3 +86,5 @@
                  (float-time
                   (time-subtract after-init-time before-init-time))) gcs-done)
 
+;; TODO: just one space keybinding doesn't work
+
