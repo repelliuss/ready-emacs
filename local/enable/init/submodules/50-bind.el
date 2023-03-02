@@ -5,15 +5,18 @@
 ;; TODO: add docstrings
 ;; TODO: add examples
 ;; TODO: use flatten instead of bind normalize and flatten first arg if not keymap in case there is a function that returns multiple keymaps instead of one like setq
+;; TODO: rest to form
 
 (defvar bind--definer #'define-key)
 
 (defvar bind--metadata nil)
 
+(defun bind--keyp (exp)
+  (or (stringp exp) (vectorp exp)))
+
 (defun bind--undefine-key (keymap key def)
   (define-key keymap key nil)
-  (if (or (stringp def)
-	  (vectorp def))
+  (if (bind--keyp def)
       (define-key keymap def nil)))
 
 (defmacro bind--normalize-bindings (arg)
@@ -42,7 +45,8 @@
     (dolist (elt rest)
       (setq bindings
 	    (nconc bindings
-		   `((bind--with-metadata ,elt)))))
+		   `((bind--with-metadata nil
+		       ,elt)))))
     (macroexp-progn bindings)))
 
 (defmacro bind--normalize-first (map-s-or-fn)
@@ -57,19 +61,23 @@
     (t (car ,bind-first))))		; list of maps
 
 ;; TODO: better metadata merge
-(defmacro bind--with-metadata (rest)
-  (let ((first (car rest)))
-    `(let* ((bind--metadata (append (list :main-keymap (bind--main-keymap ',first)) bind--metadata)))
-       (bind--done (bind--normalize-first ,first)
-		   (list ,@(cdr rest))))))
+(defmacro bind--with-metadata (plist form)
+  (declare (indent 1))
+  `(let* ((bind--metadata (append (list ,@plist) bind--metadata)))
+     (bind--done (bind--normalize-first ,(car form))
+		 (list ,@(cdr form)))))
 
-(defmacro bind (&rest rest)
-  (let ((second (cadr rest)))
-    (if (or (stringp second)
-	    (vectorp second)
-	    (fboundp (car second)))
-	`(bind--with-metadata ,rest)
-      `(bind--many ,@rest))))
+(defun bind--singularp (form)
+  (let ((second (cadr form)))
+    (or (stringp second)
+	(vectorp second)
+	(fboundp (car second)))))
+
+(defmacro bind (&rest form)
+  (if (bind--singularp form)
+      `(bind--with-metadata (:main-keymap (bind--main-keymap ',(car form)))
+	 ,form)
+    `(bind--many ,@form)))
 
 (defmacro unbind (&rest rest)
   `(let ((bind--definer #'bind--undefine-key))
@@ -88,7 +96,6 @@
       (setq bindings (cddr bindings)))
     new-bindings))
 
-;; TODO: better main file name
 (defun bind-autoload (&optional file-as-symbol &rest bindings)
   (declare (indent 1))
   (let (file)
@@ -96,6 +103,7 @@
 	(setq file (symbol-name file-as-symbol))
       (setq file (plist-get bind--metadata :main-file)
 	    bindings `(,file-as-symbol ,@bindings)))
+    (if (not file) (error "Bad FILE-AS-SYMBOL argument to BIND-AUTOLOAD."))    
     (bind--normalize-bindings bindings)
     (let ((it-bindings bindings))
       (while it-bindings
@@ -117,3 +125,6 @@
       (display-warning 'bind-repeat
 		       (format "Couldn't repeat bindings: %s. No main keymap given." bindings))))
   bindings)
+
+(provide 'bind)
+

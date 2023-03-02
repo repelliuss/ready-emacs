@@ -483,27 +483,6 @@ The first FEATURE can be used to deduce the feature context."
   :repeatable t
   :shorthand #'cadr)
 
-;; TODO: move to bind
-;; TODO: better main-file name and metadata fn to use
-;; TODO: improve for just a function case and nested without a list symbol case
-(setup-define :bind
-  (lambda (&rest bindings)
-    `(let ((bind--metadata (list :main-file ,(symbol-name (setup-get 'feature)))))
-       ,(if (not (listp (car bindings)))
-	    (if (symbolp (car bindings))
-		`(bind ,@bindings)
-	      `(bind ,(setup-get 'map) ,@bindings))
-	  (if (or (not (listp (caar bindings)))
-		  (fboundp (caaar bindings))) ; first element may be bind- functions
-	      `(bind (,(setup-get 'map) ,@(car bindings))
-		     ,@(cdr bindings))
-	    `(bind ((,(setup-get 'map) ,@(caar bindings))
-		    ,@(cdar bindings))
-		   ,@(cdr bindings))))))
-  :indent 1
-  :documentation "Bind BINDINGS in current map."
-  :debug '(form sexp))
-
 (setup-define :hook
   (lambda (function)
     `(add-hook ',(setup-get 'hook) ,function))
