@@ -159,7 +159,7 @@
 	meow-keypad-meta-prefix nil
 	meow-keypad-ctrl-meta-prefix nil)
 
-  (funcall-consider-daemon #'meow-global-mode)
+  (@funcall-consider-daemon #'meow-global-mode)
 
   (defun meow-insert-at-point ()
     "Switch to INSERT state."

@@ -22,4 +22,4 @@
   (modus-themes-load-themes)
   
   :config
-  (theme-load-if-preferred 'modus-themes 'modus-operandi 'modus-vivendi))
+  (@theme-load-if-preferred 'modus-themes 'modus-operandi 'modus-vivendi))

@@ -4,6 +4,7 @@
 ;; TODO: check linter
 ;; TODO: add docstrings
 ;; TODO: add examples
+;; TODO: use flatten instead of bind normalize and flatten first arg if not keymap in case there is a function that returns multiple keymaps instead of one like setq
 
 (defvar bind--definer #'define-key)
 
@@ -52,13 +53,13 @@
 
 (defmacro bind--main-keymap (bind-first)
   `(cond
-    ((symbolp ,bind-first) ,bind-first)
-    ((fboundp (car ,bind-first)) ,bind-first)
+    ((or (symbolp ,bind-first) (fboundp (car ,bind-first))) ,bind-first)
     (t (car ,bind-first))))		; list of maps
 
+;; TODO: better metadata merge
 (defmacro bind--with-metadata (rest)
   (let ((first (car rest)))
-    `(let ((bind--metadata (list :main-keymap (bind--main-keymap ',first))))
+    `(let* ((bind--metadata (append (list :main-keymap (bind--main-keymap ',first)) bind--metadata)))
        (bind--done (bind--normalize-first ,first)
 		   (list ,@(cdr rest))))))
 
@@ -87,14 +88,20 @@
       (setq bindings (cddr bindings)))
     new-bindings))
 
-(defun bind-autoload (file &rest bindings)
+;; TODO: better main file name
+(defun bind-autoload (&optional file-as-symbol &rest bindings)
   (declare (indent 1))
-  (bind--normalize-bindings bindings)
-  (let ((it-bindings bindings))
-    (while it-bindings
-      (let ((def (cadr it-bindings)))
-	(autoload def file nil t))
-      (setq it-bindings (cddr it-bindings))))
+  (let (file)
+    (if (symbolp file-as-symbol)
+	(setq file (symbol-name file-as-symbol))
+      (setq file (plist-get bind--metadata :main-file)
+	    bindings `(,file-as-symbol ,@bindings)))
+    (bind--normalize-bindings bindings)
+    (let ((it-bindings bindings))
+      (while it-bindings
+	(let ((def (cadr it-bindings)))
+	  (autoload def file nil t))
+	(setq it-bindings (cddr it-bindings)))))
   bindings)
 
 (defun bind-repeat (&rest bindings)

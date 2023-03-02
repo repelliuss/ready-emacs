@@ -4,4 +4,4 @@
   :init
   (setq tao-theme-use-sepia nil)
 
-  (theme-load-if-preferred 'tao-theme 'tao-yang 'tao-yin))
+  (@theme-load-if-preferred 'tao-theme 'tao-yang 'tao-yin))

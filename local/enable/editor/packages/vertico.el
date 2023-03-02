@@ -40,12 +40,12 @@
   :after (vertico)
   :attach (meow)
   (bind rps/leader-map
-	(bind-autoload "vertico"
+	(bind-autoload 'vertico
 	  "r" #'vertico-repeat))
   
   :init
   (bind (current-global-map)
-	(bind-autoload "vertico"
+	(bind-autoload 'vertico
 	  "M-r" #'vertico-repeat))
 
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))

@@ -10,4 +10,4 @@
   (dolist (command '(nano-mode nano-light nano-dark))
     (autoload command "nano-theme" nil 'interactive))
 
-  (theme-load-if-preferred 'nano-theme 'nano-light 'nano-dark))
+  (@theme-load-if-preferred 'nano-theme 'nano-light 'nano-dark))
