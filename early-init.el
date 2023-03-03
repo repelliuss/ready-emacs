@@ -7,18 +7,7 @@
 (load (concat user-emacs-directory "enable") nil 'nomessage)
 (enable-setup)
 
-(setq package-enable-at-startup nil)	; I use elpaca
-
-;; TODO: Try using in init.el
-(enable-early
- :init all
-
- :theme
- :pkg (modus-themes)
- 
- :ui
- :sub (font frame)
- :pkg (mood-line))
+(enable-early :init all)
 
 ;; TODO: meow SPC G
 

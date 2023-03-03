@@ -1,5 +1,7 @@
 ;;; elpaca.el -*- lexical-binding: t; -*-
 
+;;; Elpaca installer script
+
 (setq package-enable-at-startup nil)
 
 (defvar elpaca-installer-version 0.2)

@@ -44,3 +44,15 @@
 (defcustom @theme-preferred 'modus-themes
   "Theme to be loaded with #'@theme-load-if-preferred."
   :type 'symbol)
+
+(defconst @leader-prefix "SPC "
+  "Leader prefix.")
+
+(defconst @leader-local-prefix "C-c"
+  "Leader local prefix.")
+
+(defvar @leader-map (make-sparse-keymap)
+  "Leader map.")
+
+(defvar @normal-map (make-sparse-keymap)
+  "Normal map.")

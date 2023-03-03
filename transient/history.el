@@ -1,1 +1,2 @@
-((magit-branch nil))
+((magit-branch nil)
+ (magit-commit nil))
