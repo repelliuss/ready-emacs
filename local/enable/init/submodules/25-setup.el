@@ -463,17 +463,6 @@ If FUNCTION is a list, apply BODY to all elements of FUNCTION."
   :debug '(sexp setup)
   :indent 1)
 
-(setup-define :package
-  (lambda (package)
-    `(unless (package-installed-p ',package)
-       (unless (memq ',package package-archive-contents)
-         (package-refresh-contents))
-       (package-install ',package)))
-  :documentation "Install PACKAGE if it hasn't been installed yet.
-The first PACKAGE can be used to deduce the feature context."
-  :repeatable t
-  :shorthand #'cadr)
-
 (setup-define :require
   (lambda (feature)
     `(unless (require ',feature nil t)
@@ -586,15 +575,6 @@ supported:
   :after-loaded t
   :repeatable t)
 
-(setup-define :if-package
-  (lambda (package)
-    `(unless (package-installed-p ',package)
-       ,(setup-quit)))
-  :documentation "If package is not installed, stop evaluating the body.
-The first PACKAGE can be used to deduce the feature context."
-  :repeatable t
-  :shorthand #'cadr)
-
 (setup-define :if-feature
   (lambda (feature)
     `(unless (featurep ',feature)
@@ -653,6 +633,17 @@ feature context."
         (let ((shorthand (get (car tail) 'setup-shorthand)))
           (and shorthand (funcall shorthand tail)))))))
   :debug '(setup))
+
+(setup-define :autoload
+  (lambda (func)
+    (let ((fn (if (memq (car-safe func) '(quote function))
+                  (cadr func)
+                func)))
+      `(unless (fboundp (quote ,fn))
+         (autoload (function ,fn) ,(symbol-name (setup-get 'feature)) nil t))))
+  :documentation "Autoload COMMAND if not already bound."
+  :repeatable t
+  :signature '(FUNC ...))
 
 (provide 'setup)
 
