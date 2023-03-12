@@ -1,15 +1,7 @@
 ;;; frame.el -*- lexical-binding: t; -*-
 
-(setq default-frame-alist
-      (nconc default-frame-alist
-	     '((internal-border-width . 12)
-	       (menu-bar-lines . 0)
-	       (tool-bar-lines . 0)
-	       (vertical-scroll-bars))))
-
-(setq menu-bar-mode nil
-      tool-bar-mode nil
-      scroll-bar-mode nil)
-
 (setq use-dialog-box nil)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
 (tooltip-mode -1)
