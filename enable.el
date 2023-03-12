@@ -12,6 +12,7 @@
 ;; TODO: ordered files should rip their order
 ;; TODO: add support for bisect
 ;; TODO: add support for out of source enable folders
+;; TODO: use locate-user-emacs-file
 
 (defgroup enable nil
   "A configuration manager."

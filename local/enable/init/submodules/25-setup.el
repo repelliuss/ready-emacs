@@ -645,6 +645,11 @@ feature context."
   :repeatable t
   :signature '(FUNC ...))
 
+(setup-define :load
+  (lambda ()
+    `(require ',(setup-get 'feature)))
+  :documentation "Load current FEATURE with the current body.")
+
 (provide 'setup)
 
 ;;; setup.el ends here

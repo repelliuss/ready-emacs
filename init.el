@@ -3,10 +3,11 @@
 (enable
  :theme
  :pkg (modus-themes)
+ :sub (agnostic-sugar)
  
  :ui
- :sub (font frame)
- :pkg (mood-line))
+ :pkg (fontaine mood-line)
+ :sub (frame))
 
 ;; (enable
 ;;  :editor
