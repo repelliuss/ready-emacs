@@ -7,6 +7,8 @@
 (load (concat user-emacs-directory "enable") nil 'nomessage)
 (enable-setup)
 
+;; (enable-early :init all)
+
 (enable-early :init all)
 
 ;; TODO: meow SPC G

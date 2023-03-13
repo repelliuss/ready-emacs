@@ -88,5 +88,6 @@
 
 						   ,@modus-themes-preset-overrides-intense))
   (@theme-load-if-preferred 'modus-themes 'modus-operandi 'modus-vivendi)
-  (@modus-themes-increase-mode-line-height))
+  ;; (@modus-themes-increase-mode-line-height)
+  )
 

@@ -7,12 +7,12 @@
  
  :ui
  :pkg (fontaine mood-line)
- :sub (frame))
+ :sub (zen pad-frame))
 
 ;; (enable
 ;;  :editor
 ;;  :pkg (meow
-;;        ace-window
+;;        ace-indow
 ;;        consult
 ;;        embark
 ;;        vertico
