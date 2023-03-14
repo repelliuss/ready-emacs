@@ -16,7 +16,7 @@
 
 (defun @theme-load-if-preferred (theme light dark)
   "Load and save background variants if @THEME-PREFERRED is EQ to THEME."
-  (when (or (not @theme-preferred) (eq @theme-preferred theme))
+  (when (eq @theme-preferred theme)
     (setq @theme-default-light light
 	  @theme-default-dark dark)
     (if (eq @theme-preferred-bg 'light)

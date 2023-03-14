@@ -2,4 +2,4 @@
 
 (setq default-frame-alist
       (nconc default-frame-alist
-	     '((internal-border-width . 12))))
+	     '((internal-border-width . 8))))

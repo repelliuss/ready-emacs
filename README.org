@@ -15,4 +15,5 @@
 - (optional) Install Symbola font on Windows for missing icons.
 - (optional) ~fd~ (file finder) and ~rg~ (ripgrep: text finder) executable should be accessible through ~PATH~ environment variable. =Chocolatey= on Windows is good to get software.
 - (optional) On =Windows=, set =HOME= variable to your liking.
-  
+- (optional) Install nerd fonts for nano-modeline icon prefix.
+- (optional) Install Roboto and Victor Mono fonts for nano-theme and set ~nano-fonts-use~ to ~t~.

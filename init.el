@@ -2,12 +2,15 @@
 
 (enable
  :theme
- :pkg (modus-themes)
+ :pkg (nano-theme)
  :sub (agnostic-sugar)
  
  :ui
- :pkg (fontaine mood-line)
- :sub (zen pad-frame))
+ :pkg (fontaine nano-modeline)
+ :sub (zen pad-frame pad-window)
+
+ :editor
+ :pkg (meow))
 
 ;; (enable
 ;;  :editor

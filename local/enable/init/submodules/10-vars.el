@@ -41,7 +41,7 @@
   "Default light theme."
   :type 'symbol)
 
-(defcustom @theme-preferred 'modus-themes
+(defcustom @theme-preferred 'nano-theme
   "Theme to be loaded with #'@theme-load-if-preferred."
   :type 'symbol)
 

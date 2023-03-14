@@ -489,6 +489,7 @@ The first FEATURE can be used to deduce the feature context."
   :documentation "Add current function to HOOK."
   :repeatable t)
 
+;; TODO: use setopt emacs29
 (setup-define :option
   (setup-make-setter
    (lambda (name)
