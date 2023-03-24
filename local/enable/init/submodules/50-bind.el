@@ -4,8 +4,10 @@
 ;; TODO: check linter
 ;; TODO: add docstrings
 ;; TODO: add examples
-;; TODO: use flatten instead of bind normalize and flatten first arg if not keymap in case there is a function that returns multiple keymaps instead of one like setq
 ;; TODO: rest to form
+;; TODO: undef should recursively unbind all keys
+;; TODO: refactor (bind--done ,(car form) (list ,@(cdr form))) expr
+;; TODO: add bind definer
 
 (defvar bind--definer #'define-key)
 
@@ -20,8 +22,7 @@
       (define-key keymap def nil)))
 
 (defmacro bind--normalize-bindings (arg)
-  `(if (consp (car ,arg))
-       (setq ,arg (nconc (car ,arg) (cdr ,arg)))))
+  `(setq ,arg (flatten-list ,arg)))
 
 (defun bind--bind (keymap bindings)
   (while bindings
@@ -63,7 +64,7 @@
   (let ((second (cadr form)))
     (or (stringp second)
 	(vectorp second)
-	(fboundp (car second)))))
+	(and (symbolp (car second)) (fboundp (car second))))))
 
 (defmacro bind (&rest form)
   (if (bind--singularp form)
