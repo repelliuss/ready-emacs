@@ -45,15 +45,8 @@
     (dolist (elt rest)
       (setq bindings
 	    (nconc bindings
-		   `((bind--with-metadata nil
-		       ,elt)))))
+		   `((bind ,@elt)))))
     (macroexp-progn bindings)))
-
-(defmacro bind--normalize-first (map-s-or-fn)
-  (if (or (fboundp (car-safe map-s-or-fn))
-	  (symbolp map-s-or-fn))
-      map-s-or-fn
-    `(list ,@map-s-or-fn)))
 
 (defmacro bind--main-keymap (bind-first)
   `(cond
@@ -61,11 +54,10 @@
     (t (car ,bind-first))))		; list of maps
 
 ;; TODO: better metadata merge
-(defmacro bind--with-metadata (plist form)
+(defmacro bind--with-metadata (plist &rest body)
   (declare (indent 1))
   `(let* ((bind--metadata (append (list ,@plist) bind--metadata)))
-     (bind--done (bind--normalize-first ,(car form))
-		 (list ,@(cdr form)))))
+     ,@body))
 
 (defun bind--singularp (form)
   (let ((second (cadr form)))
@@ -76,7 +68,7 @@
 (defmacro bind (&rest form)
   (if (bind--singularp form)
       `(bind--with-metadata (:main-keymap (bind--main-keymap ',(car form)))
-	 ,form)
+	 (bind--done ,(car form) (list ,@(cdr form))))
     `(bind--many ,@form)))
 
 (defmacro unbind (&rest rest)
