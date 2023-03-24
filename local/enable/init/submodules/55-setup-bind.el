@@ -15,6 +15,7 @@
    ((string-prefix-p "bind-" (symbol-name (caar form))) 'yes) ; (bind # (bind-* ...) ...)
    (t 'no)))				; (bind (function ...) ...)
 
+;; TODO: indentation
 (setup-define :bind
   (lambda (&rest form)
     `(bind--with-metadata (:main-file ,(symbol-name (setup-get 'feature)))
