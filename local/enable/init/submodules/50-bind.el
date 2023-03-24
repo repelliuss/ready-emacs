@@ -21,8 +21,15 @@
   (if (bind--keyp def)
       (define-key keymap def nil)))
 
-(defmacro bind--normalize-bindings (arg)
-  `(setq ,arg (flatten-list ,arg)))
+(defun bind--flatten1-key-of-bindings (bindings)
+  (let (new-bindings)
+    (while bindings
+      (if (consp (car bindings))
+	  (setq new-bindings  (nconc new-bindings (car bindings))
+		bindings (cdr bindings))
+	(setq new-bindings (nconc new-bindings (list (car bindings) (cadr bindings)))
+	      bindings (cddr bindings))))
+    new-bindings))
 
 (defun bind--bind (keymap bindings)
   (while bindings
@@ -35,7 +42,7 @@
     (setq bindings (cddr bindings))))
 
 (defun bind--done (keymap-s bindings)
-  (bind--normalize-bindings bindings)
+  (setq bindings (bind--flatten1-key-of-bindings bindings))
   (if (keymapp keymap-s)
       (bind--bind keymap-s bindings)
     (dolist (keymap keymap-s)
@@ -54,7 +61,6 @@
     ((or (symbolp ,bind-first) (fboundp (car ,bind-first))) ,bind-first)
     (t (car ,bind-first))))		; list of maps
 
-;; TODO: better metadata merge
 (defmacro bind--with-metadata (plist &rest body)
   (declare (indent 1))
   `(let* ((bind--metadata (append (list ,@plist) bind--metadata)))
@@ -78,7 +84,7 @@
 
 (defun bind-prefix (prefix &rest bindings)
   (declare (indent 1))
-  (bind--normalize-bindings bindings)
+  (setq bindings (bind--flatten1-key-of-bindings bindings))
   (let (new-bindings
 	(prefix (concat prefix " ")))
     (while bindings
@@ -97,7 +103,7 @@
       (setq file (plist-get bind--metadata :main-file)
 	    bindings `(,file-as-symbol ,@bindings)))
     (if (not file) (error "Bad FILE-AS-SYMBOL argument to BIND-AUTOLOAD."))    
-    (bind--normalize-bindings bindings)
+    (setq bindings (bind--flatten1-key-of-bindings bindings))
     (let ((it-bindings bindings))
       (while it-bindings
 	(let ((def (cadr it-bindings)))
@@ -107,7 +113,7 @@
 
 (defun bind-repeat (&rest bindings)
   (declare (indent 0))
-  (bind--normalize-bindings bindings)
+  (setq bindings (bind--flatten1-key-of-bindings bindings))
   (let ((main-keymap (plist-get bind--metadata :main-keymap))
 	(it-bindings bindings))
     (if (keymapp (symbol-value main-keymap))
