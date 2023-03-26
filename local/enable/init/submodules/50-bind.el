@@ -1,6 +1,35 @@
-;;; bind.el --- Bind commands to keys. -*- lexical-binding: t; -*-
+;;; bind.el --- Bind commands to keys -*- lexical-binding: t; -*-
 
-;; TODO: add header info
+;; Copyright (C) 2023 repelliuss
+
+;; Author: repelliuss <https://github.com/repelliuss>
+;; Maintainer: repelliuss <repelliuss@gmail.com>
+;; Created: March 26, 2023
+;; Modified: March 26, 2023
+;; Version: 0.9.0
+;; Package-Requires: ((emacs "24.3"))
+;; Keywords: convenience
+;; Homepage: https://github.com/repelliuss/bind
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; TODO: commentary.
+
+;;; Code:
+
 ;; TODO: check linter
 ;; TODO: add docstrings
 ;; TODO: add examples
@@ -37,6 +66,8 @@ unbind it such as `bind--definer-unbind'."
   (define-key keymap key nil)
   (if (bind-keyp def)
       (define-key keymap def nil)))
+
+(defun bind--definer-local (keymap key def))
 
 (defun bind--mappings-in-keymap (keymap bindings)
   "Define each key def mapping in BINDINGS to KEYMAP."
@@ -108,9 +139,19 @@ and return the expected form."
     new-bindings))
 
 (defmacro bind-with-metadata (plist &rest body)
+  "Evaluate BODY with PLIST merged with `bind--metadata'."
   (declare (indent 1))
   `(let* ((bind--metadata (append (list ,@plist) bind--metadata)))
      ,@body))
+
+(defun bind-global-map ()
+  (current-global-map))
+
+(defun bind-local-map ()
+  (or (current-local-map)
+      (let ((local-map (make-sparse-keymap)))
+	(use-local-map local-map)
+	local-map)))
 
 (defmacro bind (&rest form)
   (if (bind--singularp form)
@@ -162,3 +203,4 @@ and return the expected form."
 
 (provide 'bind)
 
+;;; bind.el ends here
