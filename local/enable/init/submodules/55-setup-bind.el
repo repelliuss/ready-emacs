@@ -5,7 +5,7 @@
   "Returns symbol NO, YES, YES-MERGE for singular BIND form if a map from metadata can be insertable.
 # in comments show where the map will be inserted."
   (cond
-   ((bind--keyp (car form)) 'yes)	; (bind # ...)
+   ((bind-keyp (car form)) 'yes)	; (bind # ...)
    ((symbolp (car form)) 'no)		; (bind map ...)
    ((or (eq 'quote (caar form))
 	(not (symbolp (caar form)))) (error (concat "Bad FORM given to SETUP :BIND. If (car FORM) "
@@ -18,7 +18,7 @@
 ;; TODO: indentation
 (setup-define :bind
   (lambda (&rest form)
-    `(bind--with-metadata (:main-file ,(symbol-name (setup-get 'feature)))
+    `(bind-with-metadata (:main-file ,(symbol-name (setup-get 'feature)))
        ,(let ((map (setup-get 'map)))
 	  (if (bind--singularp form)
 	      (pcase (bind--insertable-setup-formp form)
