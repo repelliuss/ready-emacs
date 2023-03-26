@@ -5,7 +5,6 @@
 ;; TODO: add docstrings
 ;; TODO: add examples
 ;; TODO: rest to form
-;; TODO: undef should recursively unbind all keys
 ;; TODO: refactor (bind--done ,(car form) (list ,@(cdr form))) expr
 ;; TODO: add bind definer
 
@@ -21,25 +20,30 @@
   (if (bind--keyp def)
       (define-key keymap def nil)))
 
+(defun bind-foreach-key-def (bindings function)
+  (declare (indent 1))
+  (while bindings
+    (funcall function (car bindings) (cadr bindings))
+    (setq bindings (cddr bindings))))
+
 (defun bind--flatten1-key-of-bindings (bindings)
   (let (new-bindings)
-    (while bindings
-      (if (consp (car bindings))
-	  (setq new-bindings  (nconc new-bindings (car bindings))
-		bindings (cdr bindings))
-	(setq new-bindings (nconc new-bindings (list (car bindings) (cadr bindings)))
-	      bindings (cddr bindings))))
+    (bind-foreach-key-def bindings
+      (lambda (key def)
+	(if (not (consp key))
+	    (setq new-bindings (nconc new-bindings (list key def)))
+	  (setq new-bindings (nconc new-bindings key))
+	  (if (consp def)
+	      (setq new-bindings (nconc new-bindings def))))))
     new-bindings))
 
 (defun bind--bind (keymap bindings)
-  (while bindings
-    (let ((key (car bindings))
-	  (def (cadr bindings)))
+  (bind-foreach-key-def bindings
+    (lambda (key def)
       (funcall bind--definer
-	       keymap (if (stringp key)
-			  (kbd key)
-			key) def))
-    (setq bindings (cddr bindings))))
+	       keymap
+	       (if (stringp key) (kbd key) key)
+	       def))))
 
 (defun bind--done (keymap-s bindings)
   (setq bindings (bind--flatten1-key-of-bindings bindings))
@@ -87,12 +91,10 @@
   (setq bindings (bind--flatten1-key-of-bindings bindings))
   (let (new-bindings
 	(prefix (concat prefix " ")))
-    (while bindings
-      (let ((key (car bindings))
-	    (def (cadr bindings)))
+    (bind-foreach-key-def bindings
+      (lambda (key def)
 	(push def new-bindings)
-	(push (concat prefix key) new-bindings))
-      (setq bindings (cddr bindings)))
+	(push (concat prefix key) new-bindings)))
     new-bindings))
 
 (defun bind-autoload (&optional file-as-symbol &rest bindings)
@@ -104,23 +106,19 @@
 	    bindings `(,file-as-symbol ,@bindings)))
     (if (not file) (error "Bad FILE-AS-SYMBOL argument to BIND-AUTOLOAD."))    
     (setq bindings (bind--flatten1-key-of-bindings bindings))
-    (let ((it-bindings bindings))
-      (while it-bindings
-	(let ((def (cadr it-bindings)))
-	  (autoload def file nil t))
-	(setq it-bindings (cddr it-bindings)))))
+    (bind-foreach-key-def bindings
+      (lambda (key def)
+	(autoload def file nil t))))
   bindings)
 
 (defun bind-repeat (&rest bindings)
   (declare (indent 0))
   (setq bindings (bind--flatten1-key-of-bindings bindings))
-  (let ((main-keymap (plist-get bind--metadata :main-keymap))
-	(it-bindings bindings))
+  (let ((main-keymap (plist-get bind--metadata :main-keymap)))
     (if (keymapp (symbol-value main-keymap))
-	(while it-bindings
-	  (let ((def (cadr it-bindings)))
-	    (put def 'repeat-map main-keymap))
-	  (setq it-bindings (cddr it-bindings)))
+	(bind-foreach-key-def bindings
+	  (lambda (key def)
+	    (put def 'repeat-map main-keymap)))
       (display-warning 'bind-repeat
 		       (format "Couldn't repeat bindings: %s. No main keymap given." bindings))))
   bindings)
