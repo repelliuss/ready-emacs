@@ -33,7 +33,6 @@
 ;; TODO: check linter
 ;; TODO: add docstrings
 ;; TODO: add examples
-;; TODO: rename variables and functions
 
 (defgroup bind nil
   "Bind many keys to many keymaps with ease."
@@ -88,12 +87,16 @@ so BINDINGS need to be flattened."
     (dolist (keymap keymap-s)
       (bind--mappings-in-keymap keymap bindings))))
 
-(defmacro bind--multiple (&rest forms)
+(defmacro bind--singular (form)
+  `(bind-with-metadata (:main-keymap (bind--main-keymap ',(car form)))
+     (bind--mappings-foreach-keymap ,(car form) (list ,@(cdr form)))))
+
+(defmacro bind--multiple (form-prefix forms)
   "Bind multiple `bind' FORMS."
-  (let (bindings)
-    (dolist (elt forms)
-      (setq bindings (nconc bindings `((bind ,@elt)))))
-    (macroexp-progn bindings)))
+  (let (singular-binds)
+    (dolist (form forms)
+      (setq singular-binds (nconc singular-binds `((,@form-prefix ,form)))))
+    (macroexp-progn singular-binds)))
 
 (defmacro bind--main-keymap (bind-first)
   "Extract main keymap from BIND-FIRST argument of `bind' form.
@@ -155,9 +158,8 @@ and return the expected form."
 
 (defmacro bind (&rest form)
   (if (bind--singularp form)
-      `(bind-with-metadata (:main-keymap (bind--main-keymap ',(car form)))
-	 (bind--mappings-foreach-keymap ,(car form) (list ,@(cdr form))))
-    `(bind--multiple ,@form)))
+      `(bind--singular ,form)
+    `(bind--multiple (bind--singular) ,form)))
 
 (defmacro bind-undo (&rest form)
   "Undo (or unbind) `bind' form keys."

@@ -174,13 +174,11 @@
 
   (:with-feature embark
     (:when-loaded
-      (defun meow-cancel-noerr (&rest _)
-	(ignore-errors (meow-cancel)))
+      (defun meow-cancel-selection-noerr (&rest _)
+	(ignore-errors (meow-cancel-selection)))
       
-      (dolist (fn '(embark-act
-		    embark-dwim))
-	(advice-add fn :before #'meow-cancel-noerr))))
-
+      (dolist (fn '(embark-act embark-dwim))
+	(advice-add fn :before #'meow-cancel-selection-noerr))))
 
   (:with-feature org-capture
     (:when-loaded
