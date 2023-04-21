@@ -29,12 +29,17 @@
 ;; `bind' many keys to many maps, multiple times and support for
 ;; prefix, autoload and repeat-mode. `bind-undo' can be used to undo
 ;; key bindings.
+;; 
+;; (bind c-mode-map "C-c ." #'c-set-style)
 
-(bind c-mode-map "C-c ." #'c-set-style)
+;; (bind global-map
+;;       (bind-prefix "C-c C-"
+;; 	"a" #'c-toggle-auto-newline
+;; 	"b" #'c-submit-bug-report))
 
 ;; TODO: commentary.
 ;; TODO: add examples
-;; TODO: add note for prefixing C-c C- support
+;; TODO: add note for prefixing C-c C- support, removing just space doesn't work
 
 ;;; Code:
 
@@ -224,7 +229,11 @@ repeatable.  See `bind--singular' for what a FORM is."
   "Prefix each KEY in BINDINGS with PREFIX iof KEY is a string."
   (declare (indent 1))
   (setq bindings (bind-flatten1-key-of-bindings bindings))
-  (let (new-bindings)
+  (let (new-bindings
+	(prefix (concat prefix (if (string-match "\\b.-$"
+						 (car (last (split-string prefix))))
+				   ""
+				 " "))))
     (bind-foreach-key-def bindings
       (lambda (key def)
 	(push def new-bindings)
