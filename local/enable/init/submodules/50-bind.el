@@ -26,24 +26,11 @@
 
 ;;; Commentary:
 
-;; `bind' many keys to many maps, multiple times and support for
-;; prefix, autoload and repeat-mode. `bind-undo' can be used to undo
-;; key bindings.
-;; 
-;; (bind c-mode-map "C-c ." #'c-set-style)
-
-;; (bind global-map
-;;       (bind-prefix "C-c C-"
-;; 	"a" #'c-toggle-auto-newline
-;; 	"b" #'c-submit-bug-report))
-
-;; TODO: commentary.
-;; TODO: add examples
-;; TODO: add note for prefixing C-c C- support, removing just space doesn't work
+;; `bind' many commands to keys in many keymaps, multiple times and
+;; support prefix, autoload and repeat-mode.  `bind-undo' can be used
+;; to undo key bindings.
 
 ;;; Code:
-
-;; TODO: check linter
 
 (defgroup bind nil
   "Bind many keys to many keymaps."
@@ -67,8 +54,8 @@ provide and make use of persistant data."
 See `define-key' for what keymap, key and def is.
 
 This is the function called after all of the things are
-resolved. For example it can define the key or unbind it such as
-`bind--definer-unbind'. See `bind--mappings-in-keymap' for where
+resolved.  For example it can define the key or unbind it such as
+`bind--definer-unbind'.  See `bind--mappings-in-keymap' for where
 this is called."
   :type 'function)
 
@@ -101,21 +88,21 @@ so BINDINGS need to be flattened."
 (defmacro bind--singular (form)
   "Process a single bind FORM and bind many keys to many keymaps.
 FORM's first element can be a keymap, list of keymaps, a function
-returning keymap (`setq') or keymaps (a user function). It is
+returning keymap (`setq') or keymaps (a user function).  It is
 quoted, if it is a keymap or a list of keymaps.
 
-FORM's rest elements must be bindings. A binding is in the form
+FORM's rest elements must be bindings.  A binding is in the form
 of 'KEY DEF' where KEY and DEF has the same specs as in
-`define-key', in the case of `bind'. It is up to `bind--definer'
+`define-key', in the case of `bind'.  It is up to `bind--definer'
 what to do with KEY and DEF.
 
 About global and local bindings,
 
 Instead of using different functions for different cases, `bind'
-chooses to be verbose about them. In every case, at the end, each
-binding is put in a keymap. Use `bind-global-map' and
+chooses to be verbose about them.  In every case, at the end, each
+binding is put in a keymap.  Use `bind-global-map' and
 `bind-local-map' functions to get the keymap for the case you
-want. While `bind-global-map' simply
+want.  While `bind-global-map' simply
 returns `current-global-map', `bind-local-map' implements the
 behavior in `local-set-key'.
 
@@ -123,15 +110,15 @@ About processing functions,
 
 Most of the arguments in FORM is evaluated such that `bind'
 behaves like a function so they are not quoted and will be
-evaluated, unless said so. That way, bindings can be processed.
+evaluated, unless said so.  That way, bindings can be processed.
 For example, there are `bind-prefix', `bind-autoload' and
-`bind-repeat' processing functions. They take bindings as input
+`bind-repeat' processing functions.  They take bindings as input
 and return bindings and possibly transforming bindings but not
-required to. They can be nested and used many times as one
-wants. User can easily define its processing function. User is
+required to.  They can be nested and used many times as one
+wants.  User can easily define its processing function.  User is
 encouraged to make use of `bind-keyp', `bind-foreach-key-def',
 `bind-flatten1-key-of-bindings' and `bind-with-metadata' utility
-functions for their custom behavior. See default processing
+functions for their custom behavior.  See default processing
 functions' definitions for examples.
 
 See commentary or homepage for examples."
@@ -140,8 +127,8 @@ See commentary or homepage for examples."
 
 (defmacro bind--multiple (form-prefix forms)
   "Bind multiple `bind' FORMS.
-FORM-PREFIX is what each `bind' form is prefixed with. For example, its value is
-`(bind--singular)' when called by `bind'."
+FORM-PREFIX is what each `bind' form is prefixed with.  For
+example, its value is `(bind--singular)' when called by `bind'."
   (let (singular-binds)
     (dolist (form forms)
       (setq singular-binds (nconc singular-binds `((,@form-prefix ,form)))))
@@ -150,23 +137,23 @@ FORM-PREFIX is what each `bind' form is prefixed with. For example, its value is
 (defmacro bind--main-keymap (bind-first)
   "Extract main keymap from BIND-FIRST argument of `bind' form.
 Main keymap is the keymap given to bind form or first of the given keymaps.
-Main keymap can be used by binding processor calls. For example, `bind-repeat'
+Main keymap can be used by binding processor calls.  For example, `bind-repeat'
 uses it as a place for putting definitions 'repeat-map prop.
 
-BIND-FIRST is the first element of bind form. See `bind--singular' for
+BIND-FIRST is the first element of bind form.  See `bind--singular' for
 what a form is."
   `(cond
     ((or (symbolp ,bind-first) (fboundp (car ,bind-first))) ,bind-first)
     (t (car ,bind-first))))		; list of keymaps
 
 (defun bind--singularp (form)
-  "t if `bind' FORM doesn't contain multiple `bind' forms."
+  "T if `bind' FORM doesn't contain multiple `bind' forms."
   (let ((second (cadr form)))
     (or (bind-keyp second)
 	(and (symbolp (car second)) (fboundp (car second))))))
 
 (defun bind-keyp (exp)
-  "t if EXP is a valid key for `define-key'."
+  "T if EXP is a valid key for `define-key'."
   (or (stringp exp) (vectorp exp)))
 
 (defun bind-foreach-key-def (bindings function)
@@ -180,10 +167,10 @@ FUNCTION is a function that takes key and def as arguments."
 (defun bind-flatten1-key-of-bindings (bindings)
   "Flatten each first level key definition in BINDINGS.
 A binding processor function will return list of new
-bindings. A function that works on BINDINGS (such as another
+bindings.  A function that works on BINDINGS (such as another
 processor function) and one that probably uses
 `bind-foreach-key-def' expects bindings to be in the form of (KEY
-DEF...). This function can be used to merge list of new bindings
+DEF...).  This function can be used to merge list of new bindings
 and return the expected form."
   (let (new-bindings)
     (bind-foreach-key-def bindings
@@ -202,7 +189,7 @@ and return the expected form."
      ,@body))
 
 (defun bind-global-map ()
-  "Returns `current-global-map'."
+  "Return `current-global-map'."
   (current-global-map))
 
 (defun bind-local-map ()
@@ -215,22 +202,25 @@ and return the expected form."
 (defmacro bind (&rest form-or-forms)
   "Bind many keys to many keymaps, multiple times.
 Syntax is `(bind FORM)' or `(bind (FORM)...)' so (FORM) is
-repeatable.  See `bind--singular' for what a FORM is."
+repeatable.  See `bind--singular' for what a FORM is.
+FORM-OR-FORMS can be a single FORM or list of FORMs."
   (if (bind--singularp form-or-forms)
       `(bind--singular ,form-or-forms)
     `(bind--multiple (bind--singular) ,form-or-forms)))
 
 (defmacro bind-undo (&rest form)
-  "Undo (or unbind) `bind' form keys."
+  "Undo (or unbind) `bind' FORM keys."
   `(let ((bind--definer #'bind--definer-unbind))
      (bind ,@form)))
 
 (defun bind-prefix (prefix &rest bindings)
-  "Prefix each KEY in BINDINGS with PREFIX iof KEY is a string."
+  "Prefix each KEY in BINDINGS with PREFIX of KEY is a string.
+PREFIX can also be ending with a modifier, such as C-, S- C-S-
+etc."
   (declare (indent 1))
   (setq bindings (bind-flatten1-key-of-bindings bindings))
   (let (new-bindings
-	(prefix (concat prefix (if (string-match "\\b.-$"
+	(prefix (concat prefix (if (string-match "\\([[:space:]]\\|^\\)\\(.-\\)+$"
 						 (car (last (split-string prefix))))
 				   ""
 				 " "))))
@@ -244,9 +234,9 @@ repeatable.  See `bind--singular' for what a FORM is."
     new-bindings))
 
 (defun bind-autoload (&optional file-as-symbol-or-key &rest bindings)
-  "Autoload each DEF in BINDINGS from FILE-AS-SYMBOL-OR-KEY if not KEY or try from :main-file metadata.
+  "If FILE-AS-SYMBOL-OR-KEY if symbol autoload DEF in BINDINGS or use metadata.
 Note that `bind' doesn't provide :main-file prop so user must
-provide it. For example, one can utilize its package
+provide it.  For example, one can utilize its package
 configurator."
   (declare (indent 1))
   (let (file)
@@ -254,10 +244,10 @@ configurator."
 	(setq file (symbol-name file-as-symbol-or-key))
       (setq file (plist-get bind--metadata :main-file)
 	    bindings `(,file-as-symbol-or-key ,@bindings)))
-    (if (not file) (error "Bad FILE-AS-SYMBOL-OR-KEY argument to BIND-AUTOLOAD."))    
+    (if (not file) (error "Bad FILE-AS-SYMBOL-OR-KEY argument to BIND-AUTOLOAD"))
     (setq bindings (bind-flatten1-key-of-bindings bindings))
     (bind-foreach-key-def bindings
-      (lambda (key def)
+      (lambda (_key def)
 	(autoload def file nil t))))
   bindings)
 
@@ -269,7 +259,7 @@ This requires `repeat-mode' to be active to take effect."
   (let ((main-keymap (plist-get bind--metadata :main-keymap)))
     (if (keymapp (symbol-value main-keymap))
 	(bind-foreach-key-def bindings
-	  (lambda (key def)
+	  (lambda (_key def)
 	    (put def 'repeat-map main-keymap)))
       (display-warning 'bind-repeat
 		       (format "Couldn't repeat bindings: %s. No main keymap given." bindings))))
