@@ -463,15 +463,6 @@ If FUNCTION is a list, apply BODY to all elements of FUNCTION."
   :debug '(sexp setup)
   :indent 1)
 
-(setup-define :require
-  (lambda (feature)
-    `(unless (require ',feature nil t)
-       ,(setup-quit)))
-  :documentation "Try to require FEATURE, or stop evaluating body.
-The first FEATURE can be used to deduce the feature context."
-  :repeatable t
-  :shorthand #'cadr)
-
 (setup-define :hook
   (lambda (function)
     `(add-hook ',(setup-get 'hook) ,function))
@@ -573,7 +564,6 @@ supported:
   (lambda (feature)
     `(require ',feature))
   :documentation "Load FEATURE with the current body."
-  :after-loaded t
   :repeatable t)
 
 (setup-define :if-feature
@@ -585,7 +575,7 @@ The first FEATURE can be used to deduce the feature context."
   :repeatable t
   :shorthand #'cadr)
 
-(setup-define :only-if
+(setup-define :if
   (lambda (condition)
     `(unless ,condition
        ,(setup-quit)))
@@ -635,21 +625,62 @@ feature context."
           (and shorthand (funcall shorthand tail)))))))
   :debug '(setup))
 
-(setup-define :autoload
-  (lambda (func)
-    (let ((fn (if (memq (car-safe func) '(quote function))
-                  (cadr func)
-                func)))
-      `(unless (fboundp (quote ,fn))
-         (autoload (function ,fn) ,(symbol-name (setup-get 'feature)) nil t))))
-  :documentation "Autoload COMMAND if not already bound."
-  :repeatable t
-  :signature '(FUNC ...))
-
 (setup-define :load
   (lambda ()
     `(require ',(setup-get 'feature)))
   :documentation "Load current FEATURE with the current body.")
+
+(setup-define :advice
+  (lambda (symbol where arglist &rest body)
+    (let ((name (gensym "setup-advice-")))
+      `(progn
+	 (defun ,name ,arglist ,@body)
+	 (advice-add ',symbol ,where #',name))))
+  :documentation "Add a piece of advice on a function.
+See `advice-add' for more details."
+  :after-loaded t
+  :debug '(sexp sexp function-form)
+  :indent 3)
+
+(setup-define :unhook
+  (lambda (func)
+    `(remove-hook (quote ,(setup-get 'hook)) ,func))
+  :documentation "Remove FUNC from the current hook."
+  :repeatable t
+  :ensure '(func)
+  :signature '(FUNC ...))
+
+(setup-define :local-unhook
+  (lambda (hook &rest functions)
+    `(add-hook
+      (quote ,(setup-get 'hook))
+      (lambda ()
+        ,@(mapcar
+           (lambda (arg)
+             (let ((fn (cond ((eq (car-safe arg) 'function) arg)
+                             ((eq (car-safe arg) 'quote)    `(function ,(cadr arg)))
+                             ((symbolp arg)                 `(function ,arg))
+                             (t                             arg))))
+               `(remove-hook (quote ,hook) ,fn t)))
+           functions))))
+  :documentation "Remove FUNCTION from HOOK only in the current hook."
+  :debug '(&rest sexp)
+  :repeatable nil)
+
+(setup-define :needs-exe
+  (lambda (executable)
+    `(unless (executable-find ,executable)
+       ,(setup-quit)))
+  :documentation "If EXECUTABLE is not in the path, stop here."
+  :repeatable 1)
+
+(setup-define :face
+  (lambda (face spec) `(custom-set-faces (quote (,face ,spec))))
+  :documentation "Customize FACE to SPEC."
+  :signature '(face spec ...)
+  :debug '(setup)
+  :repeatable t
+  :after-loaded t)
 
 (provide 'setup)
 

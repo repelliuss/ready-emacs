@@ -3,14 +3,14 @@
 (enable
  :theme
  :pkg (nano-theme)
- :sub (agnostic-sugar)
  
  :ui
  :pkg (fontaine nano-modeline)
- :sub (zen pad-frame pad-window)
+ :sub (zen pad-frame ;; pad-window
+	   )
 
- :editor
- :pkg (meow)
+ ;; :editor
+ ;; :pkg (meow)
  )
 
 ;; (enable

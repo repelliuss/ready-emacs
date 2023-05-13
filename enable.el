@@ -14,6 +14,7 @@
 ;; TODO: add support for out of source enable folders
 ;; TODO: use locate-user-emacs-file
 ;; TODO: make sure to continue eval files if there is an error in one file
+;; TODO: only enable files ending with .el
 
 (defgroup enable nil
   "A configuration manager."

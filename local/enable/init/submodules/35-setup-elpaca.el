@@ -9,8 +9,8 @@
       order)))
 
 (setup-define :elpaca
-  (lambda (_) 'elpaca)
-  :documentation "A placeholder SETUP macro that evaluates t."
+  (lambda (&rest _) t)
+  :documentation "A placeholder SETUP macro that evaluates to t."
   :shorthand #'setup--elpaca-shorthand)
 
 (defun setup--elpaca-find-order (lst)
@@ -19,19 +19,19 @@
     (while (and lst (not order))
       (if (and (consp (car lst))
 	       (eq (caar lst) :elpaca))
-	  (setq order (cadar lst)))
+	  (setq order (cdar lst)))
       (setq lst (cdr lst)))
     order))
 
 (defmacro @setup (name &rest body)
-  "SETUP macro with :elpaca support."
+  "Setup macro with :elpaca support."
   (declare (indent 1))
   (if (and (consp name)
 	   (eq :elpaca (car name)))
-      `(elpaca ,(cadr name)
+      `(elpaca ,(cdr name)
 	 (setup ,(setup--elpaca-shorthand name)
 	   ,@body))
-    (if-let ((order (or (setup--elpaca-find-order (cdr name))
+    (if-let ((order (or (and (consp name) (setup--elpaca-find-order (cdr name)))
 			(setup--elpaca-find-order body))))
 	`(setup ,name
 	   (elpaca ,order

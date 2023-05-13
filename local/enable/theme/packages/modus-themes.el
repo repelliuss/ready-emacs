@@ -7,8 +7,6 @@
      `(mode-line ((,c :box (:line-width 10 :color ,bg-mode-line-active))))
      `(mode-line-inactive ((,c :box (:line-width 10 :color ,bg-mode-line-inactive)))))))
 
-;; BUG: :option loads modus-theme
-
 (@setup (:elpaca modus-themes)
   (:load)
   (:option modus-themes-custom-auto-reload t
@@ -22,7 +20,7 @@
 	   modus-themes-org-blocks 'tinted-background
 	   modus-themes-headings nil
 	   modus-themes-variable-pitch-ui nil
-	   modus-themes-common-palette-overrides `((border-mode-line-active unspecified)
+	   modus-themes-common-palette-overrides '((border-mode-line-active unspecified)
 						   (border-mode-line-inactive unspecified)
 						   
 						   (bg-mode-line-active bg-blue-intense)
@@ -86,9 +84,8 @@
 						   (mail-other cyan-cooler)
 
 						   (bg-region bg-ochre) ; try to replace `bg-ochre' with `bg-lavender', `bg-sage'
-						   (fg-region unspecified)
-
-						   ,@modus-themes-preset-overrides-intense))
+						   (fg-region unspecified))
+	   (append* modus-themes-common-palette-overrides) modus-themes-preset-overrides-intense)
   (@theme-load-if-preferred 'modus-themes 'modus-operandi 'modus-vivendi)
   ;; (@modus-themes-increase-mode-line-height)
   )

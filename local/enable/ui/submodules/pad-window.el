@@ -14,7 +14,7 @@
 	   window-divider-default-places t)
   (window-divider-mode 1)
   (advice-add #'enable-theme :after #'window-divider-blend-with-background)
-  (@funcall-consider-daemon #'window-divider-blend-with-background) )
+  (@funcall-consider-daemon #'window-divider-blend-with-background))
 
 
 
