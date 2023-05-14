@@ -32,7 +32,7 @@
       (call-interactively #'project-async-shell-command)
     (call-interactively #'async-shell-command)))
 
-(@setup (:elpaca meow)
+(setup meow
   (:load)
   (:bind
       (meow-keymap

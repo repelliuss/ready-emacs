@@ -8,7 +8,7 @@
 		    window-divider-first-pixel))
       (set-face-foreground face bg))))
 
-(@setup nil
+(setup nil
   (:option window-divider-default-right-width 8
 	   window-divider-default-bottom-width 1
 	   window-divider-default-places t)

@@ -7,7 +7,7 @@
      `(mode-line ((,c :box (:line-width 10 :color ,bg-mode-line-active))))
      `(mode-line-inactive ((,c :box (:line-width 10 :color ,bg-mode-line-inactive)))))))
 
-(@setup (:elpaca modus-themes)
+(setup modus-themes
   (:load)
   (:option modus-themes-custom-auto-reload t
 	   modus-themes-disable-other-themes t

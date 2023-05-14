@@ -1,6 +1,6 @@
 ;;; fontaine.el -*- lexical-binding: t; -*-
 
-(@setup (:elpaca fontaine)
+(setup fontaine
   (:option fontaine-latest-state-file (concat @dir-cache "fontaine-latest-state.eld")
 	   fontaine-presets '((iosevka-term-ss04 :default-family "Iosevka Term SS04")
 			      (t :default-weight regular
