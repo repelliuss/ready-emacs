@@ -8,7 +8,7 @@
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-(defvar elpaca-order '(elpaca :repo "https://github.com/repelliuss/elpaca.git"
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
                               :ref nil
                               :files (:defaults (:exclude "extensions"))
                               :build (:not elpaca--activate-package)))
@@ -39,3 +39,14 @@
 (add-hook 'after-init-hook #'elpaca-process-queues)
 
 (elpaca `(,@elpaca-order))
+
+(elpaca (elpaca-setup
+	 :host github
+	 :repo "repelliuss/elpaca"
+	 :branch "setup.el"
+	 :files ("extensions/elpaca-setup.el")
+	 :main "extensions/elpaca-setup.el"
+	 :build (:not elpaca--compile-info))
+	(elpaca-setup-integrate 'use-by-default))
+
+(elpaca-wait)

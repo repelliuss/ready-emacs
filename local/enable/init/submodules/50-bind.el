@@ -7,4 +7,3 @@
   (:also-load bind-setup)
   (bind-setup-integrate :bind))
 
-(elpaca-wait)
