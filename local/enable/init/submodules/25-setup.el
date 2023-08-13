@@ -560,7 +560,7 @@ supported:
   :ensure '(nil func)
   :repeatable t)
 
-(setup-define :also-load
+(setup-define :require
   (lambda (feature)
     `(require ',feature))
   :documentation "Load FEATURE with the current body."
@@ -625,17 +625,9 @@ feature context."
           (and shorthand (funcall shorthand tail)))))))
   :debug '(setup))
 
-(setup-define :load
-  (lambda ()
-    `(require ',(setup-get 'feature)))
-  :documentation "Load current FEATURE with the current body.")
-
 (setup-define :advice
-  (lambda (symbol where arglist &rest body)
-    (let ((name (gensym "setup-advice-")))
-      `(progn
-	 (defun ,name ,arglist ,@body)
-	 (advice-add ',symbol ,where #',name))))
+  (lambda (where function)
+    `(advice-add #',(setup-get 'func) ,where ,function))
   :documentation "Add a piece of advice on a function.
 See `advice-add' for more details."
   :after-loaded t

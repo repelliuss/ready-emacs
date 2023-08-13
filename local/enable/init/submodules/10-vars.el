@@ -1,5 +1,9 @@
 ;;; 10-vars.el -*- lexical-binding: t; -*-
 
+(defgroup user nil
+  "All safe to customize settings for any user."
+  :prefix "@")
+
 (defconst @os-mac-p (eq system-type 'darwin)
   "Is current system Mac based?")
 
@@ -12,8 +16,9 @@
 (defconst @os-bsd-p (or @os-mac-p (eq system-type 'berkeley-unix))
   "Is current system BSD based?")
 
-(defconst @dir-home (expand-file-name "~/")
-  "Where home directory is.")
+(defcustom @dir-home (expand-file-name "~/")
+  "Where home directory is."
+  :type 'file)
 
 (defcustom @dir-cache (expand-file-name (concat user-emacs-directory "cache/"))
   "Where cache files are stored."
@@ -33,26 +38,29 @@
              (theme-toggle-background)
            (set-default sym val))))
 
-(defcustom @theme-default-light nil
-  "Default light theme."
-  :type 'symbol)
+(defvar @theme-default-light nil
+  "Default light theme.")
 
-(defcustom @theme-default-dark nil
-  "Default light theme."
-  :type 'symbol)
+(defvar @theme-default-dark nil
+  "Default light theme.")
 
 (defcustom @theme-preferred 'nano-theme
   "Theme to be loaded with #'@theme-load-if-preferred."
   :type 'symbol)
 
-(defconst @leader-prefix "SPC "
-  "Leader prefix.")
+(defcustom @leader-prefix "SPC"
+  "Leader prefix."
+  :type 'string)
 
-(defconst @leader-local-prefix "C-c"
-  "Leader local prefix.")
+(defcustom @leader-local-prefix "<SPC> <SPC>"
+  "Leader local prefix."
+  :type 'string)
 
 (defvar @leader-map (make-sparse-keymap)
   "Leader map.")
 
 (defvar @normal-map (make-sparse-keymap)
   "Normal map.")
+
+(defvar @theme-register nil
+  "All registered themes for current sesssion.")

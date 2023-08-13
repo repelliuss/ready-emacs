@@ -6,8 +6,10 @@
  
  :ui
  :pkg (fontaine nano-modeline)
- :sub (zen pad-frame ;; pad-window
-	   )
+ :sub (zen pad-frame pad-window)
+
+ :ux
+ :pkg (which-key)
 
  :editor
  :pkg (meow)

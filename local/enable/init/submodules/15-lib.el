@@ -16,6 +16,7 @@
 
 (defun @theme-load-if-preferred (theme light dark)
   "Load and save background variants if @THEME-PREFERRED is EQ to THEME."
+  (add-to-list '@theme-register theme)
   (when (eq @theme-preferred theme)
     (setq @theme-default-light light
 	  @theme-default-dark dark)
@@ -25,3 +26,19 @@
 
 (defun @make-local-prefix (&optional key)
   (concat @leader-local-prefix (if key " ") key))
+
+(defun @press-thing-at-point ()
+  (interactive)
+  (let* ((field  (get-char-property (point) 'field))
+         (button (get-char-property (point) 'button))
+         (doc    (get-char-property (point) 'widget-doc))
+         (widget (or field button doc)))
+    (cond
+     ((and widget
+           (or (and (symbolp widget)
+                    (get widget 'widget-type))
+               (and (consp widget)
+                    (get (widget-type widget) 'widget-type))))
+      (widget-button-press (point)))
+     ((and (button-at (point)))
+      (push-button)))))

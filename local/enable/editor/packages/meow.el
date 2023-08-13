@@ -2,22 +2,6 @@
 
 ;; TODO: move these functions to proper places and bind them there
 
-(defun press-thing-at-point ()
-  (interactive)
-  (let* ((field  (get-char-property (point) 'field))
-         (button (get-char-property (point) 'button))
-         (doc    (get-char-property (point) 'widget-doc))
-         (widget (or field button doc)))
-    (cond
-     ((and widget
-           (or (and (symbolp widget)
-                    (get widget 'widget-type))
-               (and (consp widget)
-                    (get (widget-type widget) 'widget-type))))
-      (widget-button-press (point)))
-     ((and (button-at (point)))
-      (push-button)))))
-
 (defun project-aware-shell-command ()
   (interactive)
   (run-at-time nil nil #'previous-history-element 1)
@@ -33,20 +17,22 @@
     (call-interactively #'async-shell-command)))
 
 (setup meow
-  (:load)
+  (:require meow)
   (:bind
-      (meow-keymap
-       [remap describe-key] nil)		; fixes describe-key in insert-mode
+    (meow-keymap [remap describe-key] nil)		; fixes describe-key in insert-mode
+    
     (meow-motion-state-keymap
      "I" #'meow-temp-normal)
+    
     (meow-insert-state-keymap
      "M-i" #'meow-insert-exit
      "SPC" #'self-insert-command
      "C-SPC" @leader-map)
+    
     (@leader-map
-     "SPC" (defun local ()
-	     (interactive)
-	     (meow-keypad-start-with local-leader-prefix))
+     ;; "SPC" (defun @local ()
+     ;; 	     (interactive)
+     ;; 	     (meow-keypad-start-with @leader-local-prefix))
      "1" #'meow-digit-argument
      "2" #'meow-digit-argument
      "3" #'meow-digit-argument
@@ -60,8 +46,9 @@
      "u" #'universal-argument
      "." #'find-file
      "," #'switch-to-buffer)
+    
     ((setq meow-normal-state-keymap @normal-map)
-     "SPC" @leader-map
+     @leader-prefix @leader-map
      "0" #'meow-expand-0
      "9" #'meow-expand-9
      "8" #'meow-expand-8
@@ -142,55 +129,49 @@
      "\\" #'quoted-insert
      "$" #'project-aware-shell-command
      "&" #'project-aware-async-shell-command
-     "RET" #'press-thing-at-point))
+     "RET" #'@press-thing-at-point))
 
-  ;; Make Meow use our leader keymap
-  ;; Only leader map is capable of being changed this way(?)
-  ;; https://github.com/meow-edit/meow/discussions/190#discussioncomment-2095009
-  (add-to-list 'meow-keymap-alist (cons 'leader @leader-map))
+  (:option meow--kbd-undo "C-x u"		; REVIEW: do I really change the binding?
+	   meow-use-clipboard t
+	   meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
+	   meow-keypad-meta-prefix nil
+	   meow-keypad-ctrl-meta-prefix nil
 
+	   ;; Make Meow use our leader keymap
+	   ;; Only leader map is capable of being changed this way(?)
+	   ;; https://github.com/meow-edit/meow/discussions/190#discussioncomment-2095009
+	   (prepend meow-keymap-alist) (cons 'leader @leader-map))
+  
   ;; We modified meow-normal-state-keymap
   (set-keymap-parent meow-beacon-state-keymap @normal-map)
-
-  (setq meow--kbd-undo "C-x u"		; REVIEW: do I really change the binding?
-	meow-use-clipboard t
-	meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
-	meow-keypad-meta-prefix nil
-	meow-keypad-ctrl-meta-prefix nil)
-
+  
   (@funcall-consider-daemon #'meow-global-mode)
 
-  (defun meow-insert-at-point ()
-    "Switch to INSERT state."
-    (interactive)
-    (if meow--temp-normal
-	(progn
-          (message "Quit temporary normal mode")
-          (meow--switch-state 'motion))
-      (meow--cancel-selection)
-      (meow--switch-state 'insert)))
-
-  (advice-add #'meow-insert :override #'meow-insert-at-point)
+  (:with-function meow-insert
+    (:advice :override (defun @meow-insert-at-point ()
+			 "Switch to INSERT state."
+			 (interactive)
+			 (if meow--temp-normal
+			     (progn
+			       (message "Quit temporary normal mode")
+			       (meow--switch-state 'motion))
+			   (meow--cancel-selection)
+			   (meow--switch-state 'insert)))))
 
   (:with-feature embark
     (:when-loaded
-      (defun meow-cancel-selection-noerr (&rest _)
-	(ignore-errors (meow-cancel-selection)))
-      
-      (dolist (fn '(embark-act embark-dwim))
-	(advice-add fn :before #'meow-cancel-selection-noerr))))
+      (:with-function (embark-act embark-dwim)
+	(:advice :before (defun @meow-cancel-selection-noerr (&rest _)
+			   (ignore-errors (meow-cancel-selection)))))))
 
   (:with-feature org-capture
     (:when-loaded
-      (add-hook 'org-capture-mode-hook #'meow-insert)))
-  
-  (:with-feature org-capture
-    (:when-loaded
-      (add-hook 'completion-in-region-mode-hook #'meow-insert)))
+      (:hook #'meow-insert)
+      (:with-hook completion-in-region-mode-hook
+	(:hook #'meow-insert))))
 
   (:with-feature which-key
     (:when-loaded
-      (add-to-list 'which-key-replacement-alist '((nil . "^meow-") . (nil . "")))
-      (add-to-list 'which-key-replacement-alist '(("0" . "meow-digit-argument") . ("[0-9]")))
-      (add-to-list 'which-key-replacement-alist '(("[1-9]" . "meow-digit-argument") . t)))))
-
+      (:option (prepend* which-key-replacement-alist) '(((nil . "^meow-") . (nil . ""))
+							(("0" . "meow-digit-argument") . ("[0-9]"))
+							(("[1-9]" . "meow-digit-argument") . t))))))

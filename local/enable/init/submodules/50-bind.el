@@ -5,8 +5,9 @@
 		:repo "repelliuss/bind"
 		:files (:defaults "extensions/bind-setup.el"))
   
-  (:also-load bind-setup)
+  (:require bind-setup)
   (bind-setup-integrate :bind)
+  (put :bind 'lisp-indent-function 0)
   
   (defun bind-local (&optional key &rest bindings)
     (declare (indent 1))
