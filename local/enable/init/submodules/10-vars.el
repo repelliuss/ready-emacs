@@ -52,7 +52,7 @@
   "Leader prefix."
   :type 'string)
 
-(defcustom @leader-local-prefix "<SPC> <SPC>"
+(defcustom @leader-local-prefix "SPC"
   "Leader local prefix."
   :type 'string)
 

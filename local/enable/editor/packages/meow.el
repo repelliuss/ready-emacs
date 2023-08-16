@@ -30,9 +30,6 @@
      "C-SPC" @leader-map)
     
     (@leader-map
-     ;; "SPC" (defun @local ()
-     ;; 	     (interactive)
-     ;; 	     (meow-keypad-start-with @leader-local-prefix))
      "1" #'meow-digit-argument
      "2" #'meow-digit-argument
      "3" #'meow-digit-argument
@@ -129,7 +126,10 @@
      "\\" #'quoted-insert
      "$" #'project-aware-shell-command
      "&" #'project-aware-async-shell-command
-     "RET" #'@press-thing-at-point))
+     "RET" #'@press-thing-at-point)
+
+    (mode-specific-map			; remove meow_dispatch* function appearing from C-c prefix
+     "SPC" nil))
 
   (:option meow--kbd-undo "C-x u"		; REVIEW: do I really change the binding?
 	   meow-use-clipboard t
@@ -140,7 +140,10 @@
 	   ;; Make Meow use our leader keymap
 	   ;; Only leader map is capable of being changed this way(?)
 	   ;; https://github.com/meow-edit/meow/discussions/190#discussioncomment-2095009
-	   (prepend meow-keymap-alist) (cons 'leader @leader-map))
+	   (prepend meow-keymap-alist) (cons 'leader @leader-map)
+
+	   (remove minor-mode-map-alist) (cons 'meow-normal-mode (alist-get 'meow-normal-mode minor-mode-map-alist))
+	   (prepend minor-mode-map-alist) (cons 'meow-normal-mode @normal-map))
   
   ;; We modified meow-normal-state-keymap
   (set-keymap-parent meow-beacon-state-keymap @normal-map)
