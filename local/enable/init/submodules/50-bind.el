@@ -8,10 +8,15 @@
   (:require bind-setup)
   (bind-setup-integrate :bind)
   (put :bind 'lisp-indent-function 0)
+
+  (bind @keymap-leader
+	"o" @keymap-open
+	"t" @keymap-toggle)
   
-  (defun bind-local (&optional key &rest bindings)
+  (defun @bind-local (&optional key &rest bindings)
     (declare (indent 1))
-    (if (eq (stringp key) (stringp (car bindings)))
+    (if (and (eq (type-of key) (type-of (car bindings))))
 	(apply #'bind-prefix (@make-local-prefix key) bindings)
       (apply #'bind-prefix (@make-local-prefix) (cons key bindings)))))
+
 

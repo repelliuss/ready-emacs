@@ -27,9 +27,9 @@
     (meow-insert-state-keymap
      "M-i" #'meow-insert-exit
      "SPC" #'self-insert-command
-     "C-SPC" @leader-map)
+     "C-SPC" @keymap-leader)
     
-    (@leader-map
+    (@keymap-leader
      "1" #'meow-digit-argument
      "2" #'meow-digit-argument
      "3" #'meow-digit-argument
@@ -44,8 +44,8 @@
      "." #'find-file
      "," #'switch-to-buffer)
     
-    ((setq meow-normal-state-keymap @normal-map)
-     @leader-prefix @leader-map
+    ((setq meow-normal-state-keymap @keymap-normal)
+     @key-leader-prefix @keymap-leader
      "0" #'meow-expand-0
      "9" #'meow-expand-9
      "8" #'meow-expand-8
@@ -140,13 +140,13 @@
 	   ;; Make Meow use our leader keymap
 	   ;; Only leader map is capable of being changed this way(?)
 	   ;; https://github.com/meow-edit/meow/discussions/190#discussioncomment-2095009
-	   (prepend meow-keymap-alist) (cons 'leader @leader-map)
+	   (prepend meow-keymap-alist) (cons 'leader @keymap-leader)
 
 	   (remove minor-mode-map-alist) (cons 'meow-normal-mode (alist-get 'meow-normal-mode minor-mode-map-alist))
-	   (prepend minor-mode-map-alist) (cons 'meow-normal-mode @normal-map))
+	   (prepend minor-mode-map-alist) (cons 'meow-normal-mode @keymap-normal))
   
   ;; We modified meow-normal-state-keymap
-  (set-keymap-parent meow-beacon-state-keymap @normal-map)
+  (set-keymap-parent meow-beacon-state-keymap @keymap-normal)
   
   (@funcall-consider-daemon #'meow-global-mode)
 

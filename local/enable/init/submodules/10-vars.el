@@ -48,11 +48,11 @@
   "Theme to be loaded with #'@theme-load-if-preferred."
   :type 'symbol)
 
-(defcustom @leader-prefix "SPC"
+(defcustom @key-leader-prefix "SPC"
   "Leader prefix."
   :type 'string)
 
-(defcustom @leader-local-prefix "SPC"
+(defcustom @key-local-leader-prefix "SPC"
   "Leader local prefix."
   :type 'string)
 
@@ -60,11 +60,17 @@
   "A symbol describing the default font."
   :type 'symbol)
 
-(defvar @leader-map (make-sparse-keymap)
+(defvar @keymap-leader (make-sparse-keymap)
   "Leader map.")
 
-(defvar @normal-map (make-sparse-keymap)
+(defvar @keymap-normal (make-sparse-keymap)
   "Normal map.")
+
+(defvar @keymap-open (make-sparse-keymap)
+  "Open map.")
+
+(defvar @keymap-toggle (make-sparse-keymap)
+  "Open map.")
 
 (defvar @theme-register nil
   "All registered themes for current sesssion.")

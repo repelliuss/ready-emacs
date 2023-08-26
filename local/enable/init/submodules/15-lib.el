@@ -25,7 +25,7 @@
       (load-theme dark :no-confirm))))
 
 (defun @make-local-prefix (&optional key)
-  (concat @leader-prefix " " @leader-local-prefix (if key " ") key))
+  (concat @key-leader-prefix " " @key-local-leader-prefix (if key " ") key))
 
 (defun @press-thing-at-point ()
   (interactive)

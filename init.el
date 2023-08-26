@@ -6,10 +6,11 @@
 
  :font
  :pkg (fontaine)
- :sub (iosevka)
+
+ :modeline
+ :pkg (nano-modeline)
  
  :ui
- :pkg (nano-modeline)
  :sub (zen pad-frame pad-window)
 
  :ux
@@ -17,7 +18,9 @@
 
  :editor
  :pkg (meow)
- )
+
+ :tools
+ :pkg (magit))
 
 ;; (enable
 ;;  :editor
