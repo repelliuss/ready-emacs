@@ -16,6 +16,7 @@
 ;; TODO: make sure to continue eval files if there is an error in one file
 ;; TODO: only enable files ending with .el
 ;; TODO: better than with-demoted-errors
+;; TODO: number ordering is not ordinal but alphabetical
 
 (defgroup enable nil
   "A configuration manager."
@@ -70,7 +71,8 @@
          (path (concat module-path (if packages-p "packages/" "submodules/"))))
     (dolist (file files)
       (let ((file-name (if (symbolp file) (symbol-name file) file)))
-	(with-demoted-errors "Unable to enable file: %S"
+	(message "Loading file %s" file) ; TODO: remove this
+	(with-demoted-errors "Enabling error: %S"
 	  (unless (eq 'skip (catch 'enable-quit (funcall enable-loader (concat path file-name ".el"))))
 	    (provide (intern (concat "enable-" (if packages-p "pkg" "sub") "-" file-name)))))))))
 

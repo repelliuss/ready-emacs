@@ -20,8 +20,9 @@
  :pkg (meow
        ace-window)
  :sub (project
-       ;; ace-window-hasty-windows
-       )
+       file
+       buffer
+       ace-window-hasty-windows)
 
  :tools
  :pkg (magit))

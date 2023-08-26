@@ -1,24 +1,21 @@
 ;;; file.el -*- lexical-binding: t; -*-
 
-(bind
- ((setq rps/file-map (make-sparse-keymap))
-  "s" #'save-buffer
-  "d" #'delete-buffer-file
-  "r" #'recentf-open-files
-  "m" #'move-buffer-file
-  "c" #'copy-buffer-file
-  "F" #'sudo-find-file
-  "B" #'sudo-buffer-file
-  "S" #'sudo-save-file)
- (rps/leader-map
-  "f" rps/file-map))
+(bind @keymap-file
+      "s" #'save-buffer
+      "d" #'@file-delete
+      "r" #'recentf-open-files
+      "m" #'@file-move
+      "c" #'@file-copy
+      "F" #'@file-sudo-find
+      "B" #'@file-sudo
+      "S" #'@file-sudo-save)
 
 (setq delete-by-moving-to-trash t)
 
 (with-eval-after-load 'which-key
   (add-to-list 'which-key-replacement-alist '(("f$" . "prefix") . (nil . "file"))))
 
-(defun act-buffer-file (buffer new-path act)
+(defun @file-act-on-buffer (buffer new-path act)
   (if-let ((path (buffer-file-name buffer)))
       (progn
 	(make-directory (file-name-directory new-path) 'with-parents)
@@ -27,26 +24,26 @@
 	(kill-buffer buffer))
     (error "Buffer doesn't visit a file")))
 
-(defun move-buffer-file (buffer new-path)
+(defun @file-move (buffer new-path)
     (interactive (list (current-buffer)
 		       (read-file-name "Move to: ")))
-    (act-buffer-file buffer new-path #'rename-file))
+    (@file-act-on-buffer buffer new-path #'rename-file))
 
-(defun copy-buffer-file (buffer new-path)
+(defun @file-copy (buffer new-path)
     (interactive (list (current-buffer)
 		       (read-file-name "Copy to: ")))
-    (act-buffer-file buffer new-path #'copy-file))
+    (@file-act-on-buffer buffer new-path #'copy-file))
 
-(defun delete-buffer-file (buffer)
+(defun @file-delete (buffer)
   (interactive (list (current-buffer)))
   (if-let ((path (buffer-file-name buffer)))
       (when (y-or-n-p "Are you sure to delete this file?")
 	(delete-file path 'trash-t)
-	(remove-files-from-all-caches path)
-	(kill-buffer-in-all-windows buffer 'dont-save-t))
+	(@file-remove-from-cache path)
+	(@file-kill-windows buffer 'dont-save-t))
     (message "Buffer doesn't visit a file")))
 
-(defun kill-buffer-in-all-windows (buffer &optional dont-save)
+(defun @file-kill-windows (buffer &optional dont-save)
   "Kill BUFFER globally and ensure all windows previously showing this buffer
 have switched to a real buffer or the fallback buffer.
 
@@ -64,7 +61,7 @@ If DONT-SAVE, don't prompt to save modified buffers (discarding their changes)."
 	(when (equal buffer (window-buffer))
 	  (previous-buffer))))))
 
-(defun remove-files-from-all-caches (&rest files)
+(defun @file-remove-from-cache (&rest files)
   "Ensure FILES are updated in `recentf', `magit' and `save-place'."
   (let (toplevels)
     (dolist (file files)
@@ -84,7 +81,7 @@ If DONT-SAVE, don't prompt to save modified buffers (discarding their changes)."
     (when (bound-and-true-p save-place-mode)
       (save-place-forget-unreadable-files))))
 
-(defun get-sudo-file-path (file)
+(defun @file-sudo-path (file)
   (let ((host (or (file-remote-p file 'host) "localhost")))
     (concat "/" (when (file-remote-p file)
                   (concat (file-remote-p file 'method) ":"
@@ -96,25 +93,25 @@ If DONT-SAVE, don't prompt to save modified buffers (discarding their changes)."
             ":" (or (file-remote-p file 'localname)
                     file))))
 
-(defun sudo-find-file (file)
+(defun @file-sudo-find (file)
   "Open FILE as root."
   (interactive "FOpen file as root: ")
-  (find-file (get-sudo-file-path file)))
+  (find-file (@file-sudo-path file)))
 
-(defun sudo-buffer-file ()
+(defun @file-sudo ()
   "Open the current file as root."
   (interactive)
   (find-file
-   (get-sudo-file-path
+   (@file-sudo-path
     (or buffer-file-name
         (when (or (derived-mode-p 'dired-mode)
                   (derived-mode-p 'wdired-mode))
           default-directory)))))
 
-(defun sudo-save-buffer ()
+(defun @file-sudo-save ()
   "Save this file as root."
   (interactive)
-  (let ((file (get-sudo-file-path buffer-file-name)))
+  (let ((file (@file-sudo-path buffer-file-name)))
     (if-let (buffer (find-file-noselect file))
         (let ((origin (current-buffer)))
           (copy-to-buffer buffer (point-min) (point-max))
@@ -126,5 +123,3 @@ If DONT-SAVE, don't prompt to save modified buffers (discarding their changes)."
             (with-current-buffer origin
               (revert-buffer t t))))
       (user-error "Unable to open %S" file))))
-
-(provide 'rps/editor/file)

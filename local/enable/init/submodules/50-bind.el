@@ -13,7 +13,9 @@
 	"o" @keymap-open
 	"t" @keymap-toggle
 	"p" @keymap-project
-	"w" @keymap-window)
+	"w" @keymap-window
+	"b" @keymap-buffer
+	"f" @keymap-file)
   
   (defun @bind-local (&optional key &rest bindings)
     (declare (indent 1))
