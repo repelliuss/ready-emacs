@@ -15,6 +15,7 @@
 ;; TODO: use locate-user-emacs-file
 ;; TODO: make sure to continue eval files if there is an error in one file
 ;; TODO: only enable files ending with .el
+;; TODO: better than with-demoted-errors
 
 (defgroup enable nil
   "A configuration manager."
@@ -68,11 +69,10 @@
   (let* ((module-path (concat enable-modules-dir (substring (symbol-name module) 1) "/"))
          (path (concat module-path (if packages-p "packages/" "submodules/"))))
     (dolist (file files)
-      (funcall enable-loader (concat path
-                                     (if (symbolp file)
-                                         (symbol-name file)
-                                       file)
-                                     ".el")))))
+      (let ((file-name (if (symbolp file) (symbol-name file) file)))
+	(with-demoted-errors "Unable to enable file: %S"
+	  (unless (eq 'skip (catch 'enable-quit (funcall enable-loader (concat path file-name ".el"))))
+	    (provide (intern (concat "enable-" (if packages-p "pkg" "sub") "-" file-name)))))))))
 
 (defun enable--build-module (module)
   (let ((pkg-defaults (intern (concat "enable--"
@@ -236,4 +236,16 @@
                            (intern (file-name-sans-extension submodule)))
                          (enable--get-files (concat module-name "/submodules/"))))))))
 
+(defmacro enable-when (submodule filename &rest body)
+  `(when (featurep (intern (concat "enable-" (symbol-name ',submodule) "-" (symbol-name ',filename))))
+     ,@body))
 
+(defmacro enable-after (submodule filename &rest body)
+  `(with-eval-after-load (featurep (intern (concat "enable-" (symbol-name ',submodule) "-" (symbol-name ',filename))))
+     ,@body))
+
+(defmacro enable-quit-unless (submodule filename &rest body)
+  (declare (indent 2))
+  `(if (not (featurep (intern (concat "enable-" (symbol-name ',submodule) "-" (symbol-name ',filename)))))
+       (throw 'enable-quit 'skip)
+     ,@body))

@@ -1,6 +1,6 @@
 ;;; pad-window.el -*- lexical-binding: t; -*-
 
-(setup nil
+(setup-none
   (:option window-divider-default-right-width 8
 	   window-divider-default-bottom-width 1
 	   window-divider-default-places t)

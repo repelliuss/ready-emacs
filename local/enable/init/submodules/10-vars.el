@@ -56,6 +56,10 @@
   "Leader local prefix."
   :type 'string)
 
+(defcustom @font-preferred 'iosevka-term-ss04
+  "A symbol describing the default font."
+  :type 'symbol)
+
 (defvar @leader-map (make-sparse-keymap)
   "Leader map.")
 

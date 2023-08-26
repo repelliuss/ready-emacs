@@ -3,9 +3,13 @@
 (enable
  :theme
  :pkg (nano-theme)
+
+ :font
+ :pkg (fontaine)
+ :sub (iosevka)
  
  :ui
- :pkg (fontaine nano-modeline)
+ :pkg (nano-modeline)
  :sub (zen pad-frame pad-window)
 
  :ux

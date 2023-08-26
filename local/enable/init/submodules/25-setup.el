@@ -674,6 +674,10 @@ See `advice-add' for more details."
   :repeatable t
   :after-loaded t)
 
+(defmacro setup-none (&rest body)
+  (declare (indent 0))
+  `(setup nil ,@body))
+
 (provide 'setup)
 
 ;;; setup.el ends here
