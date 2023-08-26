@@ -72,5 +72,11 @@
 (defvar @keymap-toggle (make-sparse-keymap)
   "Open map.")
 
+(defvar @keymap-project (make-sparse-keymap)
+  "Project map.")
+
+(defvar @keymap-window (make-sparse-keymap)
+  "Window map.")
+
 (defvar @theme-register nil
   "All registered themes for current sesssion.")

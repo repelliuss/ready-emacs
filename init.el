@@ -8,7 +8,7 @@
  :pkg (fontaine)
 
  :modeline
- :pkg (nano-modeline)
+ :pkg (mood-line)
  
  :ui
  :sub (zen pad-frame pad-window)
@@ -17,7 +17,11 @@
  :pkg (which-key)
 
  :editor
- :pkg (meow)
+ :pkg (meow
+       ace-window)
+ :sub (project
+       ;; ace-window-hasty-windows
+       )
 
  :tools
  :pkg (magit))

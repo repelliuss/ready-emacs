@@ -2,5 +2,6 @@
 
 (setup nano-modeline
   (:option nano-modeline-prefix 'status)
-  (nano-modeline-mode 1))
+  (:require nano-modeline)	
+  (nano-modeline-text-mode 1))
 

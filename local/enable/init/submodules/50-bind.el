@@ -11,7 +11,9 @@
 
   (bind @keymap-leader
 	"o" @keymap-open
-	"t" @keymap-toggle)
+	"t" @keymap-toggle
+	"p" @keymap-project
+	"w" @keymap-window)
   
   (defun @bind-local (&optional key &rest bindings)
     (declare (indent 1))
