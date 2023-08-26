@@ -1,53 +1,58 @@
 ;;; vertico.el -*- lexical-binding: t; -*-
 
-(use-package vertico
-  :init
-  (setq vertico-cycle t
-        vertico-scroll-margin 3)
+;; TODO: vertico is not deferred
 
+(setup (:elpaca vertico :files (:defaults (:exclude "extensions/*")))
   (vertico-mode 1)
 
-  :extend (ace-window)
   (bind vertico-map
-	"M-w" #'ace-window)
+    "<backspace>" #'backward-kill-word
+    (:prefix "M-"
+      "j" #'vertico-next
+      "k" #'vertico-previous
+      "J" #'vertico-next-group
+      "K" #'vertico-previous-group
+      ">" #'vertico-scroll-up
+      "<" #'vertico-scroll-down
+      "Y" #'yank-pop
+      "RET" #'vertico-exit-input)
+    (:prefix "C-"
+      ">" #'vertico-last
+      "<" #'vertico-first))
   
-  :extend (meow)
-  (bind vertico-map
-	"M-j" #'vertico-next
-	"M-k" #'vertico-previous
-	"M-J" #'vertico-next-group
-	"M-K" #'vertico-previous-group
-	"M->" #'vertico-scroll-up
-	"M-<" #'vertico-scroll-down
-	"C->" #'vertico-last
-	"C-<" #'vertico-first
-	"<backspace>" #'backward-kill-word
-	"M-<backspace>" #'meow-kill-whole-line
-	"M-y" #'meow-yank
-	"M-Y" #'yank-pop
-	"M-RET" #'vertico-exit-input))
+  (:option vertico-cycle t
+           vertico-scroll-margin 3)
 
-(use-package vertico-quick
-  :straight (:local-repo "vertico/extensions")
-  :after (vertico)
-  :init
-  (bind vertico-map
-	"M-A" #'vertico-quick-jump
-	"M-a" #'vertico-quick-exit))
+  (:with-feature ace-window
+    (:when-loaded
+      (bind vertico-map
+	    "M-w" #'ace-window)))
 
-(use-package vertico-repeat
-  :straight (:local-repo "vertico/extensions")
-  :after (vertico)
-  :attach (meow)
-  (bind rps/leader-map
-	(bind-autoload 'vertico
-	  "r" #'vertico-repeat))
-  
-  :init
-  (bind (current-global-map)
-	(bind-autoload 'vertico
-	  "M-r" #'vertico-repeat))
+  (:with-feature meow
+    (:when-loaded
+      (bind vertico-map
+	    (:prefix "M-"
+	      "<backspace>" #'meow-kill-whole-line
+	      "y" #'meow-yank)))))
 
-  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))
+(setup (:elpaca vertico-quick
+		:host github
+		:repo "minad/vertico"
+		:files ("extensions/vertico-quick.el"))
+  (:with-feature vertico
+    (:when-loaded
+      (bind vertico-map
+	    "M-A" #'vertico-quick-jump
+	    "M-a" #'vertico-quick-exit))))
+
+(setup (:elpaca vertico-repeat
+		:host github
+		:repo "minad/vertico"
+		:files ("extensions/vertico-repeat.el"))
+  (bind @keymap-leader
+	"r" #'vertico-repeat)
+
+  (:with-hook minibuffer-setup-hook
+    (:hook #'vertico-repeat-save)))
 
 

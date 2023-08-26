@@ -1,5 +1,11 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
+;; TODO remove with eval after loads
+;; TODO: hasty and vertico should fix :bind
+;; TODO: use custom vertico order
+;; TODO: maybe remove setup-none
+;; TODO: can I write recipe to :elpaca in body
+
 (enable
  :theme
  :pkg (nano-theme)
@@ -18,7 +24,8 @@
 
  :editor
  :pkg (meow
-       ace-window)
+       ace-window
+       vertico)
  :sub (project
        file
        buffer
