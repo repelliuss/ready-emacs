@@ -1,5 +1,6 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
+;; TODO: require to load and also load
 ;; TODO remove with eval after loads
 ;; TODO: hasty and vertico should fix :bind
 ;; TODO: use custom vertico order
@@ -20,7 +21,8 @@
  :sub (zen pad-frame pad-window)
 
  :ux
- :pkg (which-key)
+ :pkg (which-key
+       orderless)
 
  :editor
  :pkg (meow

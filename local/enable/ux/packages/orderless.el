@@ -1,40 +1,34 @@
 ;;; orderless.el -*- lexical-binding: t; -*-
 
-(use-package orderless
-  :init
-  (setq completion-styles '(orderless)
-	completion-category-defaults nil
-	completion-category-overrides '((file (styles basic-remote partial-completion)))
-	orderless-component-separator #'orderless-escapable-split-on-space
-        orderless-matching-styles '(orderless-regexp
-                                    orderless-initialism
-                                    orderless-literal)
-        orderless-style-dispatchers '(orderless-default-dispatcher))
+(setup orderless
+  (:require orderless)
+  (:option completion-styles '(orderless basic)
+	   completion-category-defaults nil
+	   completion-category-overrides '((file (styles basic partial-completion)))
+	   orderless-component-separator #'orderless-escapable-split-on-space
+           orderless-matching-styles '(orderless-regexp orderless-initialism orderless-literal)
+           orderless-style-dispatchers '(@orderless-dispatcher))
 
-  (add-to-list 'completion-styles-alist
-               '(basic-remote basic-remote-try-completion basic-remote-all-completions))
+  ;; (set-face-attribute 'completions-first-difference nil :inherit nil)
 
-  (set-face-attribute 'completions-first-difference nil :inherit nil)
+  (defun @orderless--consult-suffix ()
+    "Regexp which matches the end of string with Consult tofu support."
+    (if (and (boundp 'consult--tofu-char) (boundp 'consult--tofu-range))
+        (format "[%c-%c]*$"
+                consult--tofu-char
+                (+ consult--tofu-char consult--tofu-range -1))
+      "$"))
 
-  (defun file-path-remote-p (path)
-    (string-match-p "\\`/[^/|:]+:" (substitute-in-file-name path)))
-
-  (defun basic-remote-try-completion (string table pred point)
-    (and (file-path-remote-p string)
-         (completion-basic-try-completion string table pred point)))
-
-  (defun basic-remote-all-completions (string table pred point)
-    (and (file-path-remote-p string)
-         (completion-basic-all-completions string table pred point)))
-
-  :config
-  (defun orderless-default-dispatcher (pattern _index _total)
+  (defun @orderless-dispatcher (pattern _index _total)
     (cond
      ;; Ensure $ works with Consult commands, which add disambiguation suffixes
      ((string-suffix-p "$" pattern)
-      `(orderless-regexp . ,(concat (substring pattern 0 -1) "[\x100000-\x10FFFD]*$")))
-     ;; Ignore single !
-     ((string= "!" pattern) `(orderless-literal . ""))
+      `(orderless-regexp . ,(concat (substring pattern 0 -1) (@orderless--consult-suffix))))
+     ;; File extensions
+     ((and (or minibuffer-completing-file-name
+               (derived-mode-p 'eshell-mode))
+           (string-match-p "\\`\\.." word))
+      `(orderless-regexp . ,(concat "\\." (substring word 1) (@orderless--consult-suffix))))
      ;; Without literal
      ((string-prefix-p "!" pattern) `(orderless-without-literal . ,(substring pattern 1)))
      ;; Character folding
