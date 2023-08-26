@@ -44,7 +44,7 @@
 (defvar @theme-default-dark nil
   "Default light theme.")
 
-(defcustom @theme-preferred 'nano-theme
+(defcustom @theme-preferred 'tao-theme
   "Theme to be loaded with #'@theme-load-if-preferred."
   :type 'symbol)
 
