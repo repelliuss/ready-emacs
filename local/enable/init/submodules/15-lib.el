@@ -14,15 +14,18 @@
       `(@add-hook-transient 'server-after-make-frame-hook ,fn)
     `(funcall ,fn)))
 
-(defun @theme-load-if-preferred (theme light dark)
-  "Load and save background variants if @THEME-PREFERRED is EQ to THEME."
-  (add-to-list '@theme-register theme)
-  (when (eq @theme-preferred theme)
-    (setq @theme-default-light light
-	  @theme-default-dark dark)
+(defun @theme-register (theme light dark)
+  "Add theme to theme registry."
+  (add-to-list '@theme-register (cons theme (cons light dark))))
+
+(defun @theme-load-preferred ()
+  "Load preferred theme if registered."
+  (when-let ((theme (alist-get @theme-preferred @theme-register)))
+    (setq @theme-default-light (car theme)
+	  @theme-default-dark (cdr theme))
     (if (eq @theme-preferred-bg 'light)
-	(load-theme light :no-confirm)
-      (load-theme dark :no-confirm))))
+	(load-theme @theme-default-light :no-confirm)
+      (load-theme @theme-default-dark :no-confirm))))
 
 (defun @make-local-prefix (&optional key)
   (concat @key-leader-prefix " " @key-local-leader-prefix (if key " ") key))

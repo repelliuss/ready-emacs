@@ -1,6 +1,5 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-;; TODO: require to load and also load
 ;; TODO remove with eval after loads
 ;; TODO: hasty and vertico should fix :bind
 ;; TODO: use custom vertico order
@@ -11,6 +10,7 @@
 (enable
  :theme
  :pkg (tao-theme)
+ :sub (load-preferred-theme)
 
  :font
  :pkg (fontaine)
