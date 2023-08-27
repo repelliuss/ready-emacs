@@ -18,7 +18,8 @@
 
  :ux
  :pkg (which-key
-       orderless)
+       orderless
+       marginalia)
 
  :editor
  :pkg (meow

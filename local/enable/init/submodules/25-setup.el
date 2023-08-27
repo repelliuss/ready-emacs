@@ -668,7 +668,7 @@ See `advice-add' for more details."
   :repeatable 1)
 
 (setup-define :face
-  (lambda (face spec) `(custom-set-faces (quote (,face ,spec))))
+  (lambda (face spec) `(set-face-attribute ',face nil ,@spec))
   :documentation "Customize FACE to SPEC."
   :signature '(face spec ...)
   :debug '(setup)
