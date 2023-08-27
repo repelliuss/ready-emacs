@@ -16,8 +16,7 @@
       (call-interactively #'project-async-shell-command)
     (call-interactively #'async-shell-command)))
 
-(setup meow
-  (:require meow)
+(setup (:require meow)
   (:bind
     (meow-keymap [remap describe-key] nil)		; fixes describe-key in insert-mode
     

@@ -1,7 +1,6 @@
 ;;; orderless.el -*- lexical-binding: t; -*-
 
-(setup orderless
-  (:require orderless)
+(setup (:require orderless)
   (:option completion-styles '(orderless basic)
 	   completion-category-defaults nil
 	   completion-category-overrides '((file (styles basic partial-completion)))

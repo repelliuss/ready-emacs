@@ -1,7 +1,6 @@
 ;;; nano-modeline.el -*- lexical-binding: t; -*-
 
-(setup nano-modeline
-  (:require nano-modeline)
+(setup (:require nano-modeline)
   (add-hook 'prog-mode-hook            #'nano-modeline-prog-mode)
   (add-hook 'text-mode-hook            #'nano-modeline-text-mode)
   (add-hook 'org-mode-hook             #'nano-modeline-org-mode)

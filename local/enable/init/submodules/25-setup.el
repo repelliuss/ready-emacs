@@ -564,6 +564,7 @@ supported:
   (lambda (feature)
     `(require ',feature))
   :documentation "Load FEATURE with the current body."
+  :shorthand #'cadr
   :repeatable t)
 
 (setup-define :if-feature
