@@ -12,8 +12,10 @@
 
 (setq delete-by-moving-to-trash t)
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("f$" . "prefix") . (nil . "file"))))
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:option (prepend which-key-replacement-alist) '(("f$" . "prefix") . (nil . "file")))))
 
 (defun @file-act-on-buffer (buffer new-path act)
   (if-let ((path (buffer-file-name buffer)))

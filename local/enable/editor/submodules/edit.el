@@ -6,7 +6,7 @@
  (rps/leader-map
   "e" rps/edit-map))
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("e$" . "prefix") . (nil . "edit"))))
-
-(provide 'rps/editor/edit)
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:option (prepend which-key-replacement-alist) '(("e$" . "prefix") . (nil . "edit")))))

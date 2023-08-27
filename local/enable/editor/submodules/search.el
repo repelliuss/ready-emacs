@@ -13,7 +13,8 @@
  (rps/leader-map
   "s" rps/search-map))
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("s$" . "prefix") . (nil . "search"))))
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:option (prepend which-key-replacement-alist) '(("s$" . "prefix") . (nil . "search")))))
 
-(provide 'rps/editor/search)

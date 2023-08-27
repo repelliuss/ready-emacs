@@ -6,7 +6,8 @@
  (rps/leader-map
   "o" rps/open-map))
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("o$" . "prefix") . (nil . "open"))))
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:option (prepend which-key-replacement-alist) '(("o$" . "prefix") . (nil . "open")))))
 
-(provide 'rps/editor/open)

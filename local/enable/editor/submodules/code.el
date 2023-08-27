@@ -6,5 +6,7 @@
  (rps/leader-map
   "c" rps/code-map))
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("c$" . "prefix") . (nil . "code"))))
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:option (prepend which-key-replacement-alist) '(("c$" . "prefix") . (nil . "code")))))

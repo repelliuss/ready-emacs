@@ -13,8 +13,10 @@
       "n" narrow-map
       "z" #'bury-buffer)
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("b$" . "prefix") . (nil . "buffer"))))
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:option (prepend which-key-replacement-alist) '(("b$" . "prefix") . (nil . "buffer")))))
 
 (setq display-buffer-base-action '((display-buffer-reuse-window
 				    display-buffer-reuse-mode-window

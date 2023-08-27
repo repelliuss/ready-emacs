@@ -17,6 +17,8 @@
 ;;  (rps/leader-map
 ;;   "w" rps/window-map))
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("w$" . "prefix") . (nil . "window")))
-  (add-to-list 'which-key-replacement-alist '(("w .$" . "\\(?:-\\(?:states\\|windows?\\)\\|wind\\(?:ow\\)?\\)") . (nil . ""))))
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:option (prepend* which-key-replacement-alist) '((("w$" . "prefix") . (nil . "window"))
+						      (("w .$" . "\\(?:-\\(?:states\\|windows?\\)\\|wind\\(?:ow\\)?\\)") . (nil . ""))))))

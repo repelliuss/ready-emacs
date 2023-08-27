@@ -3,5 +3,7 @@
 (bind rps/leader-map
       "n" (setq rps/note-map (make-sparse-keymap)))
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("n$" . "prefix") . (nil . "note"))))
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:option (prepend which-key-replacement-alist) '(("n$" . "prefix") . (nil . "note")))))

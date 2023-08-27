@@ -12,7 +12,7 @@
       (read-only-mode -1)
     (read-only-mode 1)))
 
-(with-eval-after-load 'which-key
-  (add-to-list 'which-key-replacement-alist '(("t$" . "prefix") . (nil . "toggle"))))
+(setup which-key
+  (:when-loaded
+    (:option (prepend which-key-replacement-alist) '(("t$" . "prefix") . (nil . "toggle")))))
 
-(provide 'rps/editor/toggle)
