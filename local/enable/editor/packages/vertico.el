@@ -2,38 +2,41 @@
 
 ;; TODO: vertico is not deferred
 
-(setup (:elpaca vertico :files (:defaults (:exclude "extensions/*")))
+(setup (:elpaca vertico
+		:host github
+		:repo "minad/vertico"
+		:files (:defaults (:exclude "extensions/*")))
   (vertico-mode 1)
 
-  (bind vertico-map
-    "<backspace>" #'backward-kill-word
-    (:prefix "M-"
-      "j" #'vertico-next
-      "k" #'vertico-previous
-      "J" #'vertico-next-group
-      "K" #'vertico-previous-group
-      ">" #'vertico-scroll-up
-      "<" #'vertico-scroll-down
-      "Y" #'yank-pop
-      "RET" #'vertico-exit-input)
-    (:prefix "C-"
-      ">" #'vertico-last
-      "<" #'vertico-first))
+  (:bind vertico-map
+	 "<backspace>" #'backward-kill-word
+	 (:prefix "M-"
+	   "j" #'vertico-next
+	   "k" #'vertico-previous
+	   "J" #'vertico-next-group
+	   "K" #'vertico-previous-group
+	   ">" #'vertico-scroll-up
+	   "<" #'vertico-scroll-down
+	   "Y" #'yank-pop
+	   "RET" #'vertico-exit-input)
+	 (:prefix "C-"
+	   ">" #'vertico-last
+	   "<" #'vertico-first))
   
   (:option vertico-cycle t
            vertico-scroll-margin 3)
 
   (:with-feature ace-window
     (:when-loaded
-      (bind vertico-map
-	    "M-w" #'ace-window)))
+      (:bind vertico-map
+	     "M-w" #'ace-window)))
 
   (:with-feature meow
     (:when-loaded
-      (bind vertico-map
-	    (:prefix "M-"
-	      "<backspace>" #'meow-kill-whole-line
-	      "y" #'meow-yank)))))
+      (:bind vertico-map
+	     (:prefix "M-"
+	       "<backspace>" #'meow-kill-whole-line
+	       "y" #'meow-yank)))))
 
 (setup (:elpaca vertico-quick
 		:host github
@@ -41,16 +44,16 @@
 		:files ("extensions/vertico-quick.el"))
   (:with-feature vertico
     (:when-loaded
-      (bind vertico-map
-	    "M-A" #'vertico-quick-jump
-	    "M-a" #'vertico-quick-exit))))
+      (:bind vertico-map
+	     "M-A" #'vertico-quick-jump
+	     "M-a" #'vertico-quick-exit))))
 
 (setup (:elpaca vertico-repeat
 		:host github
 		:repo "minad/vertico"
 		:files ("extensions/vertico-repeat.el"))
-  (bind @keymap-leader
-	"r" #'vertico-repeat)
+  (:bind @keymap-leader
+	 "r" #'vertico-repeat)
 
   (:with-hook minibuffer-setup-hook
     (:hook #'vertico-repeat-save)))

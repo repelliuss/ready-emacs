@@ -3,10 +3,10 @@
 (setup ace-window
   (:elpaca nil)
   
-  (bind @keymap-leader
-	(:autoload 'ace-window
-	  "w" #'ace-window-hasty
-	  "W" #'aw-flip-window))
+  (:bind @keymap-leader
+	 (:autoload 'ace-window
+	   "w" #'ace-window-hasty
+	   "W" #'aw-flip-window))
 
   (:option aw-minibuffer-flag t
            aw-dispatch-always t

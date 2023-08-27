@@ -1,8 +1,5 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-;; TODO remove with eval after loads
-;; TODO: hasty and vertico should fix :bind
-;; TODO: use custom vertico order
 ;; TODO: can I write recipe to :elpaca in body
 ;; TODO: move orderless $ regexp to consult dispatcher and prepend it there
 
