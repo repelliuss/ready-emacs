@@ -1,6 +1,5 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-;; TODO: can I write recipe to :elpaca in body
 ;; TODO: move orderless $ regexp to consult dispatcher and prepend it there
 
 (enable
