@@ -1,18 +1,42 @@
-j* Requirements
+* Requirements
 
-- ~git~ should be accessible through ~PATH~ environment variable. Make sure to setup git user name and mail.
+[[https://scoop.sh/][Get Scoop]] for Windows.
 
-  #+begin_src sh
-    git config --global user.name "John Doe"
-    git config --global user.email johndoe@example.com
-    git config --global core.editor emacs
+1. ~git~ should be accessible through ~PATH~ environment variable. Make sure to setup git user name and mail.
 
-    # optional for a package named magit
-    git config --global status.showUntrackedFiles all
-  #+end_src
+   For Windows,
+   #+begin_src sh
+     scoop install git
+   #+end_src
 
-- (optional) Install Symbola font on Windows for missing icons.
-- (optional) ~fd~ (file finder) and ~rg~ (ripgrep: text finder) executable should be accessible through ~PATH~ environment variable. =Chocolatey= on Windows is good to get software.
-- (optional) On =Windows=, set =HOME= variable to your liking.
-- (optional) Install nerd fonts for nano-modeline icon prefix.
-- (optional) Install Roboto and Victor Mono fonts for nano-theme and set ~nano-fonts-use~ to ~t~.
+   #+begin_src sh
+     git config --global user.name "John Doe"
+     git config --global user.email johndoe@example.com
+     git config --global core.editor emacs
+
+     # optional for a package named magit
+     git config --global status.showUntrackedFiles all
+   #+end_src
+
+   2. Install Emacs
+
+      For Windows,
+      #+begin_src sh
+        scoop bucket add extras
+        scoop install emacs
+      #+end_src
+
+   3. (optional) ~fd~ (file finder) and ~rg~ (ripgrep: text finder) executable should be accessible through ~PATH~ environment variable.
+
+      For Windows,
+      #+begin_src sh
+        scoop install fd
+        scoop install ripgrep
+      #+end_src
+
+   4. (optional) Install Symbola font on Windows for missing icons.
+   5. (optional) On =Windows=, set =HOME= variable to your liking.
+   6. (optional) Install nerd fonts for nano-modeline icon prefix.
+   7. (optional) Install Roboto and Victor Mono fonts for nano-theme and set ~nano-fonts-use~ to ~t~.
+
+

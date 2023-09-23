@@ -9,7 +9,6 @@
   (vertico-mode 1)
 
   (:bind vertico-map
-	 "<backspace>" #'backward-kill-word
 	 (:prefix "M-"
 	   "j" #'vertico-next
 	   "k" #'vertico-previous
@@ -28,8 +27,7 @@
 
   (:with-feature ace-window
     (:when-loaded
-      (:bind vertico-map
-	     "M-w" #'ace-window)))
+      (:bind vertico-map "M-w" #'ace-window)))
 
   (:with-feature meow
     (:when-loaded

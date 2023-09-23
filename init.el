@@ -28,7 +28,11 @@
  :sub (project
        file
        buffer
-       ace-window-hasty-windows)
+       search
+       toggle
+       ace-window-hasty-windows
+       minibuffer
+       electric)
 
  :tools
  :pkg (magit))

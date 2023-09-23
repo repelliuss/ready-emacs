@@ -5,14 +5,12 @@
 ;;; Needs "PASSWORD_STORE_DIR" env variable to be set. See pass-fix-env submodule.
 ;;; Depends on progams gpg and pass most of the time.
 
-(use-package pass
-  :init
-  (bind rps/open-map
-	(bind-autoload 'pass
-	  "p" #'consult-pass)
-	"P" #'pass)
+(setup pass
+  ;; (bind rps/open-map
+  ;; 	(bind-autoload 'pass
+  ;; 	  "p" #'consult-pass)
+  ;; 	"P" #'pass)
   
-  :config
   (setq password-store-password-length 25
         pass-username-fallback-on-filename t)
 

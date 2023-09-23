@@ -40,9 +40,9 @@
   (interactive (list (current-buffer)))
   (if-let ((path (buffer-file-name buffer)))
       (when (y-or-n-p "Are you sure to delete this file?")
-	(delete-file path 'trash-t)
+	(delete-file path 'trash)
 	(@file-remove-from-cache path)
-	(@file-kill-windows buffer 'dont-save-t))
+	(@file-kill-windows buffer 'dont-save))
     (message "Buffer doesn't visit a file")))
 
 (defun @file-kill-windows (buffer &optional dont-save)

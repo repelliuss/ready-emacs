@@ -5,7 +5,7 @@
   
   (:bind @keymap-leader
 	 (:autoload 'ace-window
-	   "w" #'ace-window-hasty
+	   "w" #'ace-window-hasty	; TODO: try remapping @keymap-window instead
 	   "W" #'aw-flip-window))
 
   (:option aw-minibuffer-flag t

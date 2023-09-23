@@ -8,13 +8,14 @@
 	 "G" #'magit-dispatch))
     (prog-mode-map
      (@bind-local
-	 (:autoload
-	     "g" #'magit-file-dispatch))))
+      (:autoload
+	  "g" #'magit-file-dispatch))))
   
   (:option magit-define-global-key-bindings nil
 	   magit-revision-show-gravatars t)
 
   (:with-hook git-commit-mode-hook
     (:hook (defun @meow-insert-at-eol ()
-	     (end-of-line)
-	     (meow-insert)))))
+	     (when meow-mode
+	       (end-of-line)
+	       (meow-insert))))))

@@ -81,8 +81,14 @@
 (defvar @keymap-window (make-sparse-keymap)
   "Window map.")
 
+(defvar @keymap-search (make-sparse-keymap)
+  "Search map.")
+
 (defvar @keymap-file (make-sparse-keymap)
   "File map.")
+
+(defvar @keymap-toggle (make-sparse-keymap)
+  "Toggle map.")
 
 (defvar @theme-register nil
   "All registered themes for current sesssion.")

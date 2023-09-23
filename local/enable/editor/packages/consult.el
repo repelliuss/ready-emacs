@@ -1,81 +1,79 @@
 ;;; consult.el -*- lexical-binding: t; -*-
 
-(use-package consult
-  :attach (meow)
-  (bind meow-normal-state-keymap
-	"M-z" #'consult-kmacro
-	"`" #'consult-register-load
-	"~" #'consult-register-store
-	"M-`" #'consult-register
-	"M-g" #'consult-goto-line
-	"M-m" #'consult-mark
-	"M-M" #'consult-global-mark
-	"M-o" #'consult-outline
-	"M-i" #'consult-imenu
-	"M-I" #'consult-imenu-multi
-	"!" #'consult-flymake
-	"M-!" #'consult-compile-error)
-
-  :attach (rps/editor/search)
-  (bind rps/search-map
-	"s" #'consult-line
-	"S" #'consult-line-multi
-	"G" #'consult-git-grep
-	"L" #'consult-focus-lines)
-
+(setup consult
   ;;TODO: add open externally THIS file
-  :attach (rps/editor/file)
-  (bind rps/file-map
-	"e" #'consult-file-externally)
+  (:bind
+    (:bind @keymap-leader
+	   "R" #'consult-complex-command)
+    (@keymap-search
+     "s" #'consult-line
+     "S" #'consult-line-multi
+     "G" #'consult-git-grep
+     "L" #'consult-focus-lines)
+    (@keymap-file
+     "e" #'consult-file-externally)
+    (@keymap-toggle
+     "t" #'consult-theme)
+    (:global-map
+     [remap switch-to-buffer] #'consult-buffer
+     [remap project-switch-to-buffer] #'consult-project-buffer
+     [remap switch-to-buffer-other-window] #'consult-buffer-other-window
+     [remap switch-to-buffer-other-frame] #'consult-buffer-other-frame
+     [remap recentf-open-files] #'consult-recent-file
+     [remap bookmark-jump] #'consult-bookmark
+     [remap yank-pop] #'consult-yank-pop
+     [remap view-register] #'consult-register ; BUG: preview buffer wrongly placed at first time
+     [remap goto-line] #'consult-goto-line
+     [remap pop-global-mark] #'consult-global-mark
+     [remap multi-occur] #'consult-multi-occur
+     [remap imenu] #'consult-imenu
+     [remap locate] #'consult-locate
+     [remap load-theme] #'consult-theme
+     [remap apropos] #'consult-apropos
+     [remap man] #'consult-man
+     [remap keep-lines] #'consult-keep-lines
+     [remap find-name-dired] #'consult-fd
+     [remap find-grep-dired] #'consult-ripgrep
+     [remap info] #'consult-info)
+    (help-map
+     "a" #'consult-apropos                ;BUG: remapping above doesn't work
+     "M" #'consult-man))
 
-  :attach (rps/editor/toggle)
-  (bind rps/toggle-map
-	"t" #'consult-theme)
+  (:option consult-project-root-function (lambda ()
+					   (when-let (project (project-current))
+					     (car (project-roots project))))
+	   consult-line-numbers-widen t
+	   consult-narrow-key "<"
+	   consult-async-min-input 2
+	   consult-async-refresh-delay 0.15
+	   consult-async-input-throttle 0.2
+	   consult-async-input-debounce 0.1
+	   
+	   register-preview-delay 0
+           register-preview-function #'consult-register-format
+	   
+	   xref-show-xrefs-function #'consult-xref
+           xref-show-definitions-function #'consult-xref)
 
-  :init
-  (bind
-   ((current-global-map)
-    [remap switch-to-buffer] #'consult-buffer
-    [remap switch-to-buffer-other-window] #'consult-buffer-other-window
-    [remap switch-to-buffer-other-frame] #'consult-buffer-other-frame
-    [remap recentf-open-files] #'consult-recent-file
-    [remap bookmark-jump] #'consult-bookmark
-    [remap yank-pop] #'consult-yank-pop
-    [remap view-register] #'consult-register ; BUG: preview buffer wrongly placed at first time
-    [remap goto-line] #'consult-goto-line
-    [remap pop-global-mark] #'consult-global-mark
-    [remap multi-occur] #'consult-multi-occur
-    [remap imenu] #'consult-imenu
-    [remap locate] #'consult-locate
-    [remap load-theme] #'consult-theme
-    [remap apropos] #'consult-apropos
-    [remap man] #'consult-man
-    [remap keep-lines] #'consult-keep-lines
-    [remap find-name-dired] #'consult-find
-    [remap find-grep-dired] #'consult-grep)
-   (help-map
-    "a" #'consult-apropos                ;BUG: remapping above doesn't work
-    "M" #'consult-man))
+  (:with-function register-preview (:advice :override #'consult-register-window))
+
   
-  (setq register-preview-delay 0
-        register-preview-function #'consult-register-format)
-  (advice-add #'register-preview :override #'consult-register-window)
-
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  (autoload #'consult--read "consult")
-
-  :config
-  (setq consult-project-root-function (lambda ()
-                                        (when-let (project (project-current))
-                                          (car (project-roots project))))
-        consult-line-numbers-widen t
-	consult-narrow-key "<"
-        consult-async-min-input 2
-        consult-async-refresh-delay 0.15
-        consult-async-input-throttle 0.2
-        consult-async-input-debounce 0.1)
+  (:with-feature meow
+    (:when-loaded
+      (:bind meow-normal-state-keymap
+	     (:prefix "M-"
+	       "z" #'consult-kmacro
+	       "`" #'consult-register
+	       "g" #'consult-goto-line
+	       "m" #'consult-mark
+	       "M" #'consult-global-mark
+	       "o" #'consult-outline
+	       "i" #'consult-imenu
+	       "I" #'consult-imenu-multi
+	       "!" #'consult-compile-error)
+	     "`" #'consult-register-load
+	     "~" #'consult-register-store
+	     "!" #'consult-flymake)))
 
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep
@@ -119,6 +117,8 @@
           (apply fun args)
         (when timer
           (cancel-timer timer)))))
+  
+  (autoload #'consult--read "consult")
   (advice-add #'consult--read :around #'immediate-which-key-for-narrow)
 
   :extend (eshell)
@@ -153,7 +153,7 @@
 (use-package embark-consult
   :after (embark consult))
 
-;; BUG: pulls in project and project pulls in xref and I think it is a bug to autoload define-key bindings because if this is loaded after user configurations, they may override the user bindings. which did mine for embark, so I load consult before embark
+;; bug: pulls in project and project pulls in xref and I think it is a bug to autoload define-key bindings because if this is loaded after user configurations, they may override the user bindings. which did mine for embark, so I load consult before embark
 (use-package consult-project-extra
   :attach (rps/editor/workspace)
   (advice-add #'consult-project-extra--file
