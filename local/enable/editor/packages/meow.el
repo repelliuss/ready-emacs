@@ -160,11 +160,11 @@
 			   (meow--cancel-selection)
 			   (meow--switch-state 'insert)))))
 
-  (:with-feature embark
-    (:when-loaded
-      (:with-function (embark-act embark-dwim)
-	(:advice :before (defun @meow-cancel-selection-noerr (&rest _)
-			   (ignore-errors (meow-cancel-selection)))))))
+  ;; (:with-feature embark
+  ;;   (:when-loaded
+  ;;     (:with-function (embark-act embark-dwim)
+  ;; 	(:advice :before (defun @meow-cancel-selection-noerr (&rest _)
+  ;; 			   (ignore-errors (meow-cancel-selection)))))))
 
   (:with-feature org-capture
     (:when-loaded
