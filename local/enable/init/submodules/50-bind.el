@@ -17,7 +17,8 @@
 	"b" @keymap-buffer
 	"f" @keymap-file
 	"s" @keymap-search
-	"t" @keymap-toggle)
+	"t" @keymap-toggle
+	"TAB" @keymap-workspace)
   
   (defun @bind-local (&optional key &rest bindings)
     (declare (indent 1))

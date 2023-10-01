@@ -1,7 +1,5 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-;; TODO: move orderless $ regexp to consult dispatcher and prepend it there
-
 (enable
  :theme
  :pkg (tao-theme)
@@ -24,15 +22,19 @@
  :editor
  :pkg (meow
        ace-window
-       vertico)
+       vertico
+       consult
+       consult-project-extra)
  :sub (project
        file
        buffer
        search
        toggle
+       workspace
        ace-window-hasty-windows
        minibuffer
-       electric)
+       electric
+       vertico-consult-completion-in-region)
 
  :tools
  :pkg (magit))

@@ -8,21 +8,11 @@
            orderless-matching-styles '(orderless-regexp orderless-initialism orderless-literal)
            orderless-style-dispatchers '(@orderless-dispatcher))
 
+  ;; TODO: see face
   ;; (set-face-attribute 'completions-first-difference nil :inherit nil)
-
-  (defun @orderless--consult-suffix ()
-    "Regexp which matches the end of string with Consult tofu support."
-    (if (and (boundp 'consult--tofu-char) (boundp 'consult--tofu-range))
-        (format "[%c-%c]*$"
-                consult--tofu-char
-                (+ consult--tofu-char consult--tofu-range -1))
-      "$"))
 
   (defun @orderless-dispatcher (pattern _index _total)
     (cond
-     ;; Ensure $ works with Consult commands, which add disambiguation suffixes
-     ((string-suffix-p "$" pattern)
-      `(orderless-regexp . ,(concat (substring pattern 0 -1) (@orderless--consult-suffix))))
      ;; File extensions
      ((and (or minibuffer-completing-file-name
                (derived-mode-p 'eshell-mode))

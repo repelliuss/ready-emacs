@@ -481,6 +481,7 @@ If FUNCTION is a list, apply BODY to all elements of FUNCTION."
   :repeatable t)
 
 ;; TODO: use setopt emacs29
+;; TODO: rename to set
 (setup-define :option
   (setup-make-setter
    (lambda (name)
@@ -511,7 +512,7 @@ supported:
 (append* VAR)  Assuming VAR designates a list, add each element
                of VAL to the end of VAR, keeping their order,
                unless it is already a member of the list.
-
+	
 (prepend* VAR) Assuming VAR designates a list, add each element
                of VAL to the start of VAR, keeping their order,
                unless it is already a member of the list.
@@ -567,15 +568,6 @@ supported:
   :shorthand #'cadr
   :repeatable t)
 
-(setup-define :if-feature
-  (lambda (feature)
-    `(unless (featurep ',feature)
-       ,(setup-quit)))
-  :documentation "If FEATURE is not available, stop evaluating the body.
-The first FEATURE can be used to deduce the feature context."
-  :repeatable t
-  :shorthand #'cadr)
-
 (setup-define :if
   (lambda (condition)
     `(unless ,condition
@@ -602,29 +594,17 @@ yourself."
   :after-loaded t
   :indent 0)
 
-(setup-define :and
-  (lambda (&rest conds)
-    (let ((tail (car (last conds))))
-      `(if (and ,@(butlast conds))
-           ,@(cond
-              ((symbolp tail) '(nil))
-              ((consp tail) (last conds))
-              ((error "Illegal tail")))
-         ,(setup-quit))))
-  :documentation "Abort evaluation of CONDS are not all true.
-The expression of the last condition is used to deduce the
-feature context."
-  :shorthand
-  (lambda (head)
-    (unless (cdr head)
-      (error ":and requires at least one condition"))
-    (let ((tail (car (last head))))
-      (cond
-       ((symbolp tail) tail)
-       ((consp tail)
-        (let ((shorthand (get (car tail) 'setup-shorthand)))
-          (and shorthand (funcall shorthand tail)))))))
-  :debug '(setup))
+;; TODO: use :after-feature
+(setup-define :after-feature
+  (lambda (feat &rest body)
+    `(with-eval-after-load ',feat
+       ,@body))
+  :documentation "Evaluate BODY after the current feature has been loaded.
+Avoid using this macro whenever possible, and
+instead choose a more specialized alternative or write one
+yourself."
+  :debug '(setup)
+  :indent 1)
 
 (setup-define :advice
   (lambda (where function)
@@ -632,8 +612,9 @@ feature context."
   :documentation "Add a piece of advice on a function.
 See `advice-add' for more details."
   :after-loaded t
-  :debug '(sexp sexp function-form)
-  :indent 3)
+  :debug '(sexp function-form)
+  :repeatable t
+  :indent 2)
 
 (setup-define :unhook
   (lambda (func)
@@ -667,6 +648,12 @@ See `advice-add' for more details."
   :documentation "If EXECUTABLE is not in the path, stop here."
   :repeatable 1)
 
+(setup-define :autoload
+  (lambda (fn)
+    `(autoload #',fn ,(symbol-name (setup-get 'feature))))
+  :documentation "Autoload functions for feature"
+  :repeatable t)
+	
 (setup-define :face
   (lambda (face spec) `(set-face-attribute ',face nil ,@spec))
   :documentation "Customize FACE to SPEC."

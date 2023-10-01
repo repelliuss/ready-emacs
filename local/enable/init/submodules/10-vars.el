@@ -90,5 +90,8 @@
 (defvar @keymap-toggle (make-sparse-keymap)
   "Toggle map.")
 
+(defvar @keymap-workspace (make-sparse-keymap)
+  "Workspace map.")
+
 (defvar @theme-register nil
   "All registered themes for current sesssion.")
