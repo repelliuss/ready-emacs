@@ -174,6 +174,7 @@
 
   (:with-feature which-key
     (:when-loaded
+      ;; TODO: doesn't work digit argument
       (:option (prepend* which-key-replacement-alist) '(((nil . "^meow-") . (nil . ""))
 							(("0" . "meow-digit-argument") . ("[0-9]"))
 							(("[1-9]" . "meow-digit-argument") . t))))))

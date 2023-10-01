@@ -9,7 +9,6 @@
      "S" #'consult-line-multi
      "G" #'consult-git-grep
      "L" #'consult-focus-lines)
-    (@keymap-file "e" #'consult-file-externally)
     (@keymap-toggle "t" #'consult-theme)
     ((:global-map)
      [remap switch-to-buffer] #'consult-buffer
@@ -32,9 +31,7 @@
      [remap find-name-dired] #'consult-fd
      [remap find-grep-dired] #'consult-ripgrep
      [remap info] #'consult-info)
-    (help-map
-     "a" #'consult-apropos                ;BUG: remapping above doesn't work
-     "M" #'consult-man))
+    (help-map "M" #'consult-man))
 
   (:option consult-project-root-function (lambda ()
 					   (when-let (project (project-current))

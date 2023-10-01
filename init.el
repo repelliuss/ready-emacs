@@ -24,7 +24,9 @@
        ace-window
        vertico
        consult
-       consult-project-extra)
+       consult-project-extra
+       embark
+       embark-consult)
  :sub (project
        file
        buffer
