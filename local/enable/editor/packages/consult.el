@@ -1,7 +1,6 @@
 ;;; consult.el -*- lexical-binding: t; -*-
 
 (setup consult
-  ;;TODO: add open externally THIS file
   (:bind
     (@keymap-leader "R" #'consult-complex-command)
     (@keymap-search
@@ -118,8 +117,9 @@
             (cancel-timer timer)))))
     
     (:autoload consult--read)
-    (:with-function consult--read (:advice :around #'@consult--which-key-immediate-narrow)))
-  
+    
+    (:with-function consult--read
+      (:advice :around #'@consult--which-key-immediate-narrow)))
 
   (:after-feature eshell
     (:with-hook eshell-mode-hook
@@ -140,15 +140,5 @@
 	  (defun @consult--meow-goto-line-handler (&optional _arg)
 	    (meow-line 1))))))
 
-;; TODO: integrate fd and rg
-;; TODO: check fd in doom and also for consult
-;; TODO: make a search map like window
-;; TODO: integrate org mode, Miscellaneous
 ;; TODO: add preview to meow-visit
-;; TODO: integrate embark
-;; TODO: add flycheck support
 ;; TODO: add open externally to file map
-;; TODO: add theme to something
-;; TODO: what consult completion preview does for embark collect buffers
-;; TODO: integrate which-key to search map
-;; TODO: integrate extensions
