@@ -127,12 +127,14 @@
 
   (:after-feature org
     (:bind org-mode-map (@bind-local "." #'consult-org-heading))
-    (:option (append consult-buffer-sources) `(:name "Org"
-						     :narrow ?o
-						     :hidden t
-						     :category buffer
-						     :state ,#'consult--buffer-state
-						     :items ,(lambda () (mapcar #'buffer-name (org-buffer-list))))))
+    ;; TODO: org buffer sources
+    ;; (:option (append consult-buffer-sources) `(:name "Org"
+    ;; 						     :narrow ?o
+    ;; 						     :hidden t
+    ;; 						     :category buffer
+    ;; 						     :state ,#'consult--buffer-state
+    ;; 						     :items ,(lambda () (mapcar #'buffer-name (org-buffer-list)))))
+    )
   
   (:after-feature meow
     (:with-function consult-goto-line

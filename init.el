@@ -27,6 +27,7 @@
        consult-project-extra
        embark
        embark-consult)
+ 
  :sub (project
        file
        buffer
