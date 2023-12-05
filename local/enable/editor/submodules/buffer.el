@@ -1,15 +1,15 @@
 ;;; buffer.el -*- lexical-binding: t; -*-
 
-(bind @keymap-buffer
+(bind $keymap-buffer
       "k" #'kill-current-buffer
-      "K" #'@buffer-kill-all
+      "K" #'$buffer-kill-all
       "]" #'next-buffer
       "[" #'previous-buffer
       "r" #'revert-buffer-quick
       "i" #'ibuffer
       "c" #'clone-indirect-buffer-other-window
       "C" #'clone-indirect-buffer
-      "S" #'@buffer-save-all
+      "S" #'$buffer-save-all
       "n" narrow-map
       "z" #'bury-buffer)
 
@@ -28,7 +28,7 @@
 				      ((side . bottom)
 				       (dedicated . t)))))
 
-(defun @buffer-kill-all (&optional buffer-list interactive)
+(defun $buffer-kill-all (&optional buffer-list interactive)
   "Kill all buffers and closes their windows.
 
 If the prefix arg is passed, doesn't close windows and only kill buffers that
@@ -47,7 +47,7 @@ belong to the current project."
 	     (- (length buffer-list)
 		(length (cl-remove-if-not #'buffer-live-p buffer-list))))))
 
-(defun @buffer-save-all ()
+(defun $buffer-save-all ()
   (interactive)
   (let ((saved-count 0)) 
     (save-some-buffers t

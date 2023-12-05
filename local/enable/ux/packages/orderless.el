@@ -6,18 +6,18 @@
 	   completion-category-overrides '((file (styles basic partial-completion)))
 	   orderless-component-separator #'orderless-escapable-split-on-space
            orderless-matching-styles '(orderless-regexp orderless-initialism orderless-literal)
-           orderless-style-dispatchers '(@orderless-dispatcher))
+           orderless-style-dispatchers '($orderless-dispatcher))
 
   ;; TODO: see face
   ;; (set-face-attribute 'completions-first-difference nil :inherit nil)
 
-  (defun @orderless-dispatcher (pattern _index _total)
+  (defun $orderless-dispatcher (pattern _index _total)
     (cond
      ;; File extensions
      ((and (or minibuffer-completing-file-name
                (derived-mode-p 'eshell-mode))
            (string-match-p "\\`\\.." word))
-      `(orderless-regexp . ,(concat "\\." (substring word 1) (@orderless--consult-suffix))))
+      `(orderless-regexp . ,(concat "\\." (substring word 1) ($orderless--consult-suffix))))
      ;; Without literal
      ((string-prefix-p "!" pattern) `(orderless-without-literal . ,(substring pattern 1)))
      ;; Character folding

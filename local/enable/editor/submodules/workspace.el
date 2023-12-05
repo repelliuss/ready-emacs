@@ -1,7 +1,7 @@
 ;;; workspace.el -*- lexical-binding: t; -*-
 
-(bind @keymap-workspace
-      "TAB" #'@tab-smart-switch
+(bind $keymap-workspace
+      "TAB" #'$tab-smart-switch
       "." #'find-file-other-tab
       "," #'switch-to-buffer-other-tab
       "j" #'tab-next
@@ -16,7 +16,7 @@
       "p" #'project-other-tab-command
       "D" #'tab-close-other)
 
-(defun @tab-smart-switch ()
+(defun $tab-smart-switch ()
   (interactive)
   (call-interactively
    (if (< 2 (length (tab-bar-tabs)))

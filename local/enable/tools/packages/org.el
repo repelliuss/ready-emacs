@@ -1,9 +1,9 @@
 ;;; org.el -*- lexical-binding: t; -*-
 
-(with-eval-after-load '@web
-  (defun @org-insert-link-html (url)
+(with-eval-after-load '$web
+  (defun $org-insert-link-html (url)
     (interactive (list (read-string "URL: ")))
-    (@web-download-async url
+    ($web-download-async url
 			 (lambda (file-path title)
 			   (org-insert-link
 			    nil
@@ -14,10 +14,10 @@
 
 (use-package org
   :init
-  (setq org-directory (concat @dir-home "org/")
+  (setq org-directory (concat $dir-home "org/")
 	org-id-locations-file (concat org-directory ".org-id-locations")
 	org-archive-location (concat org-directory "archive/archive_%s::datetree/")
-	org-persist-directory (concat @dir-cache "org-persist/")
+	org-persist-directory (concat $dir-cache "org-persist/")
 	org-id-link-to-org-use-id t
 	org-ellipsis "…"
 	org-extend-today-until 2)

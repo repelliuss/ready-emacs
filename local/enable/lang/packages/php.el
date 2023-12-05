@@ -9,7 +9,7 @@
   (remove-hook 'completion-at-point-functions
 	       #'php-extras-completion-at-point 'local))
 
-(define-minor-mode @php-extras-completion-lsp-integration-mode
+(define-minor-mode $php-extras-completion-lsp-integration-mode
   "Enable lsp completion integration with php-extras provided completions.
 
 This will prioritize completions provided by php-extras package over lsp
@@ -17,8 +17,8 @@ provided completions.
 
 Supports all.
 Needed by lsp-mode."
-  :lighter " @php-extras-cmplt-lsp"
-  (if @php-extras-completion-lsp-integration-mode
+  :lighter " $php-extras-cmplt-lsp"
+  (if $php-extras-completion-lsp-integration-mode
       (php-extras-attach-lsp-completion)
     (php-extras-detach-lsp-completion)))
 
@@ -37,7 +37,7 @@ Needed by lsp-mode."
 (defun php-extras-eldoc-detach-lsp-mode ()
   (advice-remove #'lsp--eldoc-message #'php-extras-eldoc-lsp-mode))
 
-(define-minor-mode @php-extras-eldoc-lsp-integration-mode
+(define-minor-mode $php-extras-eldoc-lsp-integration-mode
   "Enable lsp eldoc integration with php-extras provided documentations.
 
 Eldoc will try to fallback to php-extras provided documentation in case of there is no documentation provided by lsp.
@@ -47,13 +47,13 @@ Needed by lsp-mode.
 
 BUG: lsp-mode: Only works if lsp server successfully replies to lsp-hover
 function."
-  :lighter " @php-extras-eldoc-lsp"
-  (if @php-extras-eldoc-lsp-integration-mode
+  :lighter " $php-extras-eldoc-lsp"
+  (if $php-extras-eldoc-lsp-integration-mode
       (if (featurep 'lsp-mode)
 	  (php-extras-eldoc-attach-lsp-mode)
-	(display-warning '@php-extras-eldoc-lsp-integration-mode
+	(display-warning '$php-extras-eldoc-lsp-integration-mode
 			 "lsp-mode should be loaded first! Maybe hook to lsp-mode-hook?")
-	(setq @php-extras-eldoc-lsp-integration-mode nil))
+	(setq $php-extras-eldoc-lsp-integration-mode nil))
     (php-extras-eldoc-detach-lsp-mode)))
 
 (defun php-extras-load-eldoc-no-warn ()
@@ -76,7 +76,7 @@ function."
   :straight (:host github :repo "arnested/php-extras")
   :config
   (setq php-extras-eldoc-functions-file
-	(concat @dir-cache "php-extras-eldoc-functions"))
+	(concat $dir-cache "php-extras-eldoc-functions"))
   (advice-add #'php-extras-load-eldoc :override #'php-extras-eldoc-no-warn)
   (php-extras-generate-eldoc-async))
 

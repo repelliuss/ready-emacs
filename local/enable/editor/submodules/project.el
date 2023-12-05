@@ -1,6 +1,6 @@
 ;;; project.el -*- lexical-binding: t; -*-
 
-(set-keymap-parent @keymap-project project-prefix-map)
+(set-keymap-parent $keymap-project project-prefix-map)
 
 (setup which-key
   (:elpaca nil)

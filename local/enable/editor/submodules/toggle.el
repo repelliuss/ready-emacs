@@ -1,9 +1,9 @@
 ;;; toggle.el -*- lexical-binding: t; -*-
 
-(bind @keymap-toggle
-      "r" #'@toggle-read-only-mode)
+(bind $keymap-toggle
+      "r" #'$toggle-read-only-mode)
 
-(defun @toggle-read-only-mode ()
+(defun $toggle-read-only-mode ()
   (interactive)
   (if buffer-read-only
       (read-only-mode -1)

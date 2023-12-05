@@ -1,6 +1,6 @@
 ;;; modus-themes.el -*- lexical-binding: t; -*-
 
-(defun @modus-themes-increase-mode-line-height ()
+(defun $modus-themes-increase-mode-line-height ()
   (modus-themes-with-colors
     (custom-set-faces
      ;; Add "padding" to the mode lines
@@ -86,7 +86,7 @@
 						   (bg-region bg-ochre) ; try to replace `bg-ochre' with `bg-lavender', `bg-sage'
 						   (fg-region unspecified))
 	   (append* modus-themes-common-palette-overrides) modus-themes-preset-overrides-intense)
-  (@theme-load-if-preferred 'modus-themes 'modus-operandi 'modus-vivendi)
-  ;; (@modus-themes-increase-mode-line-height)
+  ($theme-load-if-preferred 'modus-themes 'modus-operandi 'modus-vivendi)
+  ;; ($modus-themes-increase-mode-line-height)
   )
 

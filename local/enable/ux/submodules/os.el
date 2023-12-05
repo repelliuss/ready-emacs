@@ -1,15 +1,15 @@
 ;;; os.el -*- lexical-binding: t; -*-
 
-(unless @os-mac-p   (setq command-line-ns-option-alist nil))
-(unless @os-linux-p (setq command-line-x-option-alist nil))
+(unless $os-mac-p   (setq command-line-ns-option-alist nil))
+(unless $os-linux-p (setq command-line-x-option-alist nil))
 
-(unless @os-windows-p
+(unless $os-windows-p
   (setq selection-coding-system 'utf-8))
 
-(when @os-linux-p
+(when $os-linux-p
   (setq x-gtk-use-system-tooltips nil))
 
-(when @os-windows-p
+(when $os-windows-p
   (when (null (getenv-internal "HOME"))
     (setenv "HOME" (getenv "USERPROFILE"))
     (setq abbreviated-home-dir nil))

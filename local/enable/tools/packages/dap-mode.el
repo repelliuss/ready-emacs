@@ -3,8 +3,8 @@
 (use-package dap-mode
   :init
   (setq dap-auto-configure-features '(locals expressions)
-	dap-utils-extension-path (concat @dir-cache "dap-mode/extension")
-	dap-breakpoints-file (concat @dir-cache "dap-mode/breakpoints")))
+	dap-utils-extension-path (concat $dir-cache "dap-mode/extension")
+	dap-breakpoints-file (concat $dir-cache "dap-mode/breakpoints")))
 
 (use-package cc-mode
   :config

@@ -2,4 +2,4 @@
 
 (setq native-comp-async-report-warnings-errors nil)
 
-(add-to-list 'native-comp-eln-load-path (concat @dir-cache "eln/"))
+(add-to-list 'native-comp-eln-load-path (concat $dir-cache "eln/"))

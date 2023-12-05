@@ -12,15 +12,15 @@
 
 
   (:after-feature which-key
-    (:option embark-indicators '(@embark-which-key-indicator
+    (:option embark-indicators '($embark-which-key-indicator
 				 embark-highlight-indicator
 				 embark-isearch-highlight-indicator)
 	     prefix-help-command #'embark-prefix-help-command)
     
     (:with-function embark-completing-read-prompter
-      (:advice :around #'@embark-hide-which-key-indicator))
+      (:advice :around #'$embark-hide-which-key-indicator))
 
-    (defun @embark-which-key-indicator ()
+    (defun $embark-which-key-indicator ()
       "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the
 current target followed by an ellipsis if there are further
@@ -43,19 +43,19 @@ targets."
 	   nil nil t (lambda (binding)
                        (not (string-suffix-p "-argument" (cdr binding))))))))
 
-    (defun @embark-hide-which-key-indicator (fn &rest args)
+    (defun $embark-hide-which-key-indicator (fn &rest args)
       "Hide the which-key indicator immediately when using the completing-read prompter."
       (which-key--hide-popup-ignore-command)
       (let ((embark-indicators
-             (remq #'@embark-which-key-indicator embark-indicators)))
+             (remq #'$embark-which-key-indicator embark-indicators)))
 	(apply fn args))))
   
   
   (:after-feature vertico
-    (:option (prepend embark-indicators) #'@embark-vertico-indicator)
+    (:option (prepend embark-indicators) #'$embark-vertico-indicator)
     (:face embark-target (:inherit 'lazy-highlight))
     
-    (defun @embark-vertico-indicator ()
+    (defun $embark-vertico-indicator ()
       (let ((fr face-remapping-alist))
 	(lambda (&optional keymap _targets prefix)
 	  (when (bound-and-true-p vertico--input)

@@ -2,16 +2,16 @@
 
 (require 'eww)
 
-(defun @html-try-get-title-this-buffer ()
+(defun $html-try-get-title-this-buffer ()
   (save-excursion
     (goto-char (point-min))
     (re-search-forward "<title[^>]*>\\([^<]*\\)</title>" nil t 1)
     (substring-no-properties (match-string 1))))
 
 ;; TODO: documents should be a variable
-(setq @html-dir (expand-file-name "~/documents/html/"))
+(setq $html-dir (expand-file-name "~/documents/html/"))
 
-(defun @web--download-url-callback (status url dir)
+(defun $web--download-url-callback (status url dir)
   (unless (plist-get status :error)
     (let* ((obj (url-generic-parse-url url))
 	   (path (directory-file-name (car (url-path-and-query obj))))
@@ -28,19 +28,19 @@
       (message "Saved %s" file)
       file)))
 
-(defun @web--download-callback (status url dir callback-buffer &optional callbacks)
-  (let* ((file-path (@web--download-url-callback status url dir))
+(defun $web--download-callback (status url dir callback-buffer &optional callbacks)
+  (let* ((file-path ($web--download-url-callback status url dir))
 	 (title (with-current-buffer (find-file-noselect file-path
 							 'nowarn 'literally)
-		  (@html-try-get-title-this-buffer))))
+		  ($html-try-get-title-this-buffer))))
     (with-current-buffer callback-buffer
       (dolist (callback callbacks)
 	(funcall callback file-path title)))))
 
-(defun @web-download-async (url &rest callbacks)
+(defun $web-download-async (url &rest callbacks)
   (interactive (list (read-string "URL: ")))
-  (make-directory @html-dir 'with-parents)
-  (url-retrieve url #'@web--download-callback
-		(list url @html-dir (current-buffer) callbacks)))
+  (make-directory $html-dir 'with-parents)
+  (url-retrieve url #'$web--download-callback
+		(list url $html-dir (current-buffer) callbacks)))
 
-(provide '@web)
+(provide '$web)

@@ -3,7 +3,7 @@
 (setup-none
   (bind minibuffer-mode-map
 	(:prefix "M-"
-	  "s" #'@minibuffer-save
+	  "s" #'$minibuffer-save
 	  "y" #'yank
 	  "Y" #'yank-pop
 	  "[" #'previous-history-element
@@ -20,7 +20,7 @@
 
   (fset #'yes-or-no-p #'y-or-n-p)
   
-  (defun @minibuffer-save ()
+  (defun $minibuffer-save ()
     (interactive)
     (clipboard-kill-ring-save (point-at-bol) (point-at-eol))))
 
