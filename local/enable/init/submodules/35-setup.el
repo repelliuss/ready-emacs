@@ -480,7 +480,6 @@ If FUNCTION is a list, apply BODY to all elements of FUNCTION."
   :documentation "Add current function to HOOK."
   :repeatable t)
 
-;; TODO: use setopt emacs29
 ;; TODO: rename to set
 (setup-define :option
   (setup-make-setter
@@ -489,10 +488,7 @@ If FUNCTION is a list, apply BODY to all elements of FUNCTION."
                    #'symbol-value)
                ',name))
    (lambda (name val)
-     `(progn
-        (custom-load-symbol ',name)
-        (funcall (or (get ',name 'custom-set) #'set-default)
-                 ',name ,val))))
+     `(setopt ,name ,val)))
 
   :documentation "Set the option NAME to VAL.
 NAME may be a symbol, or a cons-cell.  If NAME is a cons-cell, it
