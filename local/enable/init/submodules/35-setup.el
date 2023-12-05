@@ -668,4 +668,15 @@ See `advice-add' for more details."
 
 (provide 'setup)
 
+(elpaca (elpaca-setup
+	 :host github
+	 :repo "repelliuss/elpaca"
+	 :branch "setup.el"
+	 :files ("extensions/elpaca-setup.el")
+	 :main "extensions/elpaca-setup.el"
+	 :build (:not elpaca--compile-info))
+	(elpaca-setup-integrate 'use-by-default))
+
+(elpaca-wait)
+
 ;;; setup.el ends here
