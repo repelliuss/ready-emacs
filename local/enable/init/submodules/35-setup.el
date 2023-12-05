@@ -666,8 +666,6 @@ See `advice-add' for more details."
   (declare (indent 0))
   `(setup nil ,@body))
 
-(provide 'setup)
-
 (elpaca (elpaca-setup
 	 :host github
 	 :repo "repelliuss/elpaca"
@@ -675,7 +673,8 @@ See `advice-add' for more details."
 	 :files ("extensions/elpaca-setup.el")
 	 :main "extensions/elpaca-setup.el"
 	 :build (:not elpaca--compile-info))
-	(elpaca-setup-integrate 'use-by-default))
+  (elpaca-setup-integrate 'use-by-default)
+  (provide 'setup))
 
 (elpaca-wait)
 
