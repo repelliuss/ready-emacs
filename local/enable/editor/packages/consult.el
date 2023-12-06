@@ -2,13 +2,13 @@
 
 (setup consult
   (:bind
-    ($keymap-leader "R" #'consult-complex-command)
-    ($keymap-search
+    (~keymap-leader "R" #'consult-complex-command)
+    (~keymap-search
      "s" #'consult-line
      "S" #'consult-line-multi
      "G" #'consult-git-grep
      "L" #'consult-focus-lines)
-    ($keymap-toggle "t" #'consult-theme)
+    (~keymap-toggle "t" #'consult-theme)
     ((:global-map)
      [remap switch-to-buffer] #'consult-buffer
      [remap project-switch-to-buffer] #'consult-project-buffer
@@ -77,16 +77,16 @@
 	   "!" #'consult-flymake))
 
   (:after-feature orderless
-    (:option consult--regexp-compiler #'$consult--orderless-regexp-compiler
-	     (prepend orderless-style-dispatchers) #'$consult--orderless-dollar-dispatcher)
+    (:option consult--regexp-compiler #'~consult--orderless-regexp-compiler
+	     (prepend orderless-style-dispatchers) #'~consult--orderless-dollar-dispatcher)
 
-    (defun $consult--orderless-regexp-compiler (input type &rest _config)
+    (defun ~consult--orderless-regexp-compiler (input type &rest _config)
       (setq input (orderless-pattern-compiler input))
       (cons
        (mapcar (lambda (r) (consult--convert-regexp r type)) input)
        (lambda (str) (orderless--highlight input str))))
 
-    (defun $consult--orderless-suffix ()
+    (defun ~consult--orderless-suffix ()
       "Regexp which matches the end of string with Consult tofu support."
       (if (and (boundp 'consult--tofu-char) (boundp 'consult--tofu-range))
           (format "[%c-%c]*$"
@@ -94,13 +94,13 @@
                   (+ consult--tofu-char consult--tofu-range -1))
 	"$"))
 
-    (defun $consult--orderless-dollar-dispatcher (pattern _index _total)
+    (defun ~consult--orderless-dollar-dispatcher (pattern _index _total)
       ;; Ensure $ works with Consult commands, which add disambiguation suffixes
       (if (string-suffix-p "$" pattern)
-	  `(orderless-regexp . ,(concat (substring pattern 0 -1) ($consult--orderless-suffix))))))
+	  `(orderless-regexp . ,(concat (substring pattern 0 -1) (~consult--orderless-suffix))))))
 
   (:after-feature which-key
-    (defun $consult--which-key-immediate-narrow (fun &rest args)
+    (defun ~consult--which-key-immediate-narrow (fun &rest args)
       (let* ((refresh t)
              (timer (and consult-narrow-key
 			 (memq :narrow args)
@@ -119,14 +119,14 @@
     (:autoload consult--read)
     
     (:with-function consult--read
-      (:advice :around #'$consult--which-key-immediate-narrow)))
+      (:advice :around #'~consult--which-key-immediate-narrow)))
 
   (:after-feature eshell
     (:with-hook eshell-mode-hook
-      (:hook (defun $consult--eshell-outline-handler () (setq outline-regexp eshell-prompt-regexp)))))
+      (:hook (defun ~consult--eshell-outline-handler () (setq outline-regexp eshell-prompt-regexp)))))
 
   (:after-feature org
-    (:bind org-mode-map ($bind-local "." #'consult-org-heading))
+    (:bind org-mode-map (~bind-local "." #'consult-org-heading))
     ;; TODO: org buffer sources
     ;; (:option (append consult-buffer-sources) `(:name "Org"
     ;; 						     :narrow ?o
@@ -139,7 +139,7 @@
   (:after-feature meow
     (:with-function consult-goto-line
       (:advice :after
-	  (defun $consult--meow-goto-line-handler (&optional _arg)
+	  (defun ~consult--meow-goto-line-handler (&optional _arg)
 	    (meow-line 1))))))
 
 ;; TODO: add preview to meow-visit

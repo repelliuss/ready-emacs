@@ -3,9 +3,9 @@
 (setup ace-window
   (:elpaca nil)
   
-  (:bind $keymap-leader
+  (:bind ~keymap-leader
 	 (:autoload 'ace-window
-	   "w" #'ace-window-hasty	; TODO: try remapping $keymap-window instead
+	   "w" #'ace-window-hasty	; TODO: try remapping ~keymap-window instead
 	   "W" #'aw-flip-window))
 
   (:option aw-minibuffer-flag t

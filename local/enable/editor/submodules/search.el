@@ -1,6 +1,6 @@
 ;;; search.el -*- lexical-binding: t; -*-
 
-(bind $keymap-search
+(bind ~keymap-search
       "s" #'isearch-forward-regexp
       "o" #'occur
       "O" (cons "Search occur in multi files" #'multi-occur)

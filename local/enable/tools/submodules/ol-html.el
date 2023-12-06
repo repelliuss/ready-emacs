@@ -35,5 +35,5 @@
 
 (provide 'ol-html)
 
-(with-eval-after-load '$web
-  (setq org-link-html-complete-default-dir $html-dir))
+(with-eval-after-load '~web
+  (setq org-link-html-complete-default-dir ~html-dir))

@@ -50,7 +50,7 @@
 		:host github
 		:repo "minad/vertico"
 		:files ("extensions/vertico-repeat.el"))
-  (:bind $keymap-leader
+  (:bind ~keymap-leader
 	 "r" #'vertico-repeat)
 
   (:with-hook minibuffer-setup-hook

@@ -28,8 +28,8 @@
   (add-hook 'rust-mode-hook #'lsp-deferred)
   
   :init
-  (setq lsp-session-file (concat $dir-cache "lsp-mode/session")
-        lsp-server-install-dir (concat $dir-cache "lsp-mode/servers"))
+  (setq lsp-session-file (concat ~dir-cache "lsp-mode/session")
+        lsp-server-install-dir (concat ~dir-cache "lsp-mode/servers"))
 
   (setq lsp-keymap-prefix "M-l")
 
@@ -56,7 +56,7 @@
 
   :extend (php-mode)
   (setq lsp-intelephense-storage-path
-	(concat $dir-cache
+	(concat ~dir-cache
 		"lsp-mode/servers/intelephense")))
 
 (use-package lsp-mode

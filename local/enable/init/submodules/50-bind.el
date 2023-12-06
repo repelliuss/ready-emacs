@@ -9,21 +9,21 @@
   (bind-setup-integrate :bind)
   (put :bind 'lisp-indent-function 0)
 
-  (bind $keymap-leader
-	"o" $keymap-open
-	"t" $keymap-toggle
-	"p" $keymap-project
-	"w" $keymap-window
-	"b" $keymap-buffer
-	"f" $keymap-file
-	"s" $keymap-search
-	"t" $keymap-toggle
-	"TAB" $keymap-workspace)
+  (bind ~keymap-leader
+	"o" ~keymap-open
+	"t" ~keymap-toggle
+	"p" ~keymap-project
+	"w" ~keymap-window
+	"b" ~keymap-buffer
+	"f" ~keymap-file
+	"s" ~keymap-search
+	"t" ~keymap-toggle
+	"TAB" ~keymap-workspace)
   
-  (defun $bind-local (&optional key &rest bindings)
+  (defun ~bind-local (&optional key &rest bindings)
     (declare (indent 1))
     (if (and (eq (type-of key) (type-of (car bindings))))
-	(apply #'bind-prefix ($make-local-prefix key) bindings)
-      (apply #'bind-prefix ($make-local-prefix) (cons key bindings)))))
+	(apply #'bind-prefix (~make-local-prefix key) bindings)
+      (apply #'bind-prefix (~make-local-prefix) (cons key bindings)))))
 
 

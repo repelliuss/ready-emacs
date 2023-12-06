@@ -11,4 +11,4 @@
 (use-package svg-lib
   :straight nil
   :init
-  (setq svg-lib-icons-dir (concat $dir-cache "svg-lib/")))
+  (setq svg-lib-icons-dir (concat ~dir-cache "svg-lib/")))

@@ -5,7 +5,7 @@
 	   window-divider-default-bottom-width 1
 	   window-divider-default-places t)
 
-  (defun $window-divider-blend-with-background (&rest _)
+  (defun ~window-divider-blend-with-background (&rest _)
     (interactive)
     (let ((bg (face-background 'default)))
       (dolist (face '(window-divider
@@ -14,8 +14,8 @@
 	(set-face-foreground face bg))))
   
   
-  (advice-add #'enable-theme :after #'$window-divider-blend-with-background)
-  ($funcall-consider-daemon #'$window-divider-blend-with-background)
+  (advice-add #'enable-theme :after #'~window-divider-blend-with-background)
+  (~funcall-consider-daemon #'~window-divider-blend-with-background)
 
   (window-divider-mode 1))
 

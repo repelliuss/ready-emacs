@@ -28,7 +28,7 @@
   ;; add C:\msys64\mingw64\bin\site_perl\5.32.1 to Windows $Path environment variable
   ;; make sure all binaries exist at given paths
   ;; to read QR codes, read an external QR reader and get URI and insert it instead of screenshot tool for now
-  (when $os-windows-p
+  (when ~os-windows-p
     (setq password-store-executable "sh pass")
 
     (advice-add #'password-store--run-1

@@ -2,4 +2,4 @@
 
 (setup tao-theme
   (:option tao-theme-use-sepia nil)
-  ($theme-register 'tao-theme 'tao-yang 'tao-yin))
+  (~theme-register 'tao-theme 'tao-yang 'tao-yin))
