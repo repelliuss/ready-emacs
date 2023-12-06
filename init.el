@@ -17,7 +17,8 @@
  :ux
  :pkg (which-key
        orderless
-       marginalia)
+       marginalia
+       unsafety)
 
  :editor
  :pkg (meow
@@ -40,7 +41,10 @@
        vertico-consult-completion-in-region)
 
  :tools
- :pkg (magit))
+ :pkg (magit)
+
+ :lang
+ :pkg (elisp))
 
 ;; (enable
 ;;  :editor

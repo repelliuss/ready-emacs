@@ -23,7 +23,7 @@
   (defun ~bind-local (&optional key &rest bindings)
     (declare (indent 1))
     (if (and (eq (type-of key) (type-of (car bindings))))
-	(apply #'bind-prefix (~make-local-prefix key) bindings)
-      (apply #'bind-prefix (~make-local-prefix) (cons key bindings)))))
+	(apply #'bind-prefix (~key-make-local-prefix key) bindings)
+      (apply #'bind-prefix (~key-make-local-prefix) (cons key bindings)))))
 
 

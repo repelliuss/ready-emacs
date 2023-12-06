@@ -84,7 +84,7 @@
       (setq input (orderless-pattern-compiler input))
       (cons
        (mapcar (lambda (r) (consult--convert-regexp r type)) input)
-       (lambda (str) (orderless--highlight input str))))
+       (lambda (str) (orderless--highlight input t str))))
 
     (defun ~consult--orderless-suffix ()
       "Regexp which matches the end of string with Consult tofu support."

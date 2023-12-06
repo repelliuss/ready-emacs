@@ -172,6 +172,12 @@
       (:with-hook completion-in-region-mode-hook
 	(:hook #'meow-insert))))
 
+  (:with-feature macrostep
+    (:hook (defun ~toggle-meow-motion-mode ()
+	     (if meow-motion-mode
+		 (meow-normal-mode 1)
+	       (meow-motion-mode 1)))))
+
   (:with-feature which-key
     (:when-loaded
       ;; TODO: doesn't work digit argument

@@ -27,7 +27,7 @@
 	(load-theme ~theme-default-light :no-confirm)
       (load-theme ~theme-default-dark :no-confirm))))
 
-(defun ~make-local-prefix (&optional key)
+(defun ~key-make-local-prefix (&optional key)
   (concat ~key-leader-prefix " " ~key-local-leader-prefix (if key " ") key))
 
 (defun ~press-thing-at-point ()
