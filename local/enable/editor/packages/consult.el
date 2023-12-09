@@ -32,21 +32,19 @@
      [remap info] #'consult-info)
     (help-map "M" #'consult-man))
 
-  (:set consult-project-root-function (lambda ()
-					   (when-let (project (project-current))
-					     (car (project-roots project))))
-	   consult-line-numbers-widen t
-	   consult-narrow-key "<"
-	   consult-async-min-input 2
-	   consult-async-refresh-delay 0.15
-	   consult-async-input-throttle 0.2
-	   consult-async-input-debounce 0.1
-	   
-	   register-preview-delay 0
-           register-preview-function #'consult-register-format
-	   
-	   xref-show-xrefs-function #'consult-xref
-           xref-show-definitions-function #'consult-xref)
+  (:set consult-project-root-function (lambda () (when-let (project (project-current)) (car (project-roots project))))
+	consult-line-numbers-widen t
+	consult-narrow-key "<"
+	consult-async-min-input 2
+	consult-async-refresh-delay 0.15
+	consult-async-input-throttle 0.2
+	consult-async-input-debounce 0.1
+	
+	register-preview-delay 0
+	register-preview-function #'consult-register-format
+	
+	xref-show-xrefs-function #'consult-xref
+	xref-show-definitions-function #'consult-xref)
 
   (:with-function register-preview (:advice :override #'consult-register-window))
 
@@ -58,7 +56,16 @@
 
     (consult-customize
      consult-theme
-     :preview-key (list :debounce 0.5 'any)))
+     :preview-key (list :debounce 0.5 'any))
+    
+    (:with-function ~theme-register
+      (:advice :after
+	  (defun ~consult-theme-register-integration (theme light dark)
+	    (add-to-list 'consult-themes light)
+	    (add-to-list 'consult-themes dark)))
+      (dolist (theme ~theme-register)
+	(add-to-list 'consult-themes (car (cdr theme))
+		     (add-to-list 'consult-themes (cdr (cdr theme)))))))
 
   (:after-feature meow
     (:bind meow-normal-state-keymap

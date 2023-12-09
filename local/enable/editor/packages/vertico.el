@@ -1,13 +1,11 @@
 ;;; vertico.el -*- lexical-binding: t; -*-
 
-;; TODO: vertico is not deferred
-
 (setup (:elpaca vertico
 		:host github
 		:repo "minad/vertico"
 		:files (:defaults (:exclude "extensions/*")))
   (vertico-mode 1)
-
+  
   (:bind vertico-map
 	 (:prefix "M-"
 	   "j" #'vertico-next
@@ -23,7 +21,7 @@
 	   "<" #'vertico-first))
   
   (:set vertico-cycle t
-           vertico-scroll-margin 3)
+        vertico-scroll-margin 3)
 
   (:with-feature ace-window
     (:when-loaded

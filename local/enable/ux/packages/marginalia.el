@@ -2,7 +2,7 @@
 
 (setup marginalia
   (marginalia-mode 1)
-	
+  
   (:after-feature vertico
     (:bind vertico-map "M-m" #'marginalia-cycle)))
 

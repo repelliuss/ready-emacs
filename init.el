@@ -18,7 +18,10 @@
  :pkg (which-key
        orderless
        marginalia)
- :sub (unsafety)
+
+ :sub (unsafety
+       no-beep
+       history)
 
  :editor
  :pkg (meow
@@ -38,7 +41,8 @@
        ace-window-hasty-windows
        minibuffer
        electric
-       vertico-consult-completion-in-region)
+       vertico-consult-completion-in-region
+       spaces)
 
  :tools
  :pkg (magit)

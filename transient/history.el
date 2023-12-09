@@ -2,6 +2,8 @@
  (emoji--command-Emoji\ >\ Smileys nil)
  (emoji--command-Emoji\ >\ Smileys\ >\ hand nil)
  (emoji--command-Emoji\ >\ Smileys\ >\ smiling nil)
+ (magit-am
+  ("--3way"))
  (magit-branch nil)
  (magit-commit nil)
  (magit-log

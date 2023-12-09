@@ -480,7 +480,6 @@ If FUNCTION is a list, apply BODY to all elements of FUNCTION."
   :documentation "Add current function to HOOK."
   :repeatable t)
 
-;; TODO: rename to set
 (setup-define :set
   (setup-make-setter
    (lambda (name)
@@ -560,11 +559,20 @@ supported:
   :ensure '(nil func)
   :repeatable t)
 
+(defun setup--require-feat-extractor (sexp)
+  (if (not (keywordp (car (car-safe (cdr sexp)))))
+      (cadr sexp)
+    (let ((shorthand (get (car (car-safe (cdr sexp))) 'setup-shorthand)))
+      (if shorthand
+          (funcall shorthand (car-safe (cdr sexp)))
+        (warn "No shorthand for :require to use to get feature#1")))))
+
+;; TODO: can't user (:require (:elpaca )), test it on vertico
 (setup-define :require
   (lambda (feature)
-    `(require ',feature))
+    `(require ',(setup--require-feat-extractor (list :require feature))))
   :documentation "Load FEATURE with the current body."
-  :shorthand #'cadr
+  :shorthand #'setup--require-feat-extractor
   :repeatable t)
 
 (setup-define :if

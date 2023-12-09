@@ -1,24 +1,8 @@
 ;;; meow.el -*- lexical-binding: t; -*-
 
-;; TODO: move these functions to proper places and bind them there
-
-(defun project-aware-shell-command ()
-  (interactive)
-  (run-at-time nil nil #'previous-history-element 1)
-  (if-let ((project (project-current)))
-      (call-interactively #'project-shell-command)
-    (call-interactively #'shell-command)))
-
-(defun project-aware-async-shell-command ()
-  (interactive)
-  (run-at-time nil nil #'previous-history-element 1)
-  (if-let ((project (project-current)))
-      (call-interactively #'project-async-shell-command)
-    (call-interactively #'async-shell-command)))
-
 (setup (:require meow)
   (:bind
-    (meow-keymap [remap describe-key] nil)		; fixes describe-key in insert-mode
+    (meow-keymap [remap describe-key] nil)              ; fixes describe-key in insert-mode
     
     (meow-motion-state-keymap
      "I" #'meow-temp-normal)
@@ -26,7 +10,7 @@
     (meow-insert-state-keymap
      "M-i" #'meow-insert-exit
      "SPC" #'self-insert-command
-     "C-SPC" ~keymap-leader)
+     "S-SPC" ~keymap-leader)
     
     (~keymap-leader
      "1" #'meow-digit-argument
@@ -123,26 +107,24 @@
      "'" #'negative-argument
      "=" #'meow-indent
      "\\" #'quoted-insert
-     "$" #'project-aware-shell-command
-     "&" #'project-aware-async-shell-command
      "RET" #'~press-thing-at-point)
 
-    (mode-specific-map			; remove meow_dispatch* function appearing from C-c prefix
+    (mode-specific-map                  ; remove meow_dispatch* function appearing from C-c prefix
      "SPC" nil))
 
-  (:set meow--kbd-undo "C-x u"		; REVIEW: do I really change the binding?
-	   meow-use-clipboard t
-	   meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
-	   meow-keypad-meta-prefix nil
-	   meow-keypad-ctrl-meta-prefix nil
+  (:set meow--kbd-undo "C-x u"          ; REVIEW: do I really change the binding?
+        meow-use-clipboard t
+        meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
+        meow-keypad-meta-prefix nil
+        meow-keypad-ctrl-meta-prefix nil
 
-	   ;; Make Meow use our leader keymap
-	   ;; Only leader map is capable of being changed this way(?)
-	   ;; https://github.com/meow-edit/meow/discussions/190#discussioncomment-2095009
-	   (prepend meow-keymap-alist) (cons 'leader ~keymap-leader)
+        ;; Make Meow use our leader keymap
+        ;; Only leader map is capable of being changed this way(?)
+        ;; https://github.com/meow-edit/meow/discussions/190#discussioncomment-2095009
+        (prepend meow-keymap-alist) (cons 'leader ~keymap-leader)
 
-	   (remove minor-mode-map-alist) (cons 'meow-normal-mode (alist-get 'meow-normal-mode minor-mode-map-alist))
-	   (prepend minor-mode-map-alist) (cons 'meow-normal-mode ~keymap-normal))
+        (remove minor-mode-map-alist) (cons 'meow-normal-mode (alist-get 'meow-normal-mode minor-mode-map-alist))
+        (prepend minor-mode-map-alist) (cons 'meow-normal-mode ~keymap-normal))
   
   ;; We modified meow-normal-state-keymap
   (set-keymap-parent meow-beacon-state-keymap ~keymap-normal)
@@ -150,37 +132,37 @@
   (~funcall-consider-daemon #'meow-global-mode)
 
   (:with-function meow-insert
-    (:advice :override (defun ~meow-insert-at-point ()
-			 "Switch to INSERT state."
-			 (interactive)
-			 (if meow--temp-normal
-			     (progn
-			       (message "Quit temporary normal mode")
-			       (meow--switch-state 'motion))
-			   (meow--cancel-selection)
-			   (meow--switch-state 'insert)))))
+    (:advice :override
+        (defun ~meow-insert-at-point ()
+          "Switch to INSERT state."
+          (interactive)
+          (if meow--temp-normal
+              (progn
+                (message "Quit temporary normal mode")
+                (meow--switch-state 'motion))
+            (meow--cancel-selection)
+            (meow--switch-state 'insert)))))
 
   ;; (:with-feature embark
   ;;   (:when-loaded
   ;;     (:with-function (embark-act embark-dwim)
-  ;; 	(:advice :before (defun ~meow-cancel-selection-noerr (&rest _)
-  ;; 			   (ignore-errors (meow-cancel-selection)))))))
+  ;;    (:advice :before (defun ~meow-cancel-selection-noerr (&rest _)
+  ;;                       (ignore-errors (meow-cancel-selection)))))))
 
   (:with-feature org-capture
     (:when-loaded
       (:hook #'meow-insert)
       (:with-hook completion-in-region-mode-hook
-	(:hook #'meow-insert))))
+        (:hook #'meow-insert))))
 
   (:with-feature macrostep
     (:hook (defun ~toggle-meow-motion-mode ()
-	     (if meow-motion-mode
-		 (meow-normal-mode 1)
-	       (meow-motion-mode 1)))))
+             (if meow-motion-mode
+                 (meow-normal-mode 1)
+               (meow-motion-mode 1)))))
 
   (:with-feature which-key
     (:when-loaded
-      ;; TODO: doesn't work digit argument
       (:set (prepend* which-key-replacement-alist) '(((nil . "^meow-") . (nil . ""))
-							(("0" . "meow-digit-argument") . ("[0-9]"))
-							(("[1-9]" . "meow-digit-argument") . t))))))
+                                                     (("[1-9]" . "digit-argument") . t)
+                                                     (("0" . "digit-argument") . ("[0-9]")))))))

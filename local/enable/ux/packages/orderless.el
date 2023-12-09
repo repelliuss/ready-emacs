@@ -2,14 +2,11 @@
 
 (setup (:require orderless)
   (:set completion-styles '(orderless basic)
-	   completion-category-defaults nil
-	   completion-category-overrides '((file (styles basic partial-completion)))
-	   orderless-component-separator #'orderless-escapable-split-on-space
-           orderless-matching-styles '(orderless-regexp orderless-initialism orderless-literal)
-           orderless-style-dispatchers '(~orderless-dispatcher))
-
-  ;; TODO: see face
-  ;; (set-face-attribute 'completions-first-difference nil :inherit nil)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles basic partial-completion)))
+        orderless-component-separator #'orderless-escapable-split-on-space
+        orderless-matching-styles '(orderless-regexp orderless-initialism orderless-literal)
+        orderless-style-dispatchers '(~orderless-dispatcher))
 
   (defun ~orderless-dispatcher (pattern _index _total)
     (cond
