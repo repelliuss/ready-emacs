@@ -9,8 +9,7 @@
 	    "e" #'embark-export))
 	 (help-map
 	  "B" #'embark-bindings))
-
-
+  
   (:after-feature which-key
     (:set embark-indicators '(~embark-which-key-indicator
 				 embark-highlight-indicator
