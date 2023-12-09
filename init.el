@@ -46,7 +46,8 @@
        spaces)
 
  :tools
- :pkg (magit)
+ :pkg (magit
+       ssh-agency)
 
  :lang
  :pkg (elisp))
