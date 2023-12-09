@@ -22,7 +22,7 @@
 	   ">" #'vertico-last
 	   "<" #'vertico-first))
   
-  (:option vertico-cycle t
+  (:set vertico-cycle t
            vertico-scroll-margin 3)
 
   (:with-feature ace-window

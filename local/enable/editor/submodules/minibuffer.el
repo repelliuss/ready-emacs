@@ -12,7 +12,7 @@
 	  "}" #'next-matching-history-element)
 	"<backspace>" #'backward-kill-word)
   
-  (:option enable-recursive-minibuffers t
+  (:set enable-recursive-minibuffers t
 	   minibuffer-prompt-properties '(aread-only t cursor-intangible t face minibuffer-prompt)
 	   read-extended-command-predicate #'command-completion-default-include-p)
 

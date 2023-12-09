@@ -1,7 +1,7 @@
 ;;; which-key.el -*- lexical-binding: t; -*-
 
 (setup which-key
-  (:option which-key-sort-order #'which-key-description-order
+  (:set which-key-sort-order #'which-key-description-order
            which-key-sort-uppercase-first nil
            which-key-allow-multiple-replacements t
 	   which-key-echo-keystrokes 0.05

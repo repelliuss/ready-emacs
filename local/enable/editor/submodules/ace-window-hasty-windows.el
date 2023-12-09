@@ -8,7 +8,7 @@
 	   "w" #'ace-window-hasty	; TODO: try remapping ~keymap-window instead
 	   "W" #'aw-flip-window))
 
-  (:option aw-minibuffer-flag t
+  (:set aw-minibuffer-flag t
            aw-dispatch-always t
            aw-fair-aspect-ratio 3
            aw-dispatch-alist '((?k aw-delete-window "Kill")

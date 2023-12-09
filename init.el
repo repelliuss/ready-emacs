@@ -17,8 +17,8 @@
  :ux
  :pkg (which-key
        orderless
-       marginalia
-       unsafety)
+       marginalia)
+ :sub (unsafety)
 
  :editor
  :pkg (meow

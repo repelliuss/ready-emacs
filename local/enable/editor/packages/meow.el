@@ -130,7 +130,7 @@
     (mode-specific-map			; remove meow_dispatch* function appearing from C-c prefix
      "SPC" nil))
 
-  (:option meow--kbd-undo "C-x u"		; REVIEW: do I really change the binding?
+  (:set meow--kbd-undo "C-x u"		; REVIEW: do I really change the binding?
 	   meow-use-clipboard t
 	   meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
 	   meow-keypad-meta-prefix nil
@@ -181,6 +181,6 @@
   (:with-feature which-key
     (:when-loaded
       ;; TODO: doesn't work digit argument
-      (:option (prepend* which-key-replacement-alist) '(((nil . "^meow-") . (nil . ""))
+      (:set (prepend* which-key-replacement-alist) '(((nil . "^meow-") . (nil . ""))
 							(("0" . "meow-digit-argument") . ("[0-9]"))
 							(("[1-9]" . "meow-digit-argument") . t))))))

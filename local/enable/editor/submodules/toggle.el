@@ -12,5 +12,5 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend which-key-replacement-alist) '(("t$" . "prefix") . (nil . "toggle")))))
+    (:set (prepend which-key-replacement-alist) '(("t$" . "prefix") . (nil . "toggle")))))
 

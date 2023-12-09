@@ -12,7 +12,7 @@
 
 
   (:after-feature which-key
-    (:option embark-indicators '(~embark-which-key-indicator
+    (:set embark-indicators '(~embark-which-key-indicator
 				 embark-highlight-indicator
 				 embark-isearch-highlight-indicator)
 	     prefix-help-command #'embark-prefix-help-command)
@@ -52,7 +52,7 @@ targets."
   
   
   (:after-feature vertico
-    (:option (prepend embark-indicators) #'~embark-vertico-indicator)
+    (:set (prepend embark-indicators) #'~embark-vertico-indicator)
     (:face embark-target (:inherit 'lazy-highlight))
     
     (defun ~embark-vertico-indicator ()

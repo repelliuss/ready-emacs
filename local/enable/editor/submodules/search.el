@@ -13,4 +13,4 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend which-key-replacement-alist) '(("s$" . "prefix") . (nil . "search")))))
+    (:set (prepend which-key-replacement-alist) '(("s$" . "prefix") . (nil . "search")))))

@@ -16,7 +16,7 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend which-key-replacement-alist) '(("b$" . "prefix") . (nil . "buffer")))))
+    (:set (prepend which-key-replacement-alist) '(("b$" . "prefix") . (nil . "buffer")))))
 
 (setq display-buffer-base-action '((display-buffer-reuse-window
 				    display-buffer-reuse-mode-window

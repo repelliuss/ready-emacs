@@ -9,5 +9,5 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend which-key-replacement-alist) '(("o$" . "prefix") . (nil . "open")))))
+    (:set (prepend which-key-replacement-alist) '(("o$" . "prefix") . (nil . "open")))))
 

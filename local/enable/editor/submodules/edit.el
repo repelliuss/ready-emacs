@@ -9,4 +9,4 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend which-key-replacement-alist) '(("e$" . "prefix") . (nil . "edit")))))
+    (:set (prepend which-key-replacement-alist) '(("e$" . "prefix") . (nil . "edit")))))

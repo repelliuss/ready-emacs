@@ -32,7 +32,7 @@
      [remap info] #'consult-info)
     (help-map "M" #'consult-man))
 
-  (:option consult-project-root-function (lambda ()
+  (:set consult-project-root-function (lambda ()
 					   (when-let (project (project-current))
 					     (car (project-roots project))))
 	   consult-line-numbers-widen t
@@ -77,7 +77,7 @@
 	   "!" #'consult-flymake))
 
   (:after-feature orderless
-    (:option consult--regexp-compiler #'~consult--orderless-regexp-compiler
+    (:set consult--regexp-compiler #'~consult--orderless-regexp-compiler
 	     (prepend orderless-style-dispatchers) #'~consult--orderless-dollar-dispatcher)
 
     (defun ~consult--orderless-regexp-compiler (input type &rest _config)
@@ -128,7 +128,7 @@
   (:after-feature org
     (:bind org-mode-map (~bind-local "." #'consult-org-heading))
     ;; TODO: org buffer sources
-    ;; (:option (append consult-buffer-sources) `(:name "Org"
+    ;; (:set (append consult-buffer-sources) `(:name "Org"
     ;; 						     :narrow ?o
     ;; 						     :hidden t
     ;; 						     :category buffer

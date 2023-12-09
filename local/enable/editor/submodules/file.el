@@ -15,7 +15,7 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend which-key-replacement-alist) '(("f$" . "prefix") . (nil . "file")))))
+    (:set (prepend which-key-replacement-alist) '(("f$" . "prefix") . (nil . "file")))))
 
 (defun ~file-act-on-buffer (buffer new-path act)
   (if-let ((path (buffer-file-name buffer)))

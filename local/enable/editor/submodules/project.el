@@ -5,4 +5,4 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend which-key-replacement-alist) '(("p$" . "prefix") . (nil . "project")))))
+    (:set (prepend which-key-replacement-alist) '(("p$" . "prefix") . (nil . "project")))))

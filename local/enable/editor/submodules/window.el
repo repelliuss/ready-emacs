@@ -20,5 +20,5 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend* which-key-replacement-alist) '((("w$" . "prefix") . (nil . "window"))
+    (:set (prepend* which-key-replacement-alist) '((("w$" . "prefix") . (nil . "window"))
 						      (("w .$" . "\\(?:-\\(?:states\\|windows?\\)\\|wind\\(?:ow\\)?\\)") . (nil . ""))))))

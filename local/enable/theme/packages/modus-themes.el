@@ -9,7 +9,7 @@
 
 (setup modus-themes
   (:load)
-  (:option modus-themes-custom-auto-reload t
+  (:set modus-themes-custom-auto-reload t
 	   modus-themes-disable-other-themes t
 	   modus-themes-bold-constructs nil
 	   modus-themes-italic-constructs nil

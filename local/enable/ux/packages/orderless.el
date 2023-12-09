@@ -1,7 +1,7 @@
 ;;; orderless.el -*- lexical-binding: t; -*-
 
 (setup (:require orderless)
-  (:option completion-styles '(orderless basic)
+  (:set completion-styles '(orderless basic)
 	   completion-category-defaults nil
 	   completion-category-overrides '((file (styles basic partial-completion)))
 	   orderless-component-separator #'orderless-escapable-split-on-space

@@ -11,7 +11,7 @@
       (:autoload
 	  "g" #'magit-file-dispatch))))
   
-  (:option magit-define-global-key-bindings nil
+  (:set magit-define-global-key-bindings nil
 	   magit-revision-show-gravatars t)
 
   (:with-hook git-commit-mode-hook

@@ -6,4 +6,4 @@
 (setup which-key
   (:elpaca nil)
   (:when-loaded
-    (:option (prepend which-key-replacement-alist) '(("n$" . "prefix") . (nil . "note")))))
+    (:set (prepend which-key-replacement-alist) '(("n$" . "prefix") . (nil . "note")))))

@@ -481,14 +481,17 @@ If FUNCTION is a list, apply BODY to all elements of FUNCTION."
   :repeatable t)
 
 ;; TODO: rename to set
-(setup-define :option
+(setup-define :set
   (setup-make-setter
    (lambda (name)
      `(funcall (or (get ',name 'custom-get)
                    #'symbol-value)
                ',name))
    (lambda (name val)
-     `(setopt ,name ,val)))
+     `(progn
+        (custom-load-symbol ',name)
+        (funcall (or (get ',name 'custom-set) #'set-default)
+                 ',name ,val))))
 
   :documentation "Set the option NAME to VAL.
 NAME may be a symbol, or a cons-cell.  If NAME is a cons-cell, it
