@@ -23,3 +23,7 @@
        #'tab-switch
      #'tab-next)))
 
+(setup which-key
+  (:elpaca nil)
+  (:when-loaded
+    (:set (prepend which-key-replacement-alist) '(("TAB" . "prefix") . (nil . "workspace")))))

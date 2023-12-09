@@ -9,6 +9,6 @@
  (magit-log
   ("-n256" "--graph" "--decorate"))
  (magit-push nil
-	     ("--force-with-lease"))
+             ("--force-with-lease"))
  (magit-rebase
   ("--autostash")))

@@ -33,18 +33,18 @@
     (help-map "M" #'consult-man))
 
   (:set consult-project-root-function (lambda () (when-let (project (project-current)) (car (project-roots project))))
-	consult-line-numbers-widen t
-	consult-narrow-key "<"
-	consult-async-min-input 2
-	consult-async-refresh-delay 0.15
-	consult-async-input-throttle 0.2
-	consult-async-input-debounce 0.1
-	
-	register-preview-delay 0
-	register-preview-function #'consult-register-format
-	
-	xref-show-xrefs-function #'consult-xref
-	xref-show-definitions-function #'consult-xref)
+        consult-line-numbers-widen t
+        consult-narrow-key "<"
+        consult-async-min-input 2
+        consult-async-refresh-delay 0.15
+        consult-async-input-throttle 0.2
+        consult-async-input-debounce 0.1
+        
+        register-preview-delay 0
+        register-preview-function #'consult-register-format
+        
+        xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
 
   (:with-function register-preview (:advice :override #'consult-register-window))
 
@@ -60,32 +60,32 @@
     
     (:with-function ~theme-register
       (:advice :after
-	  (defun ~consult-theme-register-integration (theme light dark)
-	    (add-to-list 'consult-themes light)
-	    (add-to-list 'consult-themes dark)))
+          (defun ~consult-theme-register-integration (theme light dark)
+            (add-to-list 'consult-themes light)
+            (add-to-list 'consult-themes dark)))
       (dolist (theme ~theme-register)
-	(add-to-list 'consult-themes (car (cdr theme))
-		     (add-to-list 'consult-themes (cdr (cdr theme)))))))
+        (add-to-list 'consult-themes (car (cdr theme))
+                     (add-to-list 'consult-themes (cdr (cdr theme)))))))
 
   (:after-feature meow
     (:bind meow-normal-state-keymap
-	   (:prefix "M-"
-	     "z" #'consult-kmacro
-	     "`" #'consult-register
-	     "g" #'consult-goto-line
-	     "m" #'consult-mark
-	     "M" #'consult-global-mark
-	     "o" #'consult-outline
-	     "i" #'consult-imenu
-	     "I" #'consult-imenu-multi
-	     "!" #'consult-compile-error)
-	   "`" #'consult-register-load
-	   "~" #'consult-register-store
-	   "!" #'consult-flymake))
+           (:prefix "M-"
+             "z" #'consult-kmacro
+             "`" #'consult-register
+             "g" #'consult-goto-line
+             "m" #'consult-mark
+             "M" #'consult-global-mark
+             "o" #'consult-outline
+             "i" #'consult-imenu
+             "I" #'consult-imenu-multi
+             "!" #'consult-compile-error)
+           "`" #'consult-register-load
+           "~" #'consult-register-store
+           "!" #'consult-flymake))
 
   (:after-feature orderless
     (:set consult--regexp-compiler #'~consult--orderless-regexp-compiler
-	     (prepend orderless-style-dispatchers) #'~consult--orderless-dollar-dispatcher)
+          (prepend orderless-style-dispatchers) #'~consult--orderless-dollar-dispatcher)
 
     (defun ~consult--orderless-regexp-compiler (input type &rest _config)
       (setq input (orderless-pattern-compiler input))
@@ -99,28 +99,28 @@
           (format "[%c-%c]*$"
                   consult--tofu-char
                   (+ consult--tofu-char consult--tofu-range -1))
-	"$"))
+        "$"))
 
     (defun ~consult--orderless-dollar-dispatcher (pattern _index _total)
       ;; Ensure $ works with Consult commands, which add disambiguation suffixes
       (if (string-suffix-p "$" pattern)
-	  `(orderless-regexp . ,(concat (substring pattern 0 -1) (~consult--orderless-suffix))))))
+          `(orderless-regexp . ,(concat (substring pattern 0 -1) (~consult--orderless-suffix))))))
 
   (:after-feature which-key
     (defun ~consult--which-key-immediate-narrow (fun &rest args)
       (let* ((refresh t)
              (timer (and consult-narrow-key
-			 (memq :narrow args)
-			 (run-at-time 0.05 0.05
+                         (memq :narrow args)
+                         (run-at-time 0.05 0.05
                                       (lambda ()
-					(if (eq last-input-event (elt consult-narrow-key 0))
+                                        (if (eq last-input-event (elt consult-narrow-key 0))
                                             (when refresh
                                               (setq refresh nil)
                                               (which-key--update))
-					  (setq refresh t)))))))
-	(unwind-protect
+                                          (setq refresh t)))))))
+        (unwind-protect
             (apply fun args)
-	  (when timer
+          (when timer
             (cancel-timer timer)))))
     
     (:autoload consult--read)
@@ -136,18 +136,18 @@
     (:bind org-mode-map (~bind-local "." #'consult-org-heading))
     ;; TODO: org buffer sources
     ;; (:set (append consult-buffer-sources) `(:name "Org"
-    ;; 						     :narrow ?o
-    ;; 						     :hidden t
-    ;; 						     :category buffer
-    ;; 						     :state ,#'consult--buffer-state
-    ;; 						     :items ,(lambda () (mapcar #'buffer-name (org-buffer-list)))))
+    ;;                                               :narrow ?o
+    ;;                                               :hidden t
+    ;;                                               :category buffer
+    ;;                                               :state ,#'consult--buffer-state
+    ;;                                               :items ,(lambda () (mapcar #'buffer-name (org-buffer-list)))))
     )
   
   (:after-feature meow
     (:with-function consult-goto-line
       (:advice :after
-	  (defun ~consult--meow-goto-line-handler (&optional _arg)
-	    (meow-line 1))))))
+          (defun ~consult--meow-goto-line-handler (&optional _arg)
+            (meow-line 1))))))
 
 ;; TODO: add preview to meow-visit
 ;; TODO: add open externally to file map

@@ -7,12 +7,17 @@
 (setup consult-project-extra
   (:with-function consult-project-extra--file
     (:advice :before (defun ~tab-set-name-for-project (project-root)
-		       (tab-new-to)
-		       (tab-rename
-			(file-name-nondirectory
-			 (string-trim-right project-root "/"))))))
+                       (tab-new-to)
+                       (tab-rename
+                        (file-name-nondirectory
+                         (string-trim-right project-root "/"))))))
   
   (:after-feature enable-sub-project
     (:bind ~keymap-leader
-	   "p" #'consult-project-extra-find
-	   "P" project-prefix-map)))
+           "p" #'consult-project-extra-find
+           "P" project-prefix-map)
+    (setup which-key
+      (:elpaca nil)
+      (:when-loaded
+        (:set (prepend* which-key-replacement-alist) '((("p$" . "^consult-project-extra-find") . (nil . "project"))
+                                                       (("P$" . "prefix") . (nil . "project-dispatch"))))))))

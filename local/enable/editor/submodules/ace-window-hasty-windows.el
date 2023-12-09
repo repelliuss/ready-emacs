@@ -14,7 +14,7 @@
            aw-dispatch-alist '((?k aw-delete-window "Kill")
                                (?s aw-swap-window "Swap")
                                (?m aw-move-window "Move")
-                               (?c aw-copy-window "Copy")
+                               (?c aw--copy-or-clone-window)
                                (?d aw--delete-current-window)
                                (?D aw--delete-other-windows)
                                (?p aw--split-current-window-fair-switch-buffer) ; pop window
@@ -49,6 +49,13 @@
   (defun aw--delete-current-window ()
     (assoc-delete-all (selected-window) aw--windows-points)
     (delete-window))
+
+  (defun aw--copy-or-clone-window ()
+    (pcase (length (window-list))
+      (1 (aw--split-current-window-fair))
+      (2 (aw-copy-window (other-window)))
+      (t (run-at-time nil nil
+                      #'aw-select "Ace- Select a window to copy current buffer" #'aw-copy-window))))
 
   (defun aw--delete-other-windows ()
     (setq aw--windows-points (list (assoc (selected-window) aw--windows-points)))
