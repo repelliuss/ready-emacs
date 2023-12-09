@@ -38,6 +38,7 @@
        search
        toggle
        workspace
+       open
        ace-window-hasty-windows
        minibuffer
        electric

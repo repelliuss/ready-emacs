@@ -9,20 +9,20 @@
 	   "W" #'aw-flip-window))
 
   (:set aw-minibuffer-flag t
-           aw-dispatch-always t
-           aw-fair-aspect-ratio 3
-           aw-dispatch-alist '((?k aw-delete-window "Kill")
-                               (?s aw-swap-window "Swap")
-                               (?m aw-move-window "Move")
-                               (?c aw--copy-or-clone-window)
-                               (?d aw--delete-current-window)
-                               (?D aw--delete-other-windows)
-                               (?p aw--split-current-window-fair-switch-buffer) ; pop window
-                               (?P aw--split-current-window-fair) ; pop window
-                               (?w aw--switch-to-next-window) ; will only work if there are 2 windows
-                               (?l maximize-window)
-                               (?= balance-windows)
-                               (?? aw--force-show-dispatch-help)))
+        aw-dispatch-always t
+        aw-fair-aspect-ratio 3
+        aw-dispatch-alist '((?k aw-delete-window "Kill")
+                            (?s aw-swap-window "Swap")
+                            (?m aw-move-window "Move")
+                            (?c aw--copy-or-clone-window)
+                            (?d aw--delete-current-window)
+                            (?D aw--delete-other-windows)
+                            (?p aw--split-current-window-fair-switch-buffer) ; pop window
+                            (?P aw--split-current-window-fair) ; pop window
+                            (?w aw--switch-to-next-window) ; will only work if there are 2 windows
+                            (?l maximize-window)
+                            (?= balance-windows)
+                            (?? aw--force-show-dispatch-help)))
 
   (:with-function aw-split-window-vert
     (:advice :after #'windmove-down))
