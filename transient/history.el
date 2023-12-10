@@ -11,4 +11,6 @@
  (magit-push nil
              ("--force-with-lease"))
  (magit-rebase
-  ("--autostash")))
+  ("--autostash"))
+ (magit-remote
+  ("-f")))

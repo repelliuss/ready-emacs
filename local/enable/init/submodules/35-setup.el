@@ -621,7 +621,7 @@ See `advice-add' for more details."
   :after-loaded t
   :debug '(sexp function-form)
   :repeatable t
-  :indent 2)
+  :indent 0)
 
 (setup-define :unhook
   (lambda (func)

@@ -69,6 +69,9 @@
 (defvar ~keymap-open (make-sparse-keymap)
   "Open map.")
 
+(defvar ~keymap-edit (make-sparse-keymap)
+  "Leader map.")
+
 (defvar ~keymap-toggle (make-sparse-keymap)
   "Open map.")
 
@@ -92,6 +95,9 @@
 
 (defvar ~keymap-workspace (make-sparse-keymap)
   "Workspace map.")
+
+(defvar ~keymap-completion (make-sparse-keymap)
+  "Completion map.")
 
 (defvar ~theme-register nil
   "All registered themes for current sesssion.")

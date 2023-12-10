@@ -17,7 +17,8 @@
  :ux
  :pkg (which-key
        orderless
-       marginalia)
+       marginalia
+       all-the-icons)
 
  :sub (unsafety
        no-beep
@@ -32,7 +33,12 @@
        embark
        embark-consult
        wgrep
-       kind-icon)
+       kind-icon
+       puni
+       corfu
+       avy
+       tempel
+       file-painter)
  
  :sub (project
        file
@@ -44,8 +50,9 @@
        ace-window-hasty-windows
        minibuffer
        electric
-       vertico-consult-completion-in-region
-       spaces)
+       spaces
+       completion
+       tempel-file-painter)
 
  :tools
  :pkg (magit
@@ -142,16 +149,3 @@
                  (float-time
                   (time-subtract after-init-time before-init-time))) gcs-done)
 
-;; TODO: just one space keybinding doesn't work
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(eglot)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

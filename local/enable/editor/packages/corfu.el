@@ -1,66 +1,83 @@
 ;;; corfu.el -*- lexical-binding: t; -*-
 
-(use-package corfu
-  ;; Optional customizations
-  :custom
-  (corfu-cycle t)         ;; Enable cycling for `corfu-next/previous'
-  (corfu-scroll-margin 5) ;; Use scroll margin
-
-  :attach (eshell)
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (setq-local corfu-quit-at-boundary t
-                          corfu-quit-no-match t
-                          corfu-auto nil)
-              (corfu-mode)))
-
-  :attach (cape)
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
+(setup corfu
+  (:set corfu-cycle t                   ; Enable cycling for `corfu-next/previous'
+        corfu-scroll-margin 5           ; Use scroll margin
+        corfu-quit-at-boundary nil
+        corfu-quit-no-match nil
+        corfu-on-exact-match nil)
   
-  :init
   (global-corfu-mode 1)
-
-  (defun corfu-enable-in-minibuffer ()
-    "Enable Corfu in the minibuffer if `completion-at-point' is bound."
-    (when (where-is-internal #'completion-at-point (list (current-local-map)))
-      ;; (setq-local corfu-auto nil) Enable/disable auto completion
-      (corfu-mode 1)))
-  (add-hook 'minibuffer-setup-hook #'corfu-enable-in-minibuffer)
   
-  :config
-  (bind corfu-map
-	"SPC" #'corfu-insert-separator
-	"M-j" #'corfu-next
-	"M-k" #'corfu-previous
-	"C-<" #'corfu-first
-	"C->" #'corfu-last
-	"M-<" #'corfu-scroll-down
-	"M->" #'corfu-scroll-up))
+  (:bind (corfu-map
+	  "SPC" #'corfu-insert-separator
+	  "M-j" #'corfu-next
+	  "M-k" #'corfu-previous
+	  "C-<" #'corfu-first
+	  "C->" #'corfu-last 
+	  "M-<" #'corfu-scroll-down
+	  "M->" #'corfu-scroll-up))
 
-;; NOTE: doesn't work with lsp-mode
-(use-package corfu-history
-  :straight (:local-repo "corfu/extensions")
-  :attach (savehist)
-  (add-to-list 'savehist-additional-variables 'corfu-history)
-  :attach (corfu)
+  (:with-hook minibuffer-setup-hook
+    (:hook (defun ~corfu-enable-always-in-minibuffer ()
+             "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+             (unless (or (bound-and-true-p mct--active)
+                         (bound-and-true-p vertico--input)
+                         (eq (current-local-map) read-passwd-map))
+               (corfu-mode 1))))))
+
+(setup (:elpaca corfu-history
+                :host github
+                :repo "minad/corfu"
+                :files ("extensions/corfu-history.el"))
+  
+  (:after-feature savehist
+    (:set (prepend savehist-additional-variables) 'corfu-history))
+
   (corfu-history-mode 1))
 
-(use-package corfu-quick
-  :straight (:local-repo "corfu/extensions")
-  :attach (corfu)
-  (bind corfu-map
-	"M-a" #'corfu-quick-insert
-	"M-A" #'corfu-quick-complete))
+(setup (:elpaca corfu-quick
+                :host github
+                :repo "minad/corfu"
+                :files ("extensions/corfu-quick.el"))
+  (:after-feature corfu
+    (:bind corfu-map
+	   "M-a" #'corfu-quick-insert
+	   "M-A" #'corfu-quick-complete)))
 
-(use-package corfu-info
-  :straight (:local-repo "corfu/extensions"))
+(setup (:elpaca corfu-info
+                :host github
+                :repo "minad/corfu"
+                :files ("extensions/corfu-info.el")))
 
-(use-package dabbrev
-  :init
-  ;; Swap M-/ and C-M-/
-  (bind (current-global-map)
-	"M-/" #'dabbrev-completion
-	"C-M-/" #'dabbrev-expand))
+(setup (:elpaca corfu-popupinfo
+                :host github
+                :repo "minad/corfu"
+                :files ("extensions/corfu-popupinfo.el"))
+  (:require corfu-popupinfo)
+  (:set corfu-popupinfo-delay '(1.0 . 0.5))
+  (:bind corfu-popupinfo-map
+         ;; [remap corfu-first] #'corfu-popupinfo-beginning
+         ;; [remap corfu-last] #'corfu-popupinfo-end
+         ;; [remap corfu-scroll-down] #'corfu-popupinfo-scroll-down
+         ;; [remap corfu-scroll-up] #'corfu-popupinfo-scroll-up
+         "C-M-<" #'scroll-other-window-down
+         "C-M->" #'scroll-other-window)
+  (corfu-popupinfo-mode 1))
 
-
+(setup cape
+  (:bind (~keymap-completion
+	   "t" #'complete-tag
+	   "d" #'cape-dabbrev
+	   "f" #'cape-file
+	   "k" #'cape-keyword
+	   "s" #'cape-symbol
+	   "a" #'cape-abbrev
+	   "i" #'cape-ispell
+	   "l" #'cape-line
+	   "w" #'cape-dict
+	   "\\" #'cape-tex
+	   "&" #'cape-sgml
+	   "r" #'cape-rfc1345)
+         ((:global-map)
+          "M-c" ~keymap-completion)))

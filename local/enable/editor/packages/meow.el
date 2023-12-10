@@ -84,6 +84,8 @@
      ">" #'scroll-up-command
      "C->" #'scroll-other-window
      "C-<" #'scroll-other-window-down
+     "C-M-<" #'beginning-of-buffer-other-window
+     "C-M->" #'end-of-buffer-other-window
      "u" #'meow-undo
      "U" #'undo-redo
      "M-u" #'meow-undo-in-selection
