@@ -23,4 +23,5 @@
     (interactive)
     (add-hook 'completion-at-point-functions #'tempel-expand -90 'local)))
 
+(setup (:require tempel-collection))
 

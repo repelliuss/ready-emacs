@@ -1,6 +1,5 @@
 ;;; flymake.el -*- lexical-binding: t; -*-
 
-(use-package flymake
-  :straight (:type built-in)
-  :init
-  (setq flymake-fringe-indicator-position nil))
+(setup flymake
+  (:elpaca nil)
+  (:set flymake-fringe-indicator-position nil))

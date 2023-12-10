@@ -12,13 +12,19 @@
  :pkg (mood-line)
  
  :ui
- :sub (zen pad-frame pad-window)
+ :sub (zen
+       pad-frame
+       pad-window
+       hl-todo
+       rainbow-mode)
 
  :ux
  :pkg (which-key
        orderless
        marginalia
-       all-the-icons)
+       all-the-icons
+       pcmpl-args
+       helpful)
 
  :sub (unsafety
        no-beep
@@ -29,7 +35,7 @@
        ace-window
        vertico
        consult
-       consult-project-extra
+       ;; consult-project-extra
        embark
        embark-consult
        wgrep
@@ -38,10 +44,13 @@
        corfu
        avy
        tempel
-       file-painter)
+       file-painter
+       olivetti
+       topspace)
  
  :sub (project
        file
+       edit
        buffer
        search
        toggle
@@ -58,7 +67,8 @@
  :pkg (magit
        ssh-agency
        eglot
-       dape)
+       dape
+       flymake)
 
  :lang
  :pkg (elisp))

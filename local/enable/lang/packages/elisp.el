@@ -2,5 +2,6 @@
 
 (setup macrostep
   (:bind emacs-lisp-mode-map
-	 (~bind-local
-	     "e" #'macrostep-expand)))
+         (~bind-local
+             "m" #'macrostep-expand
+             "e" #'pp-eval-last-sexp)))

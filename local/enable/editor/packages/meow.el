@@ -163,8 +163,8 @@
                  (meow-normal-mode 1)
                (meow-motion-mode 1)))))
 
-  (:with-feature which-key
-    (:when-loaded
-      (:set (prepend* which-key-replacement-alist) '(((nil . "^meow-") . (nil . ""))
-                                                     (("[1-9]" . "digit-argument") . t)
-                                                     (("0" . "digit-argument") . ("[0-9]")))))))
+  (:after-feature which-key
+    (:set (prepend* which-key-replacement-alist) '((("SPC$" . "prefix") . (nil . "local"))
+                                                   ((nil . "^meow-") . (nil . ""))
+                                                   (("[1-9]" . "digit-argument") . t)
+                                                   (("0" . "digit-argument") . ("[0-9]"))))))

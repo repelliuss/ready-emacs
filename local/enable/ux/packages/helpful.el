@@ -1,21 +1,24 @@
 ;;; helpful.el -*- lexical-binding: t; -*-
 
-(use-package helpful
-  :init
-  (bind
-   (help-map
-    [remap describe-function] #'helpful-callable
-    [remap describe-key] #'helpful-key
-    [remap describe-variable] #'helpful-variable)
-   (help-map
-    "." #'helpful-at-point))
-
-  (advice-add #'describe-function :override #'helpful-callable)
-  (advice-add #'describe-key :override #'helpful-key)
-  (advice-add #'describe-variable :override #'helpful-variable)
+(setup helpful
+  (:bind (help-map
+          "." #'helpful-at-point)
+         (~keymap-leader
+          "h" help-map))
+  (:when-loaded
+    (:bind "<" #'scroll-down-command
+           ">" #'scroll-up-command))
   
-  :config
-  (bind helpful-mode-map
-	"<" #'scroll-down-command
-	">" #'scroll-up-command))
+  (:with-function describe-function
+    (:advice :override #'helpful-callable))
+  
+  (:with-function describe-key
+    (:advice :override #'helpful-key))
+  
+  (:with-function describe-variable
+    (:advice :override #'helpful-variable))
+
+  (:after-feature which-key
+    (:set (prepend which-key-replacement-alist) '(("h$" . "prefix") . (nil . "help")))))
+
 
