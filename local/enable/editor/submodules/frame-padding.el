@@ -51,14 +51,8 @@
 
 (provide 'frame-padding)
 
-(use-package frame-padding
-  :straight nil
-  :attach (org-tree-slide)
-  (frame-padding-hold-on-to #'org-tree-slide-mode)
-  
-  :attach (rps/editor/toggle)
-  (bind rps/toggle-map
-	"p" #'frame-padding-global-mode)
-
-  :init
-  (setq frame-padding-size 100))
+(setup frame-padding
+  (:elpaca nil)
+  (:after-feature org-tree-slide (frame-padding-hold-on-to #'org-tree-slide-mode))
+  (:bind ~keymap-toggle "p" #'frame-padding-global-mode)
+  (:set frame-padding-size 100))

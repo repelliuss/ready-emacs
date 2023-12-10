@@ -1,6 +1,6 @@
 ;;; quit.el -*- lexical-binding: t; -*-
 
-(defvar doom-quit-messages
+(defvar ~doom-quit-messages
   '(;;from doom 2
     "Don't go now, there's a dimensional shambler waiting at the dos prompt!"
     "Get outta here and go back to your boring programs."
@@ -34,7 +34,7 @@
   "A list of quit messages, picked randomly by `doom-quit'. Taken from
 http://doom.wikia.com/wiki/Quit_messages and elsewhere.")
 
-(defun doom-quit-p (&optional prompt)
+(defun ~doom-quit-p (&optional prompt)
   "Prompt the user for confirmation when killing Emacs.
 
 Returns t if it is safe to kill this session. Does not prompt if no real buffers
@@ -42,13 +42,13 @@ are open."
   (or (yes-or-no-p (format "%s" (or prompt "Really quit Emacs?")))
       (ignore (message "Aborted"))))
 
-(defun doom-quit-fn (&rest _)
-  (doom-quit-p
+(defun ~doom-quit-fn (&rest _)
+  (~doom-quit-p
    (format "%s  %s"
-           (propertize (nth (random (length doom-quit-messages))
-                            doom-quit-messages)
+           (propertize (nth (random (length ~doom-quit-messages))
+                            ~doom-quit-messages)
                        'face '(italic default))
            "Really quit Emacs?")))
 
-(setq confirm-kill-emacs #'doom-quit-fn)
+(setq confirm-kill-emacs #'~doom-quit-fn)
 
