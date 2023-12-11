@@ -4,6 +4,8 @@
 
 (setq package-enable-at-startup nil)
 
+(if ~os-windows-p (defvar elpaca-queue-limit 12))
+
 ;; Elpaca install script
 (defvar elpaca-installer-version 0.6)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
