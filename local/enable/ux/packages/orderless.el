@@ -14,7 +14,7 @@
      ((and (or minibuffer-completing-file-name
                (derived-mode-p 'eshell-mode))
            (string-match-p "\\`\\.." pattern))
-      `(orderless-regexp . ,(concat "\\." (substring pattern 1) (~orderless--consult-suffix))))
+      `(orderless-regexp . ,(concat "\\." (substring pattern 1) (~consult--orderless-suffix)))) ; TODO: should be in after consult or something
      ;; Without literal
      ((string-prefix-p "!" pattern) `(orderless-without-literal . ,(substring pattern 1)))
      ;; Character folding

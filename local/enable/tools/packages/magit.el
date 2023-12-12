@@ -1,5 +1,7 @@
 ;;; magit.el -*- lexical-binding: t; -*-
 
+(setup transient)
+
 (setup magit
   (:bind
     (~keymap-open
