@@ -90,6 +90,8 @@
  :pkg (elisp
        lua)
 
+ :sub (cxx)
+
  :secret all)
 
 ;; TODO: make bookmark system
