@@ -31,7 +31,8 @@
 
  :sub (unsafety
        no-beep
-       history)
+       history
+       os)
 
  :editor
  :pkg (meow
@@ -49,10 +50,11 @@
        tempel
        file-painter
        olivetti
-       topspace)
+       topspace
+       presentation
+       project)
  
- :sub (project
-       file
+ :sub (file
        edit
        buffer
        search
@@ -66,14 +68,16 @@
        completion
        tempel-file-painter
        frame-padding
-       scroll)
+       scroll
+       fd)
 
  :tools
  :pkg (magit
        ssh-agency
        eglot
        dape
-       flymake)
+       flymake
+       eshell)
 
  :sub (compile
        dired

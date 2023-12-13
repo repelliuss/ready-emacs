@@ -29,6 +29,10 @@
   "Where user files stored."
   :type 'file)
 
+(defcustom ~dir-local-pkg (expand-file-name (concat user-emacs-directory "local/package/"))
+  "Where local packages are stored."
+  :type 'file)
+
 (defcustom ~theme-preferred-bg 'light
   "Preferred background lightning for theme packages."
   :type '(choice (const 'light) (const 'dark))

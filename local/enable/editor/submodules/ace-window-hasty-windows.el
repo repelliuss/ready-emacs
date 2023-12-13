@@ -53,8 +53,8 @@
   (defun aw--copy-or-clone-window ()
     (pcase (length (window-list))
       (1 (aw--split-current-window-fair))
-      (2 (aw-copy-window (other-window)))
-      (t (run-at-time nil nil
+      (2 (aw-copy-window (next-window)))
+      (_ (run-at-time nil nil
                       #'aw-select "Ace- Select a window to copy current buffer" #'aw-copy-window))))
 
   (defun aw--delete-other-windows ()

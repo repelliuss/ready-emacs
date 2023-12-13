@@ -11,13 +11,11 @@
 
 (when ~os-windows-p
   (when (null (getenv-internal "HOME"))
-    (setenv "HOME" (getenv "USERPROFILE"))
     (setq abbreviated-home-dir nil))
 
   (setq w32-get-true-file-attributes nil  ; decrease file IO workload
         w32-pipe-read-delay 0             ; faster IPC
         w32-pipe-buffer-size (* 64 1024)) ; read more at a time (was 4K)
 
-  (with-eval-after-load 'rps/editor/fd
-    (setq consult-fd-args (concat consult-fd-args
-                                  "--path-separator=/"))))
+  (advice-add #'view-hello-file :override (defun ~windows-view-hello-file ()
+                                            (message "View hello file takes a long time view so it is disabled."))))

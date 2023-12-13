@@ -1,33 +1,41 @@
 ;;; fd.el -*- lexical-binding: t; -*-
 
-(defvar consult-fd-args "fd --color=never --full-path -i -H -E .git --regex")
+(setup consult
+  (:elpaca nil)
+  (:after-feature consult
+    (:set (append* consult-fd-args) '("-i"
+                                     "-H"
+                                     "-E .git"))
+    (when ~os-windows-p
+      (:set (append consult-fd-args) "--path-separator=/"))))
 
-(defun consult--fd-builder (input)
-  "Build command line given INPUT."
-  (pcase-let* ((cmd (split-string-and-unquote consult-fd-args))
-               (`(,arg . ,opts) (consult--command-split input))
-               (`(,re . ,hl) (funcall consult--regexp-compiler arg 'extended)))
-    (when re
-      (list :command (append cmd
-                             (list (consult--join-regexps re 'extended))
-                             opts)
-            :highlight hl))))
+(defun ~fd-ignore-arguments (ignores dir)
+    "Convert IGNORES and DIR to a list of arguments for `find'.
+IGNORES is a list of glob patterns.  DIR is an absolute
+directory, used as the root of the ignore globs."
+    (cl-assert (not (string-match-p "\\`~" dir)))
+    (if (not ignores)
+        ""
+      ;; TODO: All in-tree callers are passing in just "." or "./".
+      ;; We can simplify.
+      ;; And, if we ever end up deleting xref-matches-in-directory, move
+      ;; this function to the project package.
+      (setq dir (file-name-as-directory dir))
+      (concat
+       " -E "
+       (mapconcat
+        (lambda (ignore)
+          (when (string-match-p "/\\'" ignore)
+            (setq ignore (concat ignore "*")))
+          (shell-quote-argument (if (string-match "\\`\\./" ignore)
+                                    (replace-match dir t t ignore)
+                                  (if (string-prefix-p "*" ignore)
+                                      ignore
+                                    (concat "*/" ignore)))))
+        ignores
+        " -E ")
+       " --prune")))
 
-(autoload #'consult--directory-prompt "consult")
-;;;###autoload
-(defun consult-fd (&optional dir initial)
-  "Search for regexp with find in DIR with INITIAL input.
 
-The find process is started asynchronously, similar to `consult-grep'.
-See `consult-grep' for more details regarding the asynchronous search."
-  (interactive "P")
-  (let* ((prompt-dir (consult--directory-prompt "Find" dir))
-         (default-directory (cdr prompt-dir)))
-    (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
 
-(use-package consult
-  :straight nil
-  :after (rps/editor/search)
-  :init
-  (bind rps/search-map
-	"f" #'consult-fd))
+

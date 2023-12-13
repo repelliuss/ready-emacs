@@ -5,8 +5,10 @@
         corfu-scroll-margin 5           ; Use scroll margin
         corfu-quit-at-boundary nil
         corfu-quit-no-match nil
-        corfu-on-exact-match nil)
-  
+        corfu-on-exact-match nil
+        corfu-right-margin-width 2
+        corfu-left-margin-width 2)
+
   (global-corfu-mode 1)
   
   (:bind (corfu-map

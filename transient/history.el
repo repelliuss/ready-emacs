@@ -13,4 +13,5 @@
  (magit-rebase
   ("--autostash"))
  (magit-remote
-  ("-f")))
+  ("-f"))
+ (magit-remote.<remote>.*url "git@github.com:repelliuss/ready-emacs.git" "https://github.com/repelliuss/ready-emacs.git"))

@@ -526,6 +526,11 @@ therefore not be stored in `custom-set-variables' blocks."
   :debug '(sexp form)
   :repeatable t)
 
+(setup-define :alias
+  (lambda (symbol name)
+    `(defalias ',symbol ,name))
+  :repeatable t)
+
 (setup-define :local-set
   (setup-make-setter
    (lambda (name)
