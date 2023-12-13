@@ -1,13 +1,16 @@
 ;;; fd.el -*- lexical-binding: t; -*-
 
+(setup-none
+  (defvar ~fd-common-args '("-i"
+                            "-H"
+                            "-E .git"))
+  (when ~os-windows-p
+    (:set (append ~fd-common-args) "--path-separator=/")))
+
 (setup consult
   (:elpaca nil)
   (:after-feature consult
-    (:set (append* consult-fd-args) '("-i"
-                                     "-H"
-                                     "-E .git"))
-    (when ~os-windows-p
-      (:set (append consult-fd-args) "--path-separator=/"))))
+    (:set (append* consult-fd-args) ~fd-common-args)))
 
 (defun ~fd-ignore-arguments (ignores dir)
     "Convert IGNORES and DIR to a list of arguments for `find'.

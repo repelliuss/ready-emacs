@@ -39,7 +39,7 @@
              ;; expanded and not left for the shell command
              ;; to interpret.
              (localdir (file-local-name (expand-file-name dir)))
-             (command (format "%s . %s %s --type f %s --print0 %s"
+             (command (format "%s . %s %s --type f %s --print0 %s %s"
                               "fd"
                               ;; In case DIR is a symlink.
                               (file-name-as-directory localdir)
@@ -54,16 +54,17 @@
                                           " "
                                           (shell-quote-argument ")"))
                                 "")
-                              (~fd-ignore-arguments ignores "./"))))
+                              (~fd-ignore-arguments ignores "./")
+                              (string-join ~fd-common-args " "))))
         (project--remote-file-names
          (sort (split-string (shell-command-to-string command) "\0" t)
                #'string<))))))
-
 
 (setup (:elpaca project-x
                 :host github
                 :repo "karthink/project-x")
   (:autoload project-x-try-local)
-  (:set project-x-local-identifier '(".project" ".plastic"))
-  (:with-hook project-find-functions
-    (:hook #'project-x-try-local)))
+  (:after-feature project
+    (:set project-x-local-identifier '(".project" ".plastic")
+          (append project-find-functions) #'project-x-try-local)))
+

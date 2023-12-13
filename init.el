@@ -83,7 +83,8 @@
  :sub (compile
        dired
        grammer
-       web)
+       web
+       vc-plastic)
 
  :lang
  :pkg (elisp

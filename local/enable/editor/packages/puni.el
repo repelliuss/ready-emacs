@@ -79,7 +79,9 @@ This command supports `meow-selection-command-fallback'."
       (when (meow--allow-modify-p)
         (let ((beg (point-at-bol))
 	      (end (point-at-eol)))
-          (when (or (puni-region-balance-p beg end)
+          (require 'puni)
+          (when (or (not puni-confirm-when-delete-unbalanced-active-region)
+                    (puni-region-balance-p beg end)
                     (y-or-n-p "Delete the whole line will cause unbalanced state. Continue? "))
             (kill-whole-line))))))
 
