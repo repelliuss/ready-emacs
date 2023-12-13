@@ -70,7 +70,8 @@
        tempel-file-painter
        frame-padding
        scroll
-       fd)
+       fd
+       indent)
 
  :tools
  :pkg (magit
