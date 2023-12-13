@@ -32,7 +32,8 @@
  :sub (unsafety
        no-beep
        history
-       os)
+       os
+       home)
 
  :editor
  :pkg (meow

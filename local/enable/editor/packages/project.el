@@ -60,5 +60,10 @@
                #'string<))))))
 
 
-
-
+(setup (:elpaca project-x
+                :host github
+                :repo "karthink/project-x")
+  (:autoload project-x-try-local)
+  (:set project-x-local-identifier '(".project" ".plastic"))
+  (:with-hook project-find-functions
+    (:hook #'project-x-try-local)))
