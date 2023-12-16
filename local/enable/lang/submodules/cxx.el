@@ -4,7 +4,7 @@
   (:elpaca nil)
 
   (:when-loaded
-    (:bind (c-mode-map c++-mode-map) "<tab>" #'~c-indent-then-complete)
+    (bind c-mode-base-map "<tab>" #'~c-indent-then-complete)
     (:set (prepend c-default-style) '(other . "TaleWorlds")))
 
   (defun ~c-indent-then-complete ()
