@@ -54,4 +54,5 @@
 (setup frame-padding
   (:elpaca nil)
   (:after-feature org-tree-slide (frame-padding-hold-on-to #'org-tree-slide-mode))
-  (:bind ~keymap-toggle "p" #'frame-padding-global-mode))
+  (:bind ~keymap-toggle "p" #'frame-padding-global-mode)
+  (frame-padding-global-mode 1))

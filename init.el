@@ -14,7 +14,8 @@
  :ui
  :pkg (hl-todo
        rainbow-mode
-       all-the-icons)
+       all-the-icons
+       golden-ratio)
  
  :sub (zen
        pad-frame
