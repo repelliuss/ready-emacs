@@ -1,10 +1,11 @@
 ;;; c-pp.el -*- lexical-binding: t; -*-
 
 (setup cc-mode
-  (:bind (c-mode-map c++-mode-map)
-	 "<tab>" #'~c-indent-then-complete)
+  (:elpaca nil)
 
-  (:set (prepend c-default-style) '(other . "TaleWorlds"))
+  (:when-loaded
+    (:bind (c-mode-map c++-mode-map) "<tab>" #'~c-indent-then-complete)
+    (:set (prepend c-default-style) '(other . "TaleWorlds")))
 
   (defun ~c-indent-then-complete ()
     (interactive)

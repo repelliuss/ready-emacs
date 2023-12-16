@@ -676,7 +676,9 @@ See `advice-add' for more details."
 
 (defmacro setup-none (&rest body)
   (declare (indent 0))
-  `(setup nil ,@body))
+  `(setup nil
+     (:with-feature emacs
+       ,@body)))
 
 (elpaca (elpaca-setup
 	 :host github

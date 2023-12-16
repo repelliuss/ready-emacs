@@ -12,11 +12,13 @@
  :pkg (mood-line)
  
  :ui
+ :pkg (hl-todo
+       rainbow-mode
+       all-the-icons)
+ 
  :sub (zen
        pad-frame
        pad-window
-       hl-todo
-       rainbow-mode
        cursor
        prettify
        quit)
@@ -25,7 +27,6 @@
  :pkg (which-key
        orderless
        marginalia
-       all-the-icons
        pcmpl-args
        helpful)
 
@@ -33,7 +34,8 @@
        no-beep
        history
        os
-       home)
+       home
+       startup)
 
  :editor
  :pkg (meow
@@ -53,7 +55,8 @@
        olivetti
        topspace
        presentation
-       project)
+       project
+       treesit-auto)
  
  :sub (file
        edit

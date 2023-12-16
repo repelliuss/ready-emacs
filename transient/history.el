@@ -8,10 +8,10 @@
  (magit-commit nil)
  (magit-log
   ("-n256" "--graph" "--decorate"))
+ (magit-pull nil)
  (magit-push nil
              ("--force-with-lease"))
  (magit-rebase
   ("--autostash"))
  (magit-remote
-  ("-f"))
- (magit-remote.<remote>.*url "git@github.com:repelliuss/ready-emacs.git" "https://github.com/repelliuss/ready-emacs.git"))
+  ("-f")))
