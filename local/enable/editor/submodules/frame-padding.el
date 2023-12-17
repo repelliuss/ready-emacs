@@ -55,4 +55,4 @@
   (:elpaca nil)
   (:after-feature org-tree-slide (frame-padding-hold-on-to #'org-tree-slide-mode))
   (:bind ~keymap-toggle "p" #'frame-padding-global-mode)
-  (frame-padding-global-mode 1))
+  (~funcall-consider-daemon (lambda () (run-at-time nil nil #'frame-padding-global-mode))))

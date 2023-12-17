@@ -1,4 +1,6 @@
-((emoji--command-Emoji nil)
+((dirvish-dispatch nil)
+ (dirvish-quick-access nil)
+ (emoji--command-Emoji nil)
  (emoji--command-Emoji\ >\ Smileys nil)
  (emoji--command-Emoji\ >\ Smileys\ >\ hand nil)
  (emoji--command-Emoji\ >\ Smileys\ >\ smiling nil)

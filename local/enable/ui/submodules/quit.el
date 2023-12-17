@@ -1,7 +1,8 @@
 ;;; quit.el -*- lexical-binding: t; -*-
 
 (bind ~keymap-quit
-      "q" #'save-buffers-kill-emacs)
+      "q" #'save-buffers-kill-emacs
+      "r" #'~quit-but-restart)
 
 (defvar ~doom-quit-messages
   '(;;from doom 2
@@ -55,3 +56,6 @@ are open."
 
 (setq confirm-kill-emacs #'~doom-quit-fn)
 
+(defun ~quit-but-restart ()
+  (interactive)
+  (kill-emacs 0 'restart))

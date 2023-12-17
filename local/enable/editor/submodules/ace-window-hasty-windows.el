@@ -22,7 +22,9 @@
                             (?w aw--switch-to-next-window) ; will only work if there are 2 windows
                             (?l maximize-window)
                             (?= balance-windows)
-                            (?? aw--force-show-dispatch-help)))
+                            (?? aw--force-show-dispatch-help)
+                            (?> rotate-window)
+                            (?< rotate-layout)))
 
   (:with-function aw-split-window-vert
     (:advice :after #'windmove-down))

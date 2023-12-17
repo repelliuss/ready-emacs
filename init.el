@@ -57,7 +57,8 @@
        topspace
        presentation
        project
-       treesit-auto)
+       treesit-auto
+       dirvish)
  
  :sub (file
        edit
