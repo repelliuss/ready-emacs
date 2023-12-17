@@ -16,6 +16,11 @@
 
      # optional for a package named magit
      git config --global status.showUntrackedFiles all
+
+     # optional for Windows performance
+     git config --global core.preloadindex true   # default since v2.1
+     git config --global core.fscache true        # default since v2.8
+     git config --global gc.auto 256
    #+end_src
 
    2. Install Emacs
