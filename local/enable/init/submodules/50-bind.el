@@ -19,7 +19,8 @@
         "s" ~keymap-search
         "t" ~keymap-toggle
         "e" ~keymap-edit
-        "TAB" ~keymap-workspace)
+        "TAB" ~keymap-workspace
+        "q" ~keymap-quit)
   
   (defun ~bind-local (&optional key &rest bindings)
     (declare (indent 1))

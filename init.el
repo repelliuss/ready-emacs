@@ -112,6 +112,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(all-the-icons-scale-factor 1.0)
  '(safe-local-variable-values '((projectile-indexing-method . alien))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

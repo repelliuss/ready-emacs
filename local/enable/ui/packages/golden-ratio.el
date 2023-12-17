@@ -8,4 +8,7 @@
               (and which-key--buffer
                    (window-live-p (get-buffer-window which-key--buffer)))))))
 
+  (:with-function ace-window
+    (:advice :after #'golden-ratio))
+
   (golden-ratio-mode 1))

@@ -2,9 +2,10 @@
 
 (setup olivetti
   (:hook-into org-tree-slide)
-  (:set olivetti-body-width 74)
+  (:set olivetti-body-width 128)
   (:bind ~keymap-toggle
          "o" (defun ~olivetti-toggle ()
+               (interactive)
                (setq ~olivetti-mode-manual-p (not olivetti-mode))
                (call-interactively #'olivetti-mode)))
   (:with-hook window-state-change-hook

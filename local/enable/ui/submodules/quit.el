@@ -1,5 +1,8 @@
 ;;; quit.el -*- lexical-binding: t; -*-
 
+(bind ~keymap-quit
+      "q" #'save-buffers-kill-emacs)
+
 (defvar ~doom-quit-messages
   '(;;from doom 2
     "Don't go now, there's a dimensional shambler waiting at the dos prompt!"

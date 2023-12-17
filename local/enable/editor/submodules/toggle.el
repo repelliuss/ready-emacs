@@ -1,7 +1,8 @@
 ;;; toggle.el -*- lexical-binding: t; -*-
 
 (bind ~keymap-toggle
-      "r" #'~toggle-read-only-mode)
+      "r" #'~toggle-read-only-mode
+      "s" #'toggle-frame-fullscreen)
 
 (defun ~toggle-read-only-mode ()
   (interactive)

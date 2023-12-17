@@ -100,6 +100,9 @@
 (defvar ~keymap-workspace (make-sparse-keymap)
   "Workspace map.")
 
+(defvar ~keymap-quit (make-sparse-keymap)
+  "Quit map.")
+
 (defvar ~keymap-completion (make-sparse-keymap)
   "Completion map.")
 
