@@ -1,5 +1,7 @@
 ((dirvish-dispatch nil)
  (dirvish-file-info-menu nil)
+ (dirvish-ls-switches-menu
+  ("--group-directories-first"))
  (dirvish-quick-access nil)
  (emoji--command-Emoji nil)
  (emoji--command-Emoji\ >\ Smileys nil)
