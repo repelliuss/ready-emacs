@@ -9,6 +9,7 @@
   (dirvish-override-dired-mode)
 
   (:require dirvish-emerge)
+  ;; TODO: dirvish emerge
   (:set dirvish-emerge-groups '(("Recent files" (predicate . recent-files-2h))
                                 ("Documents" (extensions "pdf" "tex" "bib" "epub"))
                                 ("Video" (extensions "mp4" "mkv" "webm"))
