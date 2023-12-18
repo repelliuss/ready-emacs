@@ -2,7 +2,7 @@
 
 (setup cc-mode
   (:elpaca nil)
-
+  
   (:when-loaded
     (bind c-mode-base-map "<tab>" #'~c-indent-then-complete)
     (:set (prepend c-default-style) '(other . "TaleWorlds")))
