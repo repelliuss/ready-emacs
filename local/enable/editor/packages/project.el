@@ -25,7 +25,6 @@
         (call-interactively #'project-async-shell-command)
       (call-interactively #'async-shell-command)))
 
-
   (:after-feature enable-sub-fd
     (:with-function project--files-in-directory
       (:advice :override #'~project--files-in-directory-using-fd))
@@ -65,6 +64,6 @@
                 :repo "karthink/project-x")
   (:autoload project-x-try-local)
   (:after-feature project
-    (:set project-x-local-identifier '(".project" ".plastic")
+    (:set project-x-local-identifier (list ".project" (lambda (dir) (file-expand-wildcards (concat dir "*.sln"))))
           (append project-find-functions) #'project-x-try-local)))
 

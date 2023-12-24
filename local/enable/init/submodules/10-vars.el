@@ -48,7 +48,7 @@
 (defvar ~theme-default-dark nil
   "Default light theme.")
 
-(defcustom ~theme-preferred 'tao-theme
+(defcustom ~theme-preferred 'modus-themes-tinted
   "Theme to be loaded with #'~theme-load-if-preferred."
   :type 'symbol)
 

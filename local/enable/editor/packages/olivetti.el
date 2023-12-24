@@ -2,7 +2,7 @@
 
 (setup olivetti
   (:hook-into org-tree-slide)
-  (:set olivetti-body-width 128)
+  (:set olivetti-body-width 200)
   (:bind ~keymap-toggle
          "o" (defun ~olivetti-toggle ()
                (interactive)

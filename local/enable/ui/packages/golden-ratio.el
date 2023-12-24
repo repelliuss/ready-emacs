@@ -8,18 +8,20 @@
       (:set (prepend golden-ratio-inhibit-functions)
             (lambda ()
               (and which-key--buffer
-                   (window-live-p (get-buffer-window which-key--buffer)))))))
+                   (window-live-p (get-buffer-window which-key--buffer))))))))
 
-  (:with-hook window-state-change-hook
-    (:hook ~golden-ratio-only-if-less-than-three-window)))
+(advice-add #'ace-window :after #'~golden-ratio-only-if-less-than-three-window)
+(defvar ~golden-ratio-dynamic-last-action nil)
 
-(defun ~golden-ratio-only-if-less-than-three-window ()
-  (if (< 2 (length (window-list-1)))
+(defun ~golden-ratio-only-if-less-than-three-window (&rest _)
+  (if (< 2 (let ((count 0))
+             (dolist (w (window-list-1))
+               (if (not (window-parameter w 'window-side))
+                   (setq count (1+ count))))
+             count))
       (progn
-        (with-eval-after-load #'ace-window
-          (advice-remove #'ace-window #'golden-ratio))
-        (golden-ratio-mode -1)
-        (balance-windows))
-    (with-eval-after-load #'ace-window
-      (advice-add #'ace-window :after #'golden-ratio))
-    (golden-ratio-mode 1)))
+        (unless (eq ~golden-ratio-dynamic-last-action 'balance)
+          (balance-windows)
+          (setq ~golden-ratio-dynamic-last-action 'balance)))
+    (call-interactively #'golden-ratio)
+    (setq ~golden-ratio-dynamic-last-action 'golden)))

@@ -8,5 +8,5 @@
   
   (add-hook 'compilation-filter-hook
 	    (lambda () (with-silent-modifications
-			 (ansi-color-apply-on-region compilation-filter-start (point)))))
+			         (ansi-color-apply-on-region compilation-filter-start (point)))))
   (add-hook 'compilation-filter-hook #'comint-truncate-buffer))

@@ -2,7 +2,7 @@
 
 (enable
  :theme
- :pkg (tao-theme)
+ :pkg (modus-themes)
  :sub (load-preferred-theme)
 
  :font
@@ -36,7 +36,8 @@
        history
        os
        home
-       startup)
+       startup
+       optimize)
 
  :editor
  :pkg (meow
@@ -76,12 +77,13 @@
        frame-padding
        scroll
        fd
-       indent)
+       indent
+       eldoc)
 
  :tools
  :pkg (magit
        ssh-agency
-       eglot
+       lsp-mode
        dape
        flymake
        eshell)
@@ -94,7 +96,8 @@
 
  :lang
  :pkg (elisp
-       lua)
+       lua
+       csharp)
 
  :sub (cxx)
 

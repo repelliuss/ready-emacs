@@ -8,4 +8,4 @@
 	    dired-recursive-copies 'always
 	    dired-recursive-deletes 'top
 	    dired-create-destination-dirs 'ask
-	    dired-listing-switches "-ahl -v --group-directories-first") ;; REVIEW: for windows)
+	    dired-listing-switches "-ahl -v --group-directories-first"))

@@ -1,9 +1,27 @@
 ;;; corfu.el -*- lexical-binding: t; -*-
 
+(setup cape
+  (:bind (~keymap-completion
+	      (:prefix "M-"
+            "t" #'complete-tag
+	        "d" #'cape-dabbrev
+	        "f" #'cape-file
+	        "k" #'cape-keyword
+	        "s" #'cape-symbol
+	        "a" #'cape-abbrev
+	        "i" #'cape-ispell
+	        "l" #'cape-line
+	        "w" #'cape-dict
+	        "\\" #'cape-tex
+	        "&" #'cape-sgml
+	        "r" #'cape-rfc1345))
+         ((:global-map)
+          "M-c" ~keymap-completion)))
+
 (setup corfu
   (:set corfu-cycle t                   ; Enable cycling for `corfu-next/previous'
         corfu-scroll-margin 5           ; Use scroll margin
-        corfu-quit-at-boundary nil
+        corfu-quit-at-boundary 'separator
         corfu-quit-no-match nil
         corfu-on-exact-match nil
         corfu-right-margin-width 2
@@ -19,6 +37,15 @@
 	  "C->" #'corfu-last 
 	  "M-<" #'corfu-scroll-down
 	  "M->" #'corfu-scroll-up))
+
+  (:after-feature lsp-mode
+    (:after-feature orderless
+      (:set lsp-completion-provider :none)
+      (:with-hook lsp-completion-mode-hook
+        (:hook (defun ~corfu-lsp-mode-integration-for-orderless ()
+                 (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults)) '(orderless))
+                 (add-hook 'completion-at-point-functions (cape-capf-buster #'lsp-completion-at-point) 90 'local)
+                 (remove-hook 'completion-at-point-function #'lsp-completion-at-point))))))
 
   (:with-hook minibuffer-setup-hook
     (:hook (defun ~corfu-enable-always-in-minibuffer ()
@@ -67,19 +94,4 @@
          "C-M->" #'scroll-other-window)
   (corfu-popupinfo-mode 1))
 
-(setup cape
-  (:bind (~keymap-completion
-	   "t" #'complete-tag
-	   "d" #'cape-dabbrev
-	   "f" #'cape-file
-	   "k" #'cape-keyword
-	   "s" #'cape-symbol
-	   "a" #'cape-abbrev
-	   "i" #'cape-ispell
-	   "l" #'cape-line
-	   "w" #'cape-dict
-	   "\\" #'cape-tex
-	   "&" #'cape-sgml
-	   "r" #'cape-rfc1345)
-         ((:global-map)
-          "M-c" ~keymap-completion)))
+

@@ -14,7 +14,6 @@
   (:with-function ~tempel-setup-capf
     (:hook-into prog-mode text-mode conf-mode))
 
-
   (:after-feature meow
     (dolist (entry '(tempel-expand tempel-insert))
       (advice-add entry :after (lambda (&rest _) (meow-insert)))))

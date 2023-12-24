@@ -32,10 +32,9 @@
                                                                    "--clang-tidy"
                                                                    "--pch-storage=memory"
                                                                    "--background-index"
-                                                                   "--completion-style=detailed"
-                                                                   "-log=verbose"))
+                                                                   "--completion-style=detailed"))
                                              ((shader-mode) "shader-ls.exe" "--stdio")))
-
+    
     (:face eglot-inlay-hint-face (:height 0.5))
 
     (:after-feature enable-pkg-flymake
@@ -45,10 +44,16 @@
                "e" #'~flymake-show-flymake-eldoc-function))))
   
   (:with-function eglot-ensure
-    (:hook-into c-mode c++-mode shader-mode)))
+    (:hook-into c-ts-base-mode-hook shader-mode csharp-mode csharp-ts-mode)))
 
 (setup consult-eglot
   (:after-feature eglot
     (:bind eglot-mode-map
            (:prefix "M-l"
              "s" #'consult-eglot-symbols))))
+
+(setup markdown-mode)
+
+(setup eglot-tempel
+  (:after-feature eglot
+    (:require eglot-tempel)))
