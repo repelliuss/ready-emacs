@@ -68,7 +68,7 @@ Emacs runs on an interpreter and we write code to develop our config.
 Though I didn't test it properly (😬), after you clone this repo whether with vc, elpaca (without main file and excluding init files etc.) you can just do following and use the module name in the enable config.
 
 #+begin_src elisp
-  (enable-module :local :path (file-name-concat "<path to repo>" "local" "enable"))
+  (enable-module :repelliuss :path (file-name-concat "<path to repo>" "local" "enable"))
 #+end_src
 
 You may need to customize [[file:local/enable/core/15-vars.el][variables]].
