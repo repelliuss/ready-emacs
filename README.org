@@ -55,7 +55,9 @@ Emacs runs on an interpreter and we write code to develop our config.
   (:init                                  ; load with init.el
    (:local
     (:theme modus-themes)                 ; load only modus-themes from theme group
-    (:font fontaine aporetic ioskeley nerd-icons font-list)
+    (:font fontaine
+           aporetic
+           ioskeley)
     (:ui)                                 ; load all scripts in ui group
     (:tools :except                       ; load all scripts in tools except eglot and flymake
             (eglot
