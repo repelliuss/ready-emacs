@@ -40,16 +40,22 @@
   "Where home directory is."
   :type 'file)
 
-(defcustom rps-dir-cache (expand-file-name (concat user-emacs-directory "cache/"))
+(defcustom rps-dir-base (file-name-parent-directory
+                         (file-name-parent-directory
+                          (file-name-parent-directory
+                           (file-name-parent-directory
+                            (or load-file-name buffer-file-name)))))
+  "Project root.
+Works across wherever the project is at. Whether at user-emacs-directory
+or standalone package."
+  :type 'file)
+
+(defcustom rps-dir-cache (file-name-as-directory (expand-file-name "cache" rps-dir-base))
   "Where cache files are stored."
   :type 'file)
 
-(defcustom rps-dir-local (expand-file-name (concat user-emacs-directory "local/"))
+(defcustom rps-dir-local (file-name-as-directory (expand-file-name "local" rps-dir-base))
   "Where user files stored."
-  :type 'file)
-
-(defcustom rps-dir-local-pkg (expand-file-name (concat user-emacs-directory "local/package/"))
-  "Where local packages are stored."
   :type 'file)
 
 (defcustom rps-dir-data (expand-file-name (concat rps-dir-home "emacs-data/"))

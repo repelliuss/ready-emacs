@@ -54,7 +54,7 @@ Emacs runs on an interpreter and we write code to develop our config.
 
   (:init                                  ; load with init.el
    (:local
-    (:theme modus-themes)
+    (:theme modus-themes)                 ; load only modus-themes from theme group
     (:font fontaine aporetic ioskeley nerd-icons font-list)
     (:ui)                                 ; load all scripts in ui group
     (:tools :except                       ; load all scripts in tools except eglot and flymake
@@ -62,6 +62,16 @@ Emacs runs on an interpreter and we write code to develop our config.
              flymake))
     (:lang)))
 #+end_src
+
+*** How to try out my config?
+
+Though I didn't test it properly (😬), after you clone this repo whether with vc, elpaca (without main file and excluding init files etc.) you can just do following and use the module name in the enable config.
+
+#+begin_src elisp
+  (enable-module :local :path (file-name-concat "<path to repo>" "local" "enable"))
+#+end_src
+
+You may need to customize [[file:local/enable/core/15-vars.el][variables]].
 
 ** elpaca: The Package Manager
 
