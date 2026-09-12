@@ -1,0 +1,5 @@
+# key: file
+# --
+;;; `(file-name-nondirectory (buffer-file-name))` -*- lexical-binding: t; -*-
+
+$0

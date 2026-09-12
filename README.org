@@ -1,0 +1,161 @@
+* The Four Pillars
+
+#+HTML: <img src="local/github/pillars.png" align="right" width="440">
+
+This is my portable Emacs config where I use this across Microsoft
+Windows, WSL, MSYS2, Linux and Android systems. Emacs interpreter is
+usually what I only need on a fresh system such that evaluating my
+config is the get go way of preparing my environment.
+
+I have written many personal packages to develop my config as a
+project that I am fond of which takes inspirations from many sources
+thanks to the community. 
+
+** enable: The Configuration Manager
+
+[[file:local/package/enable.el][enable]] is a declarative configuration manager such that it handles the
+organization of my elisp scripts. My early-init.el and init.el just
+loads it and calls enable very simply. I have a declarative style
+(inspired from the [[https://github.com/doomemacs/core.git][Doom Emacs]] thanks to @hlissner) [[file:local/enable/config.el][config.el]] file
+where I enable scripts that mostly contain package configurations.
+
+It enables me to easily load my script files, disable some of them,
+add isolated features that depend on some other package through event
+system such that if dependency is not available nothing breaks, list
+enabled scripts with its catalog, guard against errors propating up
+while loading the file which puts Emacs in an incomplete state, a
+bisect method to find out the culprit of the issue and a handy
+enable-find-script method to go to my scripts or create a new script
+file easily.
+
+I don't like using tangling of my configuration file as I think it
+hurts debugging and I personally don't want to document my
+configuration as I like my code as itself documenting with good
+comments where necessary. enable.el is a package I have been
+developing it for such a long time that now I see very similar attempts
+being provided as a package which was interesting to me. Current
+feature set is albeit small but I believe that all is necessary since
+Emacs runs on an interpreter and we write code to develop our config.
+
+# early-init.el
+#+begin_src elisp
+(defvar enable-config-file (concat user-emacs-directory "local/enable/config.el"))
+
+(load (concat user-emacs-directory "local/package/enable") nil 'nomessage)
+(load (concat user-emacs-directory "local/package/enable-catalog") nil 'nomessage)
+
+(enable-module :local :path (concat user-emacs-directory "local/enable/"))
+(enable :early)
+#+end_src
+
+# config.el
+#+begin_src elisp
+  (:early (:local (:core)))               ; load with early-init.el
+
+  (:init                                  ; load with init.el
+   (:local
+    (:theme modus-themes)
+    (:font fontaine aporetic ioskeley nerd-icons font-list)
+    (:ui)                                 ; load all scripts in ui group
+    (:tools :except                       ; load all scripts in tools except eglot and flymake
+            (eglot
+             flymake))
+    (:lang)))
+#+end_src
+
+** elpaca: The Package Manager
+
+[[https://github.com/progfolio/elpaca][elpaca]] is an async package manager. It is good and it is async. I'm
+mentioning it being async twice as I didn't like my Emacs waiting on
+all packages to be installed just to see a window. I also try to write
+my Emacs configuration in async style.
+
+#+begin_src elisp
+  (cfg-pkg (:elpaca hlsl-ts-mode
+                    :host github
+                    :repo "repelliuss/hlsl-ts-mode"
+                    :protocol ssh))
+#+end_src
+
+** cfg: Configuration Helper
+
+[[file:local/enable/core/35-cfg.el][cfg]] is a configuration helper just like use-package is. I like its
+functional style as looks instead of declarative style of
+use-package. This is a direct replication of [[https://codeberg.org/pkal/setup.el][setup.el]] (thanks to
+@pkal). It is skinnier version of setup.el in terms of defaults (320
+vs 837 lines which isn't a measurement of anything but a preference)
+and more linear through its set functions.
+
+It is also integrated with elpaca so that I can just write cfg-pkg and
+it also installs the name through elpaca.
+
+What I didn't like about use-package was that amount of keywords which
+doesn't really describe their functionality (such as :config being
+evaluated after package is loaded, :init being loaded before package
+is loaded) and verbose values. Of course, this is all just a
+taste. You usually need to read a bit before using most of the things
+anyway.
+
+cfg also makes use of key binding package of mine [[https://github.com/repelliuss/bind][bind]].
+
+#+begin_src elisp
+  (cfg-pkg olivetti
+    (:bind rps-keymap-toggle
+           "o" #'olivetti-mode)
+    (:opt olivetti-body-width 200)
+    (:hook-into dired-mode))
+#+end_src
+
+#+begin_src elisp
+  (cfg emacs
+    (:prepend treesit-extra-load-path (:join-d rps-dir-cache "tree-sitter")))
+
+  (cfg-pkg (:require treesit-auto)
+    (:opt treesit-auto-install 'prompt)
+    (:remove treesit-auto-langs 'yaml)
+    (global-treesit-auto-mode 1))
+#+end_src
+
+** store: System Package Manager Orchestrator
+
+[[file:local/enable/core/40-store.el][store]] is a system package manager orchestrator where you register
+stores that is able to work on some systems. You give it an ID that
+denotes the library/tool/font etc. and it is getting installed unless
+already installed and then executes continuations if the tool
+exists. You can give different package ids per store, skip it on some
+systems or stores, explicitly install from a store. It also provides
+an event for scripts so that you can act accordingly on available
+tools on system. stores need not to be a concrete system
+executable. In its essence, store is just a managing a state to
+execute some code paths or not.
+
+#+begin_src elisp
+  (cfg-pkg jinx
+    (:autoload jinx-mode)
+    (:opt jinx-languages "en_US tr_TR")
+    (:hook-into text-mode prog-mode conf-mode)
+
+    (store-thread
+      (store-install "enchant2-devel"
+        :pacman '(:name "mingw-w64-x86_64-enchant" :system windows)
+        :pkg '(:name "enchant"))          ; pkg is Andorid Termux package manager store name
+      
+      :then
+      (store-install "enchant2-hunspell"
+        :skip '(:system android))
+
+      :then
+      (store-install "hunspell"
+        :pacman '(:name "mingw-w64-x86_64-hunspell" :system windows))
+
+      :then
+      (store-install "hunspell-en_US"
+        :pacman '(:name "mingw-w64-x86_64-hunspell-en" :system windows)
+        :pkg '(:name "hunspell-en-us"))
+
+      :then
+      (store-install "hunspell-tr"
+        :skip '(:system android)
+        :pacman '(:name "mingw-w64-x86_64-hunspell-tr" :system windows))))
+#+end_src
+

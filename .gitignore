@@ -1,0 +1,54 @@
+/cache/
+
+/local/enable/secret/
+
+# auto-save files.
+\#*#
+
+# backup files.
+*~
+
+
+/elpa
+
+
+# only keep lockfiles
+straight/*
+!straight/versions
+
+# savehist-mode.
+/history
+
+# known projects
+/projects
+
+# recentf-mode
+/recentf
+
+# eshell
+/eshell
+
+# tramp
+/tramp
+
+# eww
+/url
+
+# bookmarks
+/bookmarks
+
+# yasnippet compiled snippet cache (generated from source .yasnippet files)
+.yas-compiled-snippets.el
+
+# save place
+/places
+
+.cache/
+/eln-cache
+/elpaca/**
+/org-persist/
+transient/history.el
+/.agent-shell/
+/CLAUDE.md
+/agent
+/tests

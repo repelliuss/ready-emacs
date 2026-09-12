@@ -1,0 +1,7 @@
+# key: file
+# --
+#pragma once
+
+namespace $0
+{
+}
