@@ -94,9 +94,8 @@ my Emacs configuration in async style.
 [[file:local/enable/core/35-cfg.el][cfg]] is a configuration helper just like use-package is. I like its
 functional style as looks instead of declarative style of
 use-package. This is a direct replication of [[https://codeberg.org/pkal/setup.el][setup.el]] (thanks to
-@pkal). It is skinnier version of setup.el in terms of defaults (320
-vs 837 lines which isn't a measurement of anything but a preference)
-and more linear through its set functions.
+@pkal). It is skinnier version of setup.el in terms of defaults and
+more linear through its set functions.
 
 It is also integrated with elpaca so that I can just write cfg-pkg and
 it also installs the name through elpaca.
